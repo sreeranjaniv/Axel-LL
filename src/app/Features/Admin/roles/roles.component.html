@@ -1,0 +1,92 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+          <ng4-loading-spinner  ></ng4-loading-spinner>
+          <main class="col-md-9 ms-auto col-lg-10">
+              
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div class="top_bg d-flex align-items-center">
+                    <div class="form-group col-xs-3 ">
+                      <label class="form-control input-group-lg reg_name">Admin Roles</label>
+                  </div>
+              <div  class="form-group col-xs-6">
+                  <button (click)="add()"type="submit" class="btn btn-primary"  data-toggle="modal" data-target="#AddEdit">Add</button>
+              </div>
+                  
+                  </div>
+                  
+              </div>
+              <div class="modal fade" id="AddEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Add/Edit Roles</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">Role Name:</label>
+                          <input [(ngModel)]="RoleArraydata.RoleName" name="timeofsecbox" maxlength="50" #timeofsecbox="ngModel" type="text" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="form-group">
+                          <div class="switch" id="switchdivpublic" tabindex="1">
+                            <input class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnPYes" name="ispblic" tabindex="1"
+                              type="radio"  [(ngModel)]="RoleArraydata.RoleStatus"  checked value="Y"><label
+                              class="switch-label switch-label-off" for="rbtnPYes">Active</label>
+                              <input class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnPNo" name="ispblic" tabindex="1"
+                               type="radio" [(ngModel)]="RoleArraydata.RoleStatus"  value="N"><label
+                              class="switch-label switch-label-on" for="rbtnPNo">In-Active</label><span class="switch-selection"></span>
+                              
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button (click)="SaveRole()" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <div  class="table-responsive hover_">
+                <table class="table table-striped" style="width: 100%; text-align: center;">
+                    <thead>
+                      <tr style="text-transform: uppercase;">
+                        <th scope="col">Role Name</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Edit</th>
+                      </tr>
+                    </thead>
+
+                    <tbody style="cursor: pointer;">
+                        <ng-container *ngIf="RolesData.length > 0; else norecdata" >
+                            <tr *ngFor="let item of RolesData">
+                                <td >{{item.R_NAME}}</td>
+                                <td ><span [ngStyle]="{'color': item.R_STATUS=='Y' ? '#0aa40a' : '#ff0000' }">{{item.R_STATUS=='Y' ? 'Active' : 'In-active'}}</span></td>
+                                <td (click)="editBrand(item.R_ID)"  ><img data-toggle="modal" data-target="#AddEdit" style="text-align: center; cursor: pointer;" src="../../../assets/images/edit_1.png"></td>
+                            </tr>
+                    </ng-container>
+                      <ng-template #norecdata>
+                        <tr  >
+                          <td colspan="5" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found !!</label></td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                    
+                  </table>
+                <!-- <div *ngIf="Acc_COA_Data.length > 99  &&  viewmore" class="col-14" style="text-align: center;" >
+                    <div  class="d-flex justify-content-center" style="margin: 10px">
+                        <button style="background-color: #0d6efd;border: none;" type="button" class="btn btn-primary btn-sm"
+                            (click)="ViewMore()">View More</button>
+                    </div>
+                </div> -->
+            </div>
+            
+          </main>
+          
+    </div>
+   
+</div>

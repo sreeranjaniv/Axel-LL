@@ -1,0 +1,441 @@
+.Nrep2_bg {
+    height: calc(100vh - 67px); //140vh;
+    background: url(/assets/images/nr_bg.png) repeat-y;
+    background-size: 100%, cover;
+    color: #ffffff;
+    padding: 10px 20px 20px;
+    font-family: "Gotham\ Book\ Regular";
+    position: inherit;
+    left: 0;
+    right: 0;
+    z-index: -10;
+    overflow: auto;
+
+}
+
+.NR_dropdwn select {
+    outline: none;
+    border: none;
+    width: 93%;
+    height: 30px;
+    border-radius: 20px;
+    font-size: .8rem;
+    font-family: 'HelveticaNeue-Regular';
+    color: #ffffff;
+    background: url(/assets/images/Arrow_dwn.png) #678d90 95% no-repeat;
+    padding: 0 15px 0 10px;
+    text-transform: uppercase;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none
+}
+
+.NR_search {
+    outline: none;
+    border: none;
+    width: 93%;
+    height: 30px;
+    border-radius: 20px;
+    font-size: .8rem;
+    font-family: 'HelveticaNeue-Regular';
+    color: #000;
+    // background-color: #678d90; 
+    padding: 0 15px 0 10px;
+    text-transform: uppercase;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none
+}
+
+.NR_dropdwn select option {
+    background: #678d90 !important;
+    height: 40px !important;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.NR_dropdwn select option:hover {
+    background: #ff0000;
+    color: #fff;
+}
+
+.Nrep_Deal {
+    .nr_curve {
+        width: 98%;
+        background-image: linear-gradient(to bottom, transparent 5%, #fff 5%, #fff 50%);
+        position: absolute;
+        border-radius: 20px;
+        margin-top: 25px;
+        margin-left: 10px;
+    }
+
+    table {
+        width: 99%;
+        text-align: center;
+        font-size: .8rem;
+        margin-left: 9px;
+        border: none !important;
+        border-collapse: collapse;
+        letter-spacing: 1px;
+        //  z-index: 999;
+        // position: relative;
+        font-family: 'Gotham\ Book\ Regular';
+    }
+
+    table thead th {
+        // padding:13px 4px;
+        line-height: 3;
+        padding: 5px 8px;
+        background: #fff;
+        background: linear-gradient(to top, #59b76c 2px, #fff 10%);
+        color: #000;
+        border-radius: 10px 10px 0 0;
+        // border-bottom: 3px solid #59b76c;
+        vertical-align: middle;
+        text-transform: uppercase;
+        font-family: 'Gotham\ Bold';
+        font-size: .7rem;
+    }
+
+    table thead th:nth-child(even) {
+        background: transparent;
+        border: none;
+    }
+
+    table tbody td {
+        padding: 5px;
+        color: #000;
+    }
+
+    // table tr:nth-child(even){background: #f5f7f9; border: none;}
+    // table tbody tr:nth-child(odd){background:rgb(228, 228, 228) !important;}
+    table tbody tr:last-child td:first-child {
+        border-radius: 0 0 0 20px;
+    }
+
+    .odd {
+        background: #e8ebf0;
+    }
+
+    .even {
+        background: #f8f9fb;
+    }
+
+    ._ttl {
+        width: 9%;
+        white-space: nowrap !important;
+    }
+
+}
+
+.contentpanel {
+    width: 100%;
+    height: auto;
+    ;
+    border: 1px solid rgb(117, 115, 115);
+    // border-radius: 10px; 
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    font-family: 'GothamMedium'
+}
+
+.Mod_Headings {
+    font-size: 17px;
+    padding: 5px;
+    font-family: 'GothamMedium';
+}
+
+.savebutton {
+    // background: #555555;
+    // border: 1px solid #606061;
+    // border-radius: 3px;
+    // padding: 5px;
+    // outline: 0;
+    // font-weight: 400;
+    // font-size: 14px;
+    // color: #fff;
+    // text-transform: uppercase;
+    // width: 100%;
+    // font-family: 'GothamMedium'
+
+
+
+    // .save_btn {
+    width: auto;
+    height: 30px;
+    background-image: linear-gradient(to bottom, #47c0e9, #2691ba);
+    border-radius: 3px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    // }
+}
+
+
+.breakbutton {
+
+
+
+
+    // .save_btn {
+    width: 11%;
+    height: 30px;
+    // background-image: linear-gradient(to bottom, #47c0e9, #2691ba);
+    border-radius: 3px;
+    border: none;
+    color: black;
+    cursor: pointer;
+    background-color: white;
+    // }
+}
+
+.logoPointer {
+    margin: 5px 5px 0px 5px;
+    cursor: pointer;
+    background-color: #1d1e1f;
+}
+
+.closebtn {
+    background: #202020;
+    border: 1px solid #121213;
+    border-radius: 3px;
+    padding: 2px;
+    outline: 0;
+    font-weight: 20;
+    font-size: 12px;
+    color: #fff;
+    text-transform: uppercase;
+    float: left;
+    font-family: 'GothamMedium'
+        // margin-left: 50px;
+}
+
+.Active {
+    color: green;
+    text-align: center;
+    font-family: 'GothamMedium'
+}
+
+.InActive {
+    color: Red;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'GothamMedium'
+}
+
+.bgImage {
+    width: 95%;
+    height: 100vh;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    object-fit: contain;
+    position: absolute;
+    top: -6.5%;
+}
+
+.bgImage1 {
+    width: 95%;
+    height: 100vh;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    -o-object-fit: contain;
+    object-fit: contain;
+    position: absolute;
+    top: -6.5%;
+
+}
+
+.btnClose {
+    margin-left: auto;
+    position: relative;
+    z-index: 99;
+    border: none;
+}
+
+.headerLogo {
+    width: 15%;
+    position: absolute;
+    margin-left: auto;
+    left: 45%;
+    top: 2%;
+    z-index: 99;
+}
+
+.brand_name {
+    font-size: 2rem;
+    position: absolute;
+    top: 15%;
+    left: 38%;
+    color: white;
+    z-index: 99;
+}
+
+.textboxClass{
+    border-radius: 2em;
+    border: none;
+    margin: 2em;
+    padding: 1.3em;
+    padding-left: 1.5em;
+    top: 200px;
+    position: relative;
+    left: 20%;
+    width: 50%;
+    text-align: center;
+    font-size: 0.9rem;
+    z-index: 99;
+  }
+
+  .or{
+    position: absolute;
+    z-index: 99;
+    color: white;
+    top: 245px;
+    font-size: 1rem;
+    left: 50%;
+  }
+  .scanQrCode{
+    border-radius: 2em;
+    border: none;
+    margin: 2em;
+    padding: 1.2em;
+    padding-left: 1.5em;
+    top: 150px;
+    position: relative;
+    left: 20%;
+    width: 50%;
+    text-align: center;
+    font-size: 0.9rem;
+    z-index: 99;
+  }
+
+  .getHelp{
+    border-radius: 2em;
+    border: none;
+    margin: 2em;
+    padding: 1.2em;
+    padding-left: 1.5em;
+    top: 150px;
+    position: relative;
+    left: 20%;
+    width: 50%;
+    text-align: center;
+    font-size: 0.9rem;
+    z-index: 99;
+  }
+
+  .content{
+    height: 100vh;
+    overflow-y: hidden;
+  }
+
+  .footer{
+    border-radius: 2em;
+    border: none;
+    margin: 2em;
+    padding: 1.2em;
+    padding-left: 1.5em;
+    top: 220px;
+    position: relative;
+    left: 20%;
+    width: 50%;
+    text-align: center;
+    font-size: 0.9rem;
+    z-index: 99;
+  }
+
+.Nrep_bg {
+    background-image: linear-gradient(to right, #4a42d4, #267fd3);
+    color: #ffffff;
+    padding: 10px 20px 50px;
+}
+
+#style-14::-webkit-scrollbar {
+    width: 10px;
+    background-color: #F5F5F5;
+
+}
+
+#style-14::-webkit-scrollbar-thumb {
+    background-color: #FFF;
+    background-image: -webkit-linear-gradient(90deg,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 1) 25%,
+            transparent 100%,
+            rgba(0, 0, 0, 1) 75%,
+            transparent)
+}
+
+
+.scroll_deals {
+    overflow: auto;
+    overflow-x: auto;
+    height: 70vh;
+}
+
+.table-fixed {
+    width: 100%;
+}
+
+/*This will work on every browser but Chrome Browser*/
+.table-fixed thead {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+
+}
+
+/*This will work on every browser*/
+.table-fixed thead th {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+}
+
+@media screen and (min-width:1600px) {
+    .scroll_deals {
+        height: 75vh;
+    }
+
+    .Nrep_Deal {
+        .nr_curve {
+            width: 98%;
+            background-image: linear-gradient(to bottom, transparent 5%, #fff 5%, #fff 50%);
+            position: absolute;
+            border-radius: 20px;
+            margin-top: 25px;
+        }
+    }
+}
+
+
+@media screen and (min-width:1900px) {
+    .scroll_deals {
+        height: 75vh;
+    }
+
+}
+
+.description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100px !important;
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;
+}
+
+
+.tooltip-inner {
+    text-decoration: underline;
+    color: red;
+    background-color: yellow;
+}
+
+#mymodal {
+    top: 13%
+}

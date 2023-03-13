@@ -1,0 +1,189 @@
+<app-header></app-header>
+<ng4-loading-spinner></ng4-loading-spinner>
+<div class="container-fluid" style="position: fixed;">
+    <div class="row">
+        <div class="col-lg-12 p-0">
+            <div class = "Nrep2_bg">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <div>
+                            <a (click)="PreviousUrl()" style="cursor: pointer;font-size: medium;" class="link-light">Back</a>
+                          </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-2">
+                        <input type="search" placeholder="Search"  class="form-control" name="search"  [(ngModel)]="searchKeyWord" style = "line-height:1; font-size: 0.8rem" > 
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="NR_dropdwn">
+                            <select class="form-select" (change)="selectStatus($event)" [(ngModel)]="SelectStatus">
+                                <option value="">Search By Status</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="called">Called</option>
+                                <option value="rescheduled">Rescheduled</option>
+                              
+                            </select>
+                        </div>
+                    </div> 
+                    <div class="col-lg-2">
+                        <div class="NR_dropdwn">
+                            <select class="form-select" (change)="selectCode($event)" [(ngModel)]="SelectCodes">
+                                <option value="">Search By Store</option>
+                                <option *ngFor="let item of Storecodes" value="{{item.StoreCode}}">{{item.StoreName}}</option>
+                               
+                              
+                            </select>
+                        </div>
+                    </div> 
+                    <div class="col-lg-6" style="text-align-last: end;margin-left: auto!important;">
+                       
+                            <pagination-controls  previousLabel="Prev" nextLabel="Next"  responsive="true"
+                            (pageChange)="handlePageChange($event)" [maxSize]= "4" [autoHide]="true" style="font-size: medium;"></pagination-controls>                        
+                        
+                </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 p-0">
+                        <div class="Nrep_Deal">
+                            <div class="nr_curve scroll_deals">
+                                <table class="table-fixed" >
+                                    <thead>
+                                        <tr>
+                                            <th class="_ttl" style="width: 1%;">Date</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">First Name</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Last Name</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Email</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Phone#</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">serice reasoning URL</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">appt day requested</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" >Time of Day</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">VIN</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Year</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Make</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Model</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Store</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Status</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Notes</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Action</th>
+                                            <th style="width: 1%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                         <ng-container *ngIf="IVRData.length > 0 ">
+                                            <tr *ngFor="let item of showSelectedStatus(IVRData) | filter: searchKeyWord | filter: SelectCodes |paginate:config; let ioe = index;">
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CREATED_DATE == "" ? '--' : (item.CREATED_DATE == null ? '--':(item.CREATED_DATE | date:'MM/dd/yyyy')))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_FIRST_NAME == "" ? '--' : (item.CUST_FIRST_NAME == null ? '--':item.CUST_FIRST_NAME))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_LAST_NAME == ""  ? '--' : (item.CUST_LAST_NAME == null ? '--':item.CUST_LAST_NAME))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_EMAIL == "" ? '--' : (item.CUST_EMAIL  == null ? '--':item.CUST_EMAIL))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_PHONE == "" ? '--' : (item.CUST_PHONE  == null ? '--':item.CUST_PHONE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td  [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >
+                                                    <a  href="" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{item.SERICE_REASONING_URL}}" (click)="ClickURL(item.SERICE_REASONING_URL)">
+                                                       URL</a>
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.APPT_DAY_REQUESTED == "" ? '--' : (item.APPT_DAY_REQUESTED == null ? '--':item.APPT_DAY_REQUESTED ))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.TIME_OF_DAY == "" ? '--' : (item.TIME_OF_DAY == null ? '--':item.TIME_OF_DAY))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.VIN == "" ? '--' : (item.VIN == null ? '--':item.VIN))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.VEHICLE_YEAR  == "" ? '--' : (item.VEHICLE_YEAR == null ? '--':item.VEHICLE_YEAR))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.VEHICLE_MAKE == "" ? '--' : (item.VEHICLE_MAKE == null ? '--':item.VEHICLE_MAKE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.VEHICLE_MODEL == "" ? '--' : (item.VEHICLE_MODEL == null ? '--':item.VEHICLE_MODEL))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="white-space: nowrap;">{{(item.Store_Name == "" ? '--' : (item.Store_Name == null ? '--':item.Store_Name))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.IVR_STATUS == "" ? '--' : (item.IVR_STATUS == null ? '--':item.IVR_STATUS))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" data-toggle="tooltip" data-placement="bottom" title={{item.NOTES}} (click)="displayNotes(item, mymodal)"  >
+                                                    <div [ngClass]="{'description': item.NOTES != '' && item.NOTES != null }">{{(item.NOTES == "" ? '--' : (item.NOTES == null ? '--':item.NOTES))}} </div>
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"><img src="../../../assets/images/edit_1.png" (click)="edit(item, mymodal)" ></td>
+                                                <td style="background: transparent !important;"></td>
+                                            </tr>
+                                        </ng-container> 
+                                        <ng-container>
+                                            <tr  *ngIf="((showSelectedStatus(IVRData) | filter:searchKeyWord).length == 0) || ((showSelectedStatus(IVRData) | filter:SelectCodes).length == 0)">
+                                              <td colspan="30" style="text-align: center;color: #040404;font-size: 14px;border-bottom: none;"><label>No Data Found</label></td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+               
+
+            </div>
+        </div>
+        
+    </div>
+    <ng-template #mymodal let-modal style="max-width:400px" >
+        <div class="modal-header" >
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="popUpType == 'E' ">Status</h4>
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="popUpType == 'D' ">Notes</h4>
+          <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="modal.close()">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body" *ngIf="popUpType == 'E' ">
+            
+                <input type="radio" id="Scheduled" name="status" [(ngModel)]="status" value="SCHEDULED" (click)="statuschange('Scheduled')"  style="vertical-align: middle;">&nbsp;
+                <label for="Scheduled" style="font-family: Gotham Bold;">Scheduled</label><br><br>
+                <input type="radio" id="Called" name="status"  [(ngModel)]="status" value="CALLED" (click)="statuschange('Called')"  style="vertical-align: middle;">&nbsp;
+                <label for="Called" style="font-family: Gotham Bold;">Called</label><br><br>
+                <input type="radio" id="Rescheduled" name="status"  [(ngModel)]="status" value="RESCHEDULED" (click)="statuschange('Rescheduled')"  style="vertical-align: middle;">&nbsp;
+                <label for="Rescheduled" style="font-family: Gotham Bold;">Rescheduled</label><br><br><br>
+           
+            <div class="row" *ngIf="(status == 'RESCHEDULED')|| (status == 'CALLED')">
+                <div class="col-md-2">
+                    <label for="note" style="font-family: Gotham Bold;margin-top:32%">Notes</label>
+                </div>
+                <div class="col-md-10">
+                    <textarea id="note" class="form-control" [(ngModel)]="notes" style="width: 200px;"></textarea>
+                    <!-- <input type="text" id="note" class="form-control" [(ngModel)]="notes"> -->
+                </div>
+             </div>
+        </div>
+        <div class="modal-body" *ngIf="popUpType == 'D' ">
+     
+           <div class="row" >          
+            <div class="col-md-10">
+                <label  class="form-control" style="border:none;width:270px" >{{notes}}</label>
+            </div>
+         </div>
+    </div>
+       <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="saveStatus()" *ngIf="popUpType == 'E' ">OK</button>
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close()" *ngIf="popUpType == 'D' ">Close</button>
+        </div> 
+      </ng-template>
+</div>
+

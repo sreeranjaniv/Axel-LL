@@ -1,0 +1,248 @@
+
+
+<app-header></app-header>
+<div class="container-fluid">
+ <ngx-spinner size="medium" [type]="globalVarComponent.g_spinnerType"></ngx-spinner>
+  <form [formGroup]="InventoryForm">
+    <div class="row">
+        <!-- <nav id="sidebarMenu" class="col-md-3 col-lg-2 px-0 d-md-block sidebar collapse">
+            <div class="position-sticky pt-4">
+             
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">
+                    <img src="../../assets/images/tag_Icon.png" style="margin-top: -5px;" class="feather">Sales </a>
+                    <ul class="child">
+                        <li (click)="SideTabClick(1.1)" ><a>Overview</a></li>
+                        <li><a>Trends</a></li>
+                        <li><a>Reports</a></li>
+                        <li><a>Data Query</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">
+                    <img src="../../assets/images/inv_icon.png" style="margin-top: -5px;" class="feather">Inventory </a>
+                    <ul class="child">
+                        <li (click)="SideTabClick(2.1)"><a>Overview</a></li>
+                        <li><a>Trends</a></li>
+                        <li><a>Reports</a></li>
+                        <li class="active" (click)="SideTabClick(2.4)" ><a>Data Query</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">
+                    <img src="../../assets/images/finance_icon.png" style="margin-top: -5px;" class="feather">Finance </a>
+                    <ul class="child">
+                        <li><a>Overview</a></li>
+                        <li><a>Trends</a></li>
+                        <li><a>Reports</a></li>
+                        <li ><a>Data Query</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">
+                    <img src="../../assets/images/service_icon.png" style="margin-top: -5px;" class="feather">Service & Parts </a>
+                    <ul class="child">
+                        <li (click)="SideTabClick(4.1)"><a>Overview</a></li>
+                        <li><a>Trends</a></li>
+                        <li><a>Reports</a></li>
+                        <li ><a>Data Query</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">
+                    <img src="../../assets/images/tag_Icon.png" style="margin-top: -5px;" class="feather">Service Appointments</a>
+                    <ul class="child">
+                      <li (click)="SideTabClick(5.3)"><a>SAG Report</a></li>
+                      <li (click)="SideTabClick(5.1)"><a>Maloney Report</a></li>
+                      <li (click)="SideTabClick(5.2)"><a>Objective</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">
+                    <img src="../../assets/images/tag_Icon.png" style="margin-top: -5px;" class="feather">Admin</a>
+                    <ul class="child">
+                      <li (click)="SideTabClick(6.1)"><a>Accounts COA</a></li>
+                    </ul>
+                  </li>
+                </ul>
+        
+              </div>
+          </nav> -->
+          <ng4-loading-spinner  ></ng4-loading-spinner>
+          <main class="col-md-9 ms-auto col-lg-10">
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div class="top_bg d-flex align-items-center">
+                      <div class="me-auto pt-3">
+                        <select id="Dealer_DDL" (change)="DealerChange($event)" class="_dropdwn" formControlName="InventoryControl">
+                            <option value="0"> ALL STORES </option>
+                            <option  *ngFor="let i of Dealer_DD" [value]="i.DMS_ID">{{i.DEALER_NAME}}</option>
+                        </select>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="table-responsive inv_ " style="margin: -40px 0 0 0;">
+                <table class="table table-striped " style="text-align: center;">
+                  
+                  <thead>
+                    <tr   >
+                      <th style="width: 9.5%; border-bottom: 5px solid #65bbfa;"> 
+                        <select (change)="SetSelectFilters($event, 'ST')" class="inv_dropdwn" formControlName="STOCKTYPEControl">
+                          <!-- <option value=""> ALL</option> -->
+                            <option *ngFor="let i of StockType">{{i.STOCKTYPE}}</option>
+                        </select>
+                        <br>
+                        <span class="inv_ttl">Type</span>
+                      </th>
+                      <th style="width: .5%; background:transparent !important;"></th>
+
+                      <th style="width: 9.5%; border-bottom: 5px solid #65bbfa;">
+                        <select (change)="SetSelectFilters($event, 'Y')" class="inv_dropdwn" formControlName="YearControl">
+                          <!-- <option value="0"> ALL</option> -->
+                          <option *ngFor="let i of Year">{{i.YEAR}}</option>
+                        </select>
+                        <br>
+                        <span class="inv_ttl">year</span></th>
+                      <th style="width: .5%; background:transparent !important;"></th>
+                      <th style="width: 12.5%; border-bottom: 5px solid #65bbfa;">
+                        <select (change)="SetSelectFilters($event, 'B')" class="inv_dropdwn">
+                          <option value="">ALL</option>
+                          <option  *ngFor="let i of Brand" [value]="i.BRANDID">{{i.BRAND_NAME}}</option>
+                        </select>
+                        <br>
+                        <span class="inv_ttl">brand</span>
+                    </th>
+                      <th style="width: .5%; background:transparent !important;"></th>
+  
+                      <th style="width: 12.5%; border-bottom: 5px solid #65bbfa;">
+                        <select (change)="SetSelectFilters($event, 'M')" class="inv_dropdwn">
+                          <option value="">ALL</option>
+                          <option  *ngFor="let i of Model" [value]="i.MODELID">{{i.MODEL}}</option>
+                        </select>
+                        <br>
+                        <span class="inv_ttl">model</span>
+                    </th>
+                      <th style="width: .5%; background:transparent !important;"></th>
+  
+                      <th style="width: 14.5%; border-bottom: 5px solid #65bbfa;">
+                        <select (change)="SetSelectFilters($event, 'S')" class="inv_dropdwn">
+                          <option value="">ALL</option>
+                          <option  *ngFor="let i of Style"  [value]="i.STYLEID">{{i.STYLENAME}}</option>
+                        </select>
+                        <br>
+                        <span class="inv_ttl">trim</span> 
+                      </th>
+                      <th style="width: .5%; background:transparent !important;"></th>
+  
+                      <th style="width: 13.5%; border-bottom: 5px solid #65bbfa;">
+                        <select (change)="SetSelectFilters($event, 'C')" class="inv_dropdwn">
+                          <option value="0">Color</option>
+                          <option  *ngFor="let i of Color">{{i.COLOUR}}</option>
+                        </select>
+                        <br>
+                        <span class="inv_ttl">color</span> 
+                      </th>
+                      <th style="width: .5%; background:transparent !important;"></th>
+  
+                      <th style="width: 10.5%; border-bottom: 5px solid #65bbfa;">
+                        <select (change)="SetSelectFilters($event, 'P')" class="inv_dropdwn">
+                            <option [value]="0">Max.Price</option>
+                            <option [value]="45000">$45000</option>
+                            <option [value]="50000">$50000</option>
+                            <option [value]="55000">$55000</option>
+                            <option [value]="60000">$60000</option>
+                            <option [value]="65000">$65000</option>
+                            <option [value]="70000">$70000</option>
+                        </select>
+                        <br>
+                        <span class="inv_ttl">Price</span>
+                     </th>
+                      <th style="width: .5%; background:transparent !important;"></th>
+  
+                      <th style="width: 12%; border-bottom: 5px solid #65bbfa;">
+                        <select (change)="SetSelectFilters($event, 'MI')" class="inv_dropdwn">
+                            <option [value]="0">Mileage</option>
+                            <option [value]="1000"><1000</option>
+                            <option [value]="5000"><5000</option>
+                            <option [value]="10000"><10000</option>
+                            <option [value]="50000"><50000</option>
+                            <option [value]="100000"><100000</option>
+                            <option [value]="200000"><200000</option>
+                        </select>
+                        <br>
+                        <span class="inv_ttl">mileage</span>
+                     </th>
+                    </tr>
+                  </thead>
+                  <tbody id="demo1" *ngFor="let item of GridData"  >
+                   
+                    <tr id="Row_Click" (click)="RowClick(item.ROWNUM, item)" 
+                    [ngClass] = "{'incative' :Isinactive,'highlight' : item.ROWNUM == selectedName,'highlighttr':item.type==selecttr}">
+                      <td class="store_name" style="padding-left: 20px;" >{{item.STOCKTYPE}}</td>
+                      <td style="background: transparent !important;text-align: left;"></td>
+                      <td style="text-align: right;padding-right: 20px;">{{item.YEAR}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td class="store_name" style="padding-left: 20px;">{{item.BRAND}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td class="store_name" style="padding-left: 20px;">{{item.MODEL}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td class="store_name" style="padding-left: 20px;">{{item.TRIM}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td class="store_name" style="padding-left: 20px;" >{{item.COLOUR}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td style="text-align: right;padding-right: 20px;">{{item.MAXPRICE}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td class="store_name" style="padding-left: 20px;">{{item.MILEAGE}}</td>
+                    </tr>
+                      <tr  >
+                        <td colspan="15" style="display: none;" id='td-{{item.ROWNUM}}'>
+                            <div class="text-start pe-3 p-3"> 
+                                <div class="col-12">
+                                  <div class="row">
+                                    <div class="col-xl-5 col-12 ps-4">
+                                      <h6 class="ps-2">Highlighted features</h6>
+                                      <div class="row">
+                                        <div class="col">
+                                          <ul *ngIf="item.HIGHLIGHTEDFEATURES.length !=0  " >
+                                            <!-- <li>{{item.HIGHLIGHTEDFEATURES}}</li> -->
+                                            <div *ngFor="let Highlights of item.HIGHLIGHTEDFEATURES?.split('|')">
+                                              <div  *ngIf="Highlights!=''"><li>{{ Highlights }}</li> </div>
+                                             
+                                           </div>
+                                          </ul>
+                                        </div>
+                                      </div>
+                                      
+                                    </div>
+                                    <div class="col-xl-7 col-12 ps-4">
+                                      <h6 class="ps-2">Included options </h6>
+                                      <div class="row">
+                                        <div class="col">
+                                          <ul *ngIf="item.INCLUDEDOPTIONS.length !=0">
+                                            <!-- <li> {{ item.INCLUDEDOPTIONS }}</li> -->
+                                            <div *ngFor="let Options of item.INCLUDEDOPTIONS?.split('|')">
+                                              <div *ngIf="Options !=''"><li>{{ Options }}</li></div>
+                                               
+                                            </div>
+                                          </ul>
+                                        </div>
+                                      </div>
+                                      
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </td> 
+                      </tr>
+                      
+                  </tbody>
+                </table>
+              </div>
+          </main>
+    </div>
+  </form>
+</div>
+
+
+<p>vauto-data-query works!</p>

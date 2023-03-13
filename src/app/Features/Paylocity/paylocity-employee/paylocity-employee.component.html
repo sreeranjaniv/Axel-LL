@@ -1,0 +1,84 @@
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="row">
+        <ng4-loading-spinner ></ng4-loading-spinner>
+        <main class="col-md-9 ms-auto col-lg-10">
+            <div class="row flex-wrap flex-md-nowrap align-item-center border-bottom">
+                <div class="top_bg d-flex align-item-center">
+                    <div class="form-group" style="margin-right: 25px !important;margin-top: 9px;">
+                        <input type="search" placeholder="Search" id="srchgroups" class="form-control" [(ngModel)]="searchterm"> 
+                    </div>
+                    <!-- <div class="form-group" style="margin-right: 10px !important;margin-top: 4px;">
+                        <button (click)="searchdata()" type="submit" class="btn btn-primary" >Go</button>
+                    </div>  -->
+                    
+                </div>
+            </div>
+            <div class="table-responsive hover_">
+                <table class="table table-striped" style="width: 100%;text-align: center;">
+                    <thead>
+                      <tr style="text-transform: uppercase;">
+                        <th>ROWNUM</th>
+                        <th>Employee Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Supervisors Name</th>
+                        <th>Code</th>
+                        <th>Company Name</th>
+                        <th>Company Code</th>
+                        <th>Position Description</th>
+                        <th>Store Name</th>
+                        <th>Department Code Name</th>
+                        <th>Department Name</th>
+                        <th>Department Code</th>
+                        <th>Current WorkEmail</th>
+                        <th>Employee Status Code</th>
+                        <th>Date</th>
+                      </tr> 
+                    </thead>
+                   
+                    <tbody>
+                        <ng4-loading-spinner ></ng4-loading-spinner>
+                        <ng-container *ngIf="GridData.length > 0;else norecdata">
+                            <tr *ngFor="let item of GridData | filter:searchterm;">
+                             <td>{{item.ROWNUM}}</td>
+                             <td>{{item.PC_Employee_Id}}</td>
+                             <td>{{item.PC_First_Name}}</td>
+                             <td>{{item.PC_Last_Name}}</td>
+                             <td>{{item.PC_Supervisors_Name}}</td>
+                             <td>{{item.PC_Code}}</td>
+                             <td>{{item.PC_Company_Name}}</td>
+                             <td>{{item.PC_Company_Code}}</td>
+                             <td>{{item.PC_Position_Description}}</td>
+                             <td>{{item.PC_Store_Name}}</td>
+                             <td>{{item.PC_Department}}</td>
+                             <td>{{item.PC_Department_Name}}</td>
+                             <td>{{item.PC_Department_Code}}</td>
+                             <td>{{item.PC_Work_Email}}</td>
+                             <td>{{item.PC_Employee_Status_Code}}</td>
+                             <td>{{item.PC_Date}}</td>
+                             
+                            </tr>
+                    </ng-container>
+                     <ng-template #norecdata>
+                        <tr>
+                          <td colspan="14" style="text-align: center;color: #040404;font-size: 14px;border-bottom: none;"><label>Loading....</label></td>
+                        </tr>
+                    </ng-template> 
+                     <!-- <ng-container *ngIf="(GridData|filter:searchterm).length==0">
+                        <td id="notFoundDiv" colspan="14" ng-show="" style=" font-weight: bold">No Records Found</td>
+                    </ng-container> -->
+                    </tbody>
+                  </table>
+                 
+            </div>
+            <!-- <div *ngIf="GridData.length > 49 " style="text-align: center;" > 
+                <div  class="d-flex justify-content-center" >
+                    <button style="background-color: #0d6efd;border: none;" type="button" class="btn btn-primary btn-sm"
+                        (click)="ViewMore()">View More</button>
+                </div>
+             </div> -->
+        </main>
+    </div>
+</div>

@@ -1,0 +1,449 @@
+<app-header></app-header>
+<div class="container-fluid">
+    
+    <div class="row">
+       
+          <ng4-loading-spinner  ></ng4-loading-spinner>
+          <main class="col-md-9 ms-auto col-lg-10" *ngIf="AdminGrid">
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div  class="top_bg d-flex align-items-center ">
+                    
+                        <!-- <div class="form-group col-xs-3 ">
+                            <input [(ngModel)]="SearchData.CORAACCTCODE" id="AcctCode" class="form-control input-group-lg reg_name" 
+                                  type="text" name="AcctCode" title="Enter Acct Code" placeholder="Acct Code"/>
+                        </div> -->
+
+                        <!-- <div class="form-group col-md-2">
+                            <select id="inputState" (change)="DMSFilter($event, 'AccountType')" class="form-control">
+                              <option selected value="">Select Account Type</option>
+                              <option *ngFor="let i of DDLAccountType" [value]="i.AccountType">{{i.AccountType}}</option>
+                            </select>
+                          </div> -->
+                          <!-- <div class="form-group col-md-2">
+                            <select id="inputState" (change)="DMSFilter($event, 'COAType')" class="form-control">
+                              <option selected value="" >Select COA Type</option>
+                              <option *ngFor="let i of DDLCOATYPE" [value]="i.COAType">{{i.COAType}}</option>
+                            </select>
+                          </div> -->
+                             <div class="form-group col-xs-3 ">
+                            <label class="form-control input-group-lg reg_name">Admin Modules</label>
+                        </div>
+                    <div  class="form-group col-xs-6">
+                        <button (click)="AdminAdd()"type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                    <!-- <div (click)="ClearAll()" class="form-group">
+                        <span  class="badge badge-light">Clear All</span>
+                    </div> -->
+                  </div>
+              </div>
+              <div>
+                <div class="row">
+                  <div class="column1">
+                  </div>
+                  <!-- <div class="column">
+                    <h2 class="ttl-sales"><span>Admin Modules Data</span></h2>
+                  </div> -->
+                </div>
+            </div>
+            <div  >
+                <table id="dtHorizontalExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                        <th style="text-transform: uppercase;text-align: center;">MODULE NAME</th>
+                        <th style="text-transform: uppercase;text-align: center;">SEQUENCE</th>
+                        <th style="text-transform: uppercase;text-align: center;">STATUS</th>
+                        <th style="text-transform: uppercase;text-align: center;">EDIT</th>
+                        <th style="text-transform: uppercase;text-align: center;">DELETE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="AdminData!=''; else norecdata">
+                            <tr *ngFor="let item of AdminData">
+                                <td style="text-transform: uppercase;text-align: center;">{{item.MOD_NAME}}</td>
+                                <!-- <td style="text-transform: uppercase;text-align: center;">{{item.MOD_ADMIN}}</td> -->
+
+                                <!-- <td style="text-transform: uppercase;text-align: center;" >{{item.MOD_FRONT}}</td> -->
+                                <td style="text-transform: uppercase;" >{{item.MOD_SEQ}}</td>
+                                <td ><span [ngStyle]="{'color': item.MOD_STATUS=='Y' ? '#0aa40a' : '#ff0000' }">{{item.MOD_STATUS=='Y' ? 'Active' : 'In-active'}}</span></td>
+                                <!-- <td style="text-transform: uppercase;" >{{item.MOD_STATUS}}</td> -->
+
+                             
+                            <td>
+                            <a (click)="EditAdmin(item)">
+                                <img src="assets/images/edit_1.png" />
+                              </a>
+                            </td>
+                            <td>
+                              <a (click)="AdminDelete(item.MOD_ID)">
+                                  <img src="assets/images/del_gry.png" />
+                                </a>
+                              </td>
+                            </tr>
+                        </ng-container>
+                        <ng-template #norecdata>
+                            <tr >
+                              <td colspan="17" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found !!</label></td>
+                            </tr>
+                          </ng-template>
+                    </tbody>
+                </table>
+                <!-- <div *ngIf="Acc_COA_Data.length > 99  &&  viewmore" class="col-14" style="text-align: center;" >
+                    <div  class="d-flex justify-content-center" style="margin: 10px">
+                        <button style="background-color: #0d6efd;border: none;" type="button" class="btn btn-primary btn-sm"
+                            (click)="ViewMore()">View More</button>
+                    </div>
+                </div> -->
+            </div>
+          </main>
+          <main class="col-md-9 ms-auto col-lg-10" *ngIf="AddAdmin">
+            <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                <div  class="top_bg d-flex align-items-center ">
+                  
+                  <div class="form-group col-xs-3 ">
+                    <label class="form-control input-group-lg reg_name">Add/Edit Admin Modules</label>
+                </div>
+                </div>
+            </div>
+            <div>
+              <div class="row">
+                <div class="column1">
+                </div>
+                <div class="column">
+                  <!-- <h2 class="ttl-sales"><span>Admin Modules Data</span></h2> -->
+                </div>
+              </div>
+          </div>
+          <div class="contentpanel">
+            <div class="container">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-4">
+                  <div class="panel panel-default">
+
+                    <div class="panel-body">
+                      <form role="form" [formGroup]="AdminModuleForm">
+                        <div class="row">
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+
+                              <label class="Mod_Headings" for="mod_name">Module Name:</label>
+
+                              <input type="text" formControlName="mod_name" class="form-control" placeholder="Module Name" autofocus maxlength="51" [ngClass]="{ 'is-invalid': submitted &amp;&amp; AdminModuleForm.controls.mod_name.errors }"
+                              />
+                              <div *ngIf="submitted &amp;&amp; AdminModuleForm.controls.mod_name.errors" class="text-danger">
+                                <div *ngIf="AdminModuleForm.controls.mod_name.errors.required">Module Name is required</div>
+                                <!-- <div *ngIf="AdminModuleForm.controls.mod_name.errors.pattern">Module Name must be String</div> -->
+                                <div *ngIf="AdminModuleForm.controls.mod_name.errors.maxlength">Module Name Limit is Exceeded</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+
+                              <label class="Mod_Headings" for="mod_seq">Sequence :</label>
+
+                              <input type="text" formControlName="mod_seq" class="form-control" placeholder="Sequence" maxlength="6" [ngClass]="{ 'is-invalid': submitted &amp;&amp; AdminModuleForm.controls.mod_seq.errors }"
+                              />
+                              <div *ngIf="submitted &amp;&amp; AdminModuleForm.controls.mod_seq.errors" class="text-danger">
+                                <div *ngIf="AdminModuleForm.controls.mod_seq.errors.required">Sequence is required</div>
+                                <div *ngIf="AdminModuleForm.controls.mod_seq.errors.pattern">Sequence must be Number</div>
+                                <div *ngIf="AdminModuleForm.controls.mod_seq.errors.maxlength">Sequence limit Exceeded</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <!-- <div class="row">
+                          <div class="col-xs-3 col-sm-3 col-md-3">
+                            <div class="form-group">
+
+
+                              <label class="Mod_Headings" for="mod_admin">Admin:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="Y" name="mod_admin" formControlName="mod_admin">&nbsp;
+                              <label  for="admin">Yes</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="N" name="mod_admin" formControlName="mod_admin">&nbsp;
+                              <label for="admin">No</label>
+
+                            </div>
+                          </div>
+                        </div> -->
+
+                        <!-- <div class="row">
+                          <div class="col-xs-3 col-sm-3 col-md-3">
+                            <div class="form-group">
+
+
+                              <label class="Mod_Headings" for="mod_front">Frontend:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="Y" name="mod_front" formControlName="mod_front">&nbsp;
+                              <label for="frontend">Yes</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="N" name="mod_front" formControlName="mod_front">&nbsp;
+                              <label for="frontend">No</label>
+
+                            </div>
+                          </div>
+                        </div> -->
+
+
+                        <div class="row" *ngIf="AdminStatus">
+                          <div class="col-xs-3 col-sm-3 col-md-3">
+                            <div class="form-group">
+
+
+                              <label class="Mod_Headings" for="mod_status" >Status :</label> &nbsp;&nbsp;&nbsp;&nbsp;
+                              <input type="checkbox" formControlName="mod_status" value="y" (change)="HandleAdminStatus($event)" [ngClass]="{ 'is-invalid': submitted &amp;&amp; AdminModuleForm.controls.mod_status.errors }"
+                              />
+                              <div *ngIf="submitted &amp;&amp; AdminModuleForm.controls.mod_status.errors" class="text-danger">
+                                <div *ngIf="AdminModuleForm.controls.mod_status.errors">Status required</div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div> <div class="row"> 
+                            <div class="col-xs-3 col-sm-3 col-md-63">
+                                </div>
+                                <div class="col-xs-3 col-sm-3 col-md-3">
+                                    <span *ngIf="previewUrl"> <button (click)="clear()" class="closebtn">X</button> </span>
+
+                                </div>
+                        </div>
+                        <div class="row" style="padding-top: 10px;">
+
+                          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <div class="form-group">
+                              
+
+
+                              <img src="../../../../assets/images/Upload-Icon.png" class="logoPointer" (click)="selectFile.click()">
+                              <input style="display: none" type="file" name="image" formControlName="mod_image" (change)="processFile($event)" #selectFile
+                              />
+                              <!-- <div *ngIf="fileUploadProgress">
+                                Upload progress: {{ fileUploadProgress }}
+                              </div> -->
+                              <div style="display: contents;" class="image-preview" *ngIf="previewUrl">                       
+                                <img [src]="previewUrl" height="100" width="100" />
+
+                              </div>
+
+                              <!-- <div *ngIf="uploadedFilePath">
+                                {{uploadedFilePath}}
+                              </div> -->
+
+                              <div>
+                                <small class="text-danger" *ngIf="submitted && AdminModuleForm.controls.mod_image.hasError('required')">
+                                  Image is required
+                                </small>
+                              </div>
+
+
+                            </div>
+                          </div>
+                        </div>
+
+                      
+                        <div class="col-lg-12 pt-lg-5 pl-lg-4">
+                          <div class="row">
+                            <div class="col-lg-2">
+                              <button type="button" class="savebutton" (click)="AdminSaving()">Save</button>
+                            </div>
+                            <div class="col-lg-2">
+                              <button type="button" (click)="BackTOAdminGrid()" class="savebutton" >Cancel</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="SubModGrid">
+          <div id="SubModGrid" class="row flex-wrap flex-md-nowrap align-items-center border-bottom" *ngIf="SubModGrid">
+            <div  class="top_bg d-flex align-items-center ">
+              
+               
+                       <div class="form-group col-xs-3 ">
+                      <label class="form-control input-group-lg reg_name"> SubModules</label>
+                  </div>
+              <div  class="form-group col-xs-6">
+                  <button (click)="SubModAdd()"type="submit" class="btn btn-primary">Add</button>
+              </div>
+           
+            </div>
+        </div>
+        <div id="SubModGrid" *ngIf="SubModGrid">
+          <div class="row">
+            <div class="column1">
+            </div>
+            <div class="column">
+              <h2 class="ttl-sales"><span>SubModules Data</span></h2>
+            </div>
+          </div>
+      </div>
+      <div id="SubModGrid" class="table-responsive" *ngIf="SubModGrid">
+          <table id="dtHorizontalExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+              <thead>
+                  <tr>
+                  <th style="text-transform: uppercase;text-align: center;">MODULE NAME</th>
+                  <th style="text-transform: uppercase;text-align: center;">FILENAME</th>
+                  <th style="text-transform: uppercase;text-align: center;">STATUS</th>	            
+                  <th style="text-transform: uppercase;text-align: center;">SEQUENCE</th>
+                
+                 <th></th>
+                 <th></th>
+                  
+                  </tr>
+              </thead>
+              <tbody>
+                  <ng-container *ngIf="SubModData!=''; else norecdata">
+                      <tr *ngFor="let item of SubModData">
+                      <td style="text-transform: uppercase;text-align: center;">{{item.SMOD_NAME}}</td>
+                      <td style="text-transform: uppercase;text-align: center;">{{item.SMOD_FILENAME}}</td>
+                    
+                      <td ><span [ngStyle]="{'color': item.SMOD_ACTIVE=='Y' ? '#0aa40a' : '#ff0000' }">{{item.SMOD_ACTIVE=='Y' ? 'Active' : 'In-active'}}</span></td>
+                      <!-- <td style="text-transform: uppercase;text-align: center;">{{item.SMOD_ACTIVE}}</td> -->
+                             
+                      <td style="text-transform: uppercase;">{{item.SMOD_SEQ}}</td>
+                     
+                      <td>  <a (click)="EditSubMod(item)">
+                        <img src="assets/images/edit_1.png" />
+                      </a></td>
+                      <td>  <a (click)="SubModDelete(item)">
+                        <img src="assets/images/del_gry.png" />
+                      </a></td>
+                      </tr>
+                  </ng-container>
+                  <ng-template #norecdata>
+                      <tr >
+                        <td colspan="17" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found !!</label></td>
+                      </tr>
+                    </ng-template>
+              </tbody>
+          </table>
+        
+      </div>
+    </div>
+        </main>
+        <main class="col-md-9 ms-auto col-lg-10" *ngIf="AddSubMod">
+            <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                <div  class="top_bg d-flex align-items-center ">
+                  
+                  <div class="form-group col-xs-3 ">
+                    <label class="form-control input-group-lg reg_name">Add/Edit Sub Admin Modules</label>
+                </div>
+                </div>
+            </div>
+            <div>
+              <div class="row">
+                <div class="column1">
+                </div>
+                <div class="column">
+                  <!-- <h2 class="ttl-sales"><span>Admin Modules Data</span></h2> -->
+                </div>
+              </div>
+          </div>
+          <div class="contentpanel">
+            <div class="container">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-4">
+                  <div class="panel panel-default">
+
+                    <div class="panel-body">
+                      <form role="form" [formGroup]="SubModuleForm">
+                        <div class="row">
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+
+                              <label class="Mod_Headings" for="smod_name">SubModule Name:</label>
+                              <input type="text" formControlName="smod_name" placeholder="Submodule Name" autofocus class="form-control" maxlength="51" [ngClass]="{ 'is-invalid': submitted &amp;&amp; SubModuleForm.controls.smod_name.errors }"
+                              />
+                              <div *ngIf="submitted &amp;&amp; SubModuleForm.controls.smod_name.errors" class="text-danger">
+                                <div *ngIf="SubModuleForm.controls.smod_name.errors.required">Module Name is required</div>
+                                <!-- <div *ngIf="SubModuleForm.controls.smod_name.errors.pattern">Module Name must be String</div> -->
+                                <div *ngIf="SubModuleForm.controls.smod_name.errors.maxlength">Module Name Limit is Exceeded</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+
+                              <label class="Mod_Headings" for="smod_filename">SubModule Path/Url:</label>
+
+                              <input type="text" formControlName="smod_filename" placeholder="SubModule Path" class="form-control"  [ngClass]="{ 'is-invalid': submitted &amp;&amp; SubModuleForm.controls.smod_filename.errors }"
+                              />
+                              <div *ngIf="submitted &amp;&amp; SubModuleForm.controls.smod_filename.errors" class="text-danger">
+                                <div *ngIf="SubModuleForm.controls.smod_filename.errors.required">Module Path is required</div>
+                                <!-- <div *ngIf="SubModuleForm.controls.smod_filename.errors.pattern">Module Path must be String</div> -->
+                                <!-- <div *ngIf="SubModuleForm.controls.smod_filename.errors.maxlength">Module Path Limit is Exceeded</div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="row">
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+
+
+                              <label class="Mod_Headings" for="mod_seq">Sequence :</label>
+
+                              <input type="text" formControlName="smod_seq" class="form-control" maxlength="6" placeholder="Sequence" [ngClass]="{ 'is-invalid': submitted &amp;&amp; SubModuleForm.controls.smod_seq.errors }"
+                              />
+                              <div *ngIf="submitted &amp;&amp; SubModuleForm.controls.smod_seq.errors" class="text-danger">
+                                <div *ngIf="SubModuleForm.controls.smod_seq.errors.required">Sequence is required</div>
+                                <div *ngIf="SubModuleForm.controls.smod_seq.errors.pattern">Sequence must be Number</div>
+                                <div *ngIf="SubModuleForm.controls.smod_seq.errors.maxlength">Sequence limit Exceeded</div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row" *ngIf="SubModStatus">
+                          <div class="col-xs-3 col-sm-3 col-md-3">
+                            <div class="form-group">
+
+
+                              <label class="Mod_Headings" for="smod_active" >Status :</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                              <input type="checkbox" formControlName="smod_active" (change)="HandleSubModStatus($event)" value="y" [ngClass]="{ 'is-invalid': submitted &amp;&amp; SubModuleForm.controls.smod_active.errors }"
+                              />
+                              <div *ngIf="submitted &amp;&amp; SubModuleForm.controls.smod_active.errors" class="text-danger">
+                                <div *ngIf="SubModuleForm.controls.smod_active.errors">Status required</div>
+                              </div>
+                            </div>   
+
+                          </div>
+                        </div>
+                     
+                        <div class="col-lg-12 pt-lg-5 pl-lg-4">
+                          <div class="row">
+                            <div class="col-lg-2">
+                              <button type="button" class="savebutton" (click)="SubModSaving()">Save</button>
+                            </div>
+                            <div class="col-lg-2">
+                              <button type="button" class="savebutton" (click)="BackToSubModGrid()">Cancel</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+        </main>
+    </div>
+    
+</div>
+
+
+

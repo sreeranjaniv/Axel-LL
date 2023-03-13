@@ -1,0 +1,179 @@
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="row">
+          <ng4-loading-spinner  ></ng4-loading-spinner>
+          <main class="col-md-9 ms-auto col-lg-10" *ngIf="StoresGrid" >
+              
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div class="top_bg d-flex align-items-center">
+                    <div class="form-group col-xs-3 ">
+                      <label class="form-control input-group-lg reg_name">Stores</label>
+                  </div>
+              <div  class="form-group col-xs-6">
+                  <button (click)="AddStore()" type="button" class="btn btn-primary" >Add</button>
+              </div>
+                  </div>
+                  
+              </div>
+              
+              <div  class="table-responsive hover_">
+                <table class="table table-striped" style="width: 100%; text-align: center;">
+                    <thead>
+                      <tr style="text-transform: uppercase;">
+                        <th scope="col" class="store_name" >STORE NAME</th>
+                        <th scope="col" style="padding-left: 20px;">CORA CODE</th>
+                        <th scope="col">ACTIVE</th>
+                        <th scope="col">EDIT</th>
+                      </tr>
+                    </thead>
+  
+                    <tbody style="cursor: pointer;">
+                        <ng-container *ngIf="StoresGridData" >
+                            <tr *ngFor="let item of StoresGridData">
+                                <td class="store_name" >{{item.AS_DEALERNAME | uppercase}}</td>
+                                <td style="padding-left: 20px;">{{item.AS_CORA_ACCT_CODE}}</td>
+                                <td ><span [ngStyle]="{'color': item.AS_ACTIVE=='Y' ? '#0aa40a' : item.AS_ACTIVE=='D' ? 'red' : '#ff0000' }">{{item.AS_ACTIVE=='Y' ? 'Active' : item.AS_ACTIVE=='D' ? 'Delete' : 'In-active'}}</span></td>
+                                <td (click)="editStore(item.AS_ID)"  ><img data-toggle="modal" data-target="#AddEdit" style="text-align: center; cursor: pointer;" src="../../../assets/images/edit_1.png"></td>
+                            </tr>
+                    </ng-container>
+                      <ng-template #norecdata>
+                        <tr  >
+                          <td colspan="5" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found !!</label></td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                    
+                  </table>
+              
+            </div>
+            
+          </main>
+          <main class="col-md-9 ms-auto col-lg-10" *ngIf="EditStore">
+            <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                <div class="top_bg d-flex align-items-center">
+                  <div class="form-group col-xs-3 ">
+                    <label class="form-control input-group-lg reg_name">{{lbl_Action}} Store</label>
+                </div>
+                </div>
+            </div>
+            <div>
+              <div class="row">
+                <div class="column1">
+                </div>
+                <div class="column">
+                  <!-- <h2 class="ttl-sales"><span>Admin Modules Data</span></h2> -->
+                </div>
+              </div>
+          </div>
+          <div class="contentpanel">
+              <div class="container">
+                <div class="row">
+                  <div >
+                    <div class="panel panel-default">
+  
+                      <div class="form-row align-items-center">
+                        <form role="form" [formGroup]="StoresForm">
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <label class="sr-only" for="DealerName">STORE NAME</label>
+                            <input [(ngModel)]="StoresArraydata.DealerName" formControlName="dealerName" type="text" class="form-control mb-2" id="DealerName" placeholder="Store Name" autofocus class="form-control" />
+                            </div>
+                            <div class="col-lg-3">
+                              <label class="sr-only" for="AccountingAccount">ACCOUNTING ACCOUNT</label>
+                            <input [(ngModel)]="StoresArraydata.AccountingAccount"  formControlName="accountingAccount" maxlength="10" type="text" class="form-control mb-2" id="AccountingAccount" placeholder="Accounting Account">
+                            </div>
+                            <div class="col-lg-3">
+                              <label class="sr-only" for="CapLoan">CAP LOAN</label>
+                            <input [(ngModel)]="StoresArraydata.CapLoan"  formControlName="capLoan" maxlength="10" type="text" class="form-control mb-2" id="CapLoan" placeholder="CapLoan">
+                            </div>
+                          </div>
+                              <br><br>
+                          <div class="row">
+                            <div class="col-lg-3">
+                              <label class="sr-only" for="CompanyName">COMPANY NAME</label>
+                            <input [(ngModel)]="StoresArraydata.CompanyName" formControlName="companyName" maxlength="10" type="text" class="form-control mb-2" id="CompanyName" placeholder="Company Name">
+                            </div>
+                            <div class="col-lg-3">
+                              <label class="sr-only" for="CoraAccountCode">CORA ACCOUNT CODE</label>
+                            <input [(ngModel)]="StoresArraydata.CoraAccountCode" formControlName="coraAccountCode" maxlength="10"  type="text" class="form-control mb-2" id="CoraAccountCode" placeholder="Cora Account Code">
+                            </div>
+                            <div class="col-lg-3">
+                              <label class="sr-only" for="CoraAccountId">CORA ACCOUNT ID</label>
+                            <input [(ngModel)]="StoresArraydata.CoraAccountId" formControlName="coraAccountId" maxlength="10" type="text" class="form-control mb-2" id="CoraAccountId" placeholder="Cora Account Id">
+                            </div>
+                            <div class="col-lg-3">
+                              <label class="sr-only" for="Dealer">DEALER</label>
+                            <input [(ngModel)]="StoresArraydata.Dealer" formControlName="dealer" maxlength="20" type="text" class="form-control mb-2" id="Dealer" placeholder="Dealer">
+                            </div>
+                          </div>
+                          <br><br>
+                          <div class="row">
+                            <div class="col-lg-3">
+                              <label class="sr-only" for="DealerAbbr">DEALER ABBR</label>
+                            <input [(ngModel)]="StoresArraydata.DealerAbbr" formControlName="dealerAbbr" maxlength="10" type="text" class="form-control mb-2" id="DealerAbbr" placeholder="DealerAbbr">
+                            </div>
+                            <div class="col-lg-3">
+                              <label class="sr-only" for="Flooring">FLOORING</label>
+                            <input [(ngModel)]="StoresArraydata.Flooring" formControlName="flooring" maxlength="10" type="text" class="form-control mb-2" id="Flooring" placeholder="Flooring">
+                            </div>
+                            <div class="col-lg-3">
+                              <label class="sr-only" for="Metro">METRO</label>
+                            <input [(ngModel)]="StoresArraydata.Metro"  formControlName="metro" maxlength="10"  type="text" class="form-control mb-2" id="Metro" placeholder="Metro">
+                            </div>
+                            <div class="col-lg-3">
+                              <label class="sr-only" for="MKTDays">MKT DAYS</label>
+                            <input [(ngModel)]="StoresArraydata.MKTDays" formControlName="mKTDays" maxlength="10" type="text" class="form-control mb-2" id="MKTDays" placeholder="MKT Days">
+                            </div>
+                          </div>
+                          <br><br>
+                          <div class="row">
+                            <div class="col-lg-4">
+                              <label class="sr-only" for="Realestate">REAL ESTATE</label>
+                            <input [(ngModel)]="StoresArraydata.Realestate"  formControlName="realestate" maxlength="30" type="text" class="form-control mb-2" id="Realestate" placeholder="Realestate">
+                            </div>
+                            <div class="col-lg-4">
+                              <label class="sr-only" for="ServceAct">SERVICE ACT</label>
+                            <input [(ngModel)]="StoresArraydata.ServceAct" formControlName="servceAct" maxlength="30" type="text" class="form-control mb-2" id="ServceAct" placeholder="Servce Act">
+                            </div>
+                            <div class="col-lg-4">
+                              <label class="sr-only" for="State">STATE</label>
+                            <input [(ngModel)]="StoresArraydata.State" formControlName="state" maxlength="30" type="text" class="form-control mb-2" id="State" placeholder="State">
+                            </div>
+                            <div *ngIf = "GroupStatus" class="form-group">
+                              <label class="Mod_Headings" for="Status">Status:</label>
+                              <div class="switch" id="switchdivpublic" tabindex="1">
+                                <input formControlName="status" class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnPYes" name="status" tabindex="1"
+                                  type="radio"  [(ngModel)]="StoresArraydata.Status"  checked value="Y"><label
+                                  class="switch-label switch-label-off" for="rbtnPYes">Active</label>
+                                  <input formControlName="status" class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnPNo" name="status" tabindex="1"
+                                   type="radio" [(ngModel)]="StoresArraydata.Status"  value="N"><label
+                                  class="switch-label switch-label-on" for="rbtnPNo">In-Active</label>
+                                  <span class="switch-selection"></span>
+                                  
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-12 pt-lg-5 pl-lg-4">
+                            <div class="row">
+                              <div class="col-lg-2">
+                                <button id="savebutton" type="button" class="savebutton" (click)="SaveStore()"  >Save</button>
+                              </div>
+                              <div class="col-lg-2">
+                                <button type="button" class="cancelbutton" (click)="BackToGrid()">Cancel</button>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+        </main>
+          
+    </div>
+   
+  </div>

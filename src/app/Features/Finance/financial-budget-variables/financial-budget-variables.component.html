@@ -1,0 +1,178 @@
+<app-header></app-header>
+<!-- <ngx-http-loader [loader] ="loader.SPINNER"  > 
+
+</ngx-http-loader>-->
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12 p-0">
+      <div class="Nrep2_bg">
+        <div class="row">
+          <div class="col-lg-2">
+            <div>
+              <a (click)="PreviousUrl()" style="cursor: pointer;font-size: medium;font-weight: bold;"
+                class="link-light"  >Back</a>
+            </div>
+          </div>
+          <div class="col-lg-10 ">
+            <div class="row">
+              <div class="data NR_dropdwn">
+                <select id="Dealer_DDL" (change)="DealerChange($event)" [(ngModel)] = "DEALER_Change"  >
+                  <option *ngFor="let i of GetStores;  " [value]="i.AS_ID" >{{i.DEALER_NAME}}</option>
+                </select>
+              </div>
+              <div class="date">
+                <div class="md-form">
+                  <input type="month" [ngModel]="ChangeDate | date:'yyyy-MM'" (ngModelChange)="updatedate($event)"
+                    name="startDate" class="datepicker">
+                </div>
+              </div>
+         
+
+              <!-- <div style="cursor: pointer;"  class="col-lg-5 ms-auto" style="margin-top: 18px;" *ngIf="(TabChange == '1' || TabChange == '2')">
+                <div class="d-flex align-items-center export" style="float: right;cursor: pointer;">
+                  <div (click)="refreshClick()">Refresh</div> 
+                   <span><img src="../../assets/images/refresh.png" style="margin:-5px 0 0 5px;height:18px" (click)="refreshClick()"></span>
+                  </div>
+             </div>
+        -->
+         
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 p-0">
+       
+            <div class="Nrep2">
+              <div class="nr_curve_summary summary">
+                <table class="table-fixed" id="Summary-table" *ngIf="budgetVariablesData.length > 0">
+                    
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th></th>
+                        <th class="_ttl" style="width:200px">BUDGET</th> 
+                        <th></th>                    
+                        <th class="_ttl" style="width:200px">Edit</th>    
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container>
+                        <tr *ngFor = "let item of budgetVariablesData; let ioe_tr = index; " >
+                            <td *ngFor = "let itemKey of AllDatakeys; let ioe_td = index; " 
+                            [ngClass]="{'even' : (ioe_tr+1) % 2 == 0, 'odd': (ioe_tr+1) % 2 != 0 && ioe_td !=0, 
+                            'labelhead' : itemKey == 'LABEL' }"    
+                            [ngStyle] ="{'background':  ioe_td % 2 == 0 ? 'transparent !important': 'none' }" > 
+                            
+                            <span *ngIf= "item['LABEL'].toUpperCase() == 'UNITS' ">{{item[itemKey]}}</span>
+                          
+                            <span *ngIf=" ioe_td % 2 == 0 && itemKey != 'EDIT' && (item['LABEL'].toUpperCase() != 'UNITS')" >{{(itemKey == 'LABEL' ? item[itemKey] : (item[itemKey] == 0 ? '-' : (item[itemKey] | currency : 'USD' : 'symbol' : '1.0-0')))}}
+                            </span>
+                            <span  *ngIf = "itemKey == 'EDIT'"> 
+                                <img src="../../assets/images/edit_1.png" style="cursor: pointer;" (click) = "populateEditPopUp(item.VARIABLE_PARENT_ID, item.LABEL, item.BUDGET_VALUE, div_EditPopup)" />
+                            </span>
+                          
+                        </td>
+                         </tr>
+                    </ng-container>
+                   </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+  
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- /*Modal Popup for Graph*/ -->
+<ng-template #div_EditPopup >
+ 
+       <div class="modal-content" style="width:fit-content;right: 143px;"  >
+         <div class="modal-header">
+   
+          <span> Edit Budget - <b style="font-size: 14px;"> {{edit_Parent_Name}} </b> </span>
+         
+   <span class="close" data-bs-dismiss="modal"  id="close" aria-label="Close" style="font-size: 18px;cursor: pointer;" (click) ="CloseEditPopup()">X </span>
+   
+   
+                </div>
+         <div class="modal-body">
+           <div class="col-lg-12">
+             <div class="row justify-content-center">
+               <div class="cancel_bg" >
+               <div class="content_width" style="margin: 10px 30px 10px 10px;">
+                 <div class="row mt-4">
+
+                   
+                        <table style="margin-inline: 10px;">
+                            <thead>
+                                <th style="min-width:120px;"></th>
+                                <th>Passenger Vehicle</th>
+                                <th>Commercial Vehicle</th>
+                            </thead>
+                            <tbody>
+                               
+                                <tr *ngFor="let item of budgetChildVariablesData; let ioe = index;">
+                                    <td *ngFor="let itemKey of AllChildDatakeys" class="align-items-center" style ="padding-bottom: 20px;">
+                                        <span *ngIf="itemKey == 'VARIABLE_CHILD_ID' && (item['VARIABLE_CHILD_ID'].toUpperCase()=='NEW' || item['VARIABLE_CHILD_ID'].toUpperCase() =='USED')" style="font-size: 14px;                                      
+                                        display: -webkit-inline-box;
+                                        padding-right: 10px;
+                                        float: right; " 
+                                      >{{item[itemKey]}}:</span>
+                                      <span   *ngIf="itemKey != 'VARIABLE_CHILD_ID' && (item['VARIABLE_CHILD_ID'].toUpperCase()=='NEW' || item['VARIABLE_CHILD_ID'].toUpperCase() =='USED')" >
+                                        <input  type="text"   [(ngModel)]="item[itemKey]" value="{{item[itemKey]}}" (keypress)="keyPressNumbers($event)" maxlength="10"/> 
+                                        
+                                    </span>
+
+
+                                    <span *ngIf="itemKey == 'VARIABLE_CHILD_ID' && item['VARIABLE_CHILD_ID'].toUpperCase() !='NEW' && item['VARIABLE_CHILD_ID'].toUpperCase() !='USED'" style="font-size: 14px;                                      
+                                    display: -webkit-inline-box;
+                                    padding-right: 10px;
+                                    float: right; padding-bottom: 20px;" 
+                                  >{{item[itemKey]}}:</span>
+                                        <span style="display: block;position: relative;"  *ngIf="itemKey != 'VARIABLE_CHILD_ID' && item['VARIABLE_CHILD_ID'].toUpperCase() !='NEW' && item['VARIABLE_CHILD_ID'].toUpperCase() !='USED' " >
+                                        <input  type="text"  style="   padding-left: 17px;
+                                        padding-right: 0;" [(ngModel)]="item[itemKey]" value="{{item[itemKey]}}" (keypress)="keyPressNumbers($event)" maxlength="10"/> 
+                                       
+                                             <i style=" display: block;
+                                        transform: translate(0, -115%);
+                                       
+                                        pointer-events: none;
+                                        width: 25px;
+                                        text-align: center;
+                                        font-style: normal;" >$</i>                                       
+                                        </span>    
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+            
+                    
+                   
+                    <div class="me-auto" style="padding-right: 0px !important;">
+                        <button (click)="SaveBudgetValues()"type="submit" class="btn btn-primary" style="    float: right;
+                        margin: 10px 0px 10px 10px;">Save</button>
+                        <button (click)="CloseEditPopup()"type="submit" class="btn btn-primary" style="    float: right;
+                        margin: 10px 0px 10px 10px;">Cancel</button>
+                       
+                    </div>
+                 
+                 </div>            
+                
+               </div>
+             </div>
+             </div>
+           </div>
+         </div>
+   
+       </div>
+
+</ng-template>

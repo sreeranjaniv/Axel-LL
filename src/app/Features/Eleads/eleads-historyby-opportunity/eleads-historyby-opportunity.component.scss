@@ -1,0 +1,246 @@
+.Nrep2_bg{
+    height: calc(100vh - 67px); //140vh;
+    background: url(/assets/images/nr_bg.png) repeat-y;
+    background-size:100%, cover;
+    color: #ffffff;
+    padding: 10px 20px 20px;
+    font-family: "Gotham\ Book\ Regular";
+    position:inherit;
+    left:0;
+    right:0;
+    z-index:-10;
+    overflow:auto;
+}
+.NR_dropdwn select {
+    outline: none;
+    border: none;
+    width: 93%;
+    height: 30px;
+    border-radius: 20px;
+    font-size: .8rem;
+    font-family: 'HelveticaNeue-Regular';
+    color: #ffffff;
+    background: url(/assets/images/Arrow_dwn.png) #678d90  95% no-repeat;
+    padding: 0 15px 0 10px;
+    text-transform: uppercase;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none
+  }
+  .NR_dropdwn select option {
+    background: #678d90 !important;
+  height: 40px !important;    color: #fff;
+    text-transform: uppercase;
+  }
+  .NR_dropdwn select option:hover{
+    background:#ff0000 ;
+    color: #fff;
+  }
+  .Nrep_Deal{
+    .nr_curve{width: 98%; background-image:linear-gradient(to bottom, transparent 5%,#fff 5%,#fff 50%);
+        position: absolute; border-radius:20px; margin-top: 25px;margin-left: 10px;}
+    table{
+        width: 99%;
+        text-align: center;
+        font-size:.8rem;
+        margin-left:9px;
+        border: none !important;
+        border-collapse: collapse;  
+        letter-spacing: 1px;
+        //  z-index: 999;
+        // position: relative;
+        font-family: 'Gotham\ Book\ Regular';
+    }
+    table thead th {
+        // padding:13px 4px;
+        line-height: 3;
+        padding:5px 8px;
+         background: #fff;
+        background: linear-gradient(to top, #59b76c 2px,  #fff 10%);
+        color: #000;
+        border-radius: 10px 10px 0 0;
+        // border-bottom: 3px solid #59b76c;
+        vertical-align: middle;
+       text-transform: uppercase;
+       font-family: 'Gotham\ Bold';
+       font-size: .7rem;
+    }
+    table thead th:nth-child(even){background: transparent;border: none;}
+    table tbody td {padding:5px; color: #000;}
+    // table tr:nth-child(even){background: #f5f7f9; border: none;}
+    // table tbody tr:nth-child(odd){background:rgb(228, 228, 228) !important;}
+    table tbody tr:last-child td:first-child{ border-radius: 0 0 0 20px;}
+    .odd{background: #e8ebf0;}
+    .even{background: #f8f9fb;}
+    ._ttl{width: 9%;white-space: nowrap !important;}
+    
+}
+
+
+.Nrep_bg{
+background-image: linear-gradient(to right, #4a42d4 , #267fd3);
+color: #ffffff; 
+padding: 10px 20px 50px;
+}
+
+#style-14::-webkit-scrollbar
+{
+width: 10px;
+background-color: #F5F5F5;
+
+}
+
+#style-14::-webkit-scrollbar-thumb
+{
+background-color: #FFF;
+background-image: -webkit-linear-gradient(90deg,
+                                         rgba(0, 0, 0, 1) 0%,
+                     rgba(0, 0, 0, 1) 25%,
+                     transparent 100%,
+                     rgba(0, 0, 0, 1) 75%,
+                     transparent)
+}
+
+
+.scroll_deals{
+  overflow: auto;
+  overflow-x: auto;
+  height: 70vh;
+}
+.table-fixed {
+width: 100%;
+}
+
+/*This will work on every browser but Chrome Browser*/
+.table-fixed thead {
+position: sticky;
+position: -webkit-sticky;
+top: 0;
+
+}
+
+/*This will work on every browser*/
+.table-fixed thead th {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+@media screen and (min-width:1600px) {
+.scroll_deals{
+          height: 75vh;
+}
+.Nrep_Deal{
+    .nr_curve{width: 98%; background-image:linear-gradient(to bottom, transparent 5%,#fff 5%,#fff 50%);
+        position: absolute; border-radius:20px; margin-top: 25px;}
+}
+}
+
+
+@media screen and (min-width:1900px) {
+.scroll_deals{
+   height: 75vh;
+}
+
+}
+
+.button2{
+  ul {
+      width: fit-content;
+      list-style-type: none;
+      margin:1rem 0 0;
+      padding: 0;
+      overflow: hidden;
+      border-radius: 25px ;
+    }
+    
+    li {
+      float: left;
+    }
+    
+    li a {
+      display: block;
+      width:115px;
+      color:#333;
+      text-align: center;
+      text-transform: uppercase;
+      font-size: .8rem;
+      padding:8px;
+      text-decoration: none;
+      background: linear-gradient( #d9dddf ,#c5cacd);
+      border-right: 1px solid #333;
+      font-family: 'Gotham\ Bold';
+    }
+    li a.active{background: #000; color: #fff; font-family: 'Gotham\ Bold';}
+  
+    
+    li a:hover {
+      background: #111422;
+      color: #fff;
+    }
+  }
+    .Subtables{
+      width: 100%;
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      text-align: center;
+    }
+  }
+
+  .searchbutton{
+    background-color: #85a7a9;
+    color:white;
+    border-radius: 4px;
+  }
+ .viewmore{
+  text-align: center;
+  margin-top: 501px;
+ } 
+
+ @media screen and (min-width:1600px) {
+  .viewmore{
+    margin-top: 765px;
+  }
+}
+
+.button2{
+  outline: none;
+  border: none;
+  height: 25px;
+  border-radius: 3px;
+  font-size: .8rem;
+  font-family: 'HelveticaNeue-Regular';
+  color: #ffffff;
+  background-color: #678d90;
+  padding: 0 15px 0 10px;
+  text-transform: uppercase;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none
+    
+  }
+
+  .date{width: 150px;}
+  input.datepicker{
+    width: 140px;  background: url(/assets/images/Calendar.png) #678d90  95% no-repeat;border: none; color: #fff; padding: 3px 0px 3px 14px; height: 30px;
+    border-radius: 20px;
+  }
+  input[type="date"]{
+    position: relative;
+ }
+ input[type="date"]::-webkit-calendar-picker-indicator {
+    // color: transparent;
+    // background: none;
+    // z-index: 1;
+   background: transparent;
+   color: transparent;
+   position: absolute;
+   //cursor: pointer;
+   height: auto;
+   width: auto;
+   left: 0;  
+   bottom: 0;
+   right: 0;
+   top: 0;
+
+  }

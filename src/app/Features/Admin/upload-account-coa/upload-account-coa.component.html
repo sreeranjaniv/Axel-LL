@@ -1,0 +1,63 @@
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="row">
+         <ng4-loading-spinner ></ng4-loading-spinner>  
+          <main class="col-md-9 ms-auto col-lg-10">
+               <div class="row flex-wrap flex-md-nowrap align-item-center border-bottom"> 
+                <div class="top_bg d-flex align-item-center"> 
+                    <div class="form-group" style="margin-right: 25px !important">
+                        <input type="file" (change)="onFileChange($event)">
+                    </div>
+                    <div class="form-group"  style="margin-right: 10px !important">
+                        <button (click)="Submit()"type="submit" class="btn btn-primary" value="Submit" >Submit</button>
+                    </div>
+                </div>
+               </div>  
+               <div class="Progressbarposition" *ngIf="progress > 0" >
+                   <span style="text-align: center;color: #040404;font-size: 14px;margin-left: 45%;">Loading {{progress}}%</span>
+                   <div class="progress form-group" >
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" id="Processing" [style.width]="progress + '%'">
+                </div> 
+            </div>  
+        </div> 
+               <div class="table-responsive hover_">
+                 <table class="table table-striped"  style="width: 100%;text-align: center;">
+                     <thead *ngIf="keys;">
+                      <tr  style="text-transform: uppercase;">
+                        <th *ngFor = 'let key of keys'>{{key}}</th>
+                      </tr>
+                    </thead> 
+
+                    <tbody>
+                        <tr *ngIf="isLoading">
+                        </tr>
+                        <ng-container *ngIf="list_item.length > 0">   
+                          <tr *ngFor="let row of list_item">
+                            <td *ngFor = 'let key of keys'>{{row[key]}}
+                               
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <!-- <ng-template #norecdata >
+                        <tr>
+                            <td colspan="25" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found !!</label></td>
+                            </tr>
+                    </ng-template> -->
+                    <ng-container *ngIf="list_item.length == 0 && progress ==0">
+                        <tr>
+                            <td colspan="25" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found !!</label></td>
+                            </tr>
+                    </ng-container>
+                      </tbody>
+                  </table>
+                 </div>
+                 <div class="d-flex justify-content-center" style="margin: 10px" *ngIf="list_item.length > 10 ">
+                    <button style="background-color: #0d6efd;border: none;" type="button" class="btn btn-primary btn-sm"
+                    (click)="ViewMore()">View More</button>
+                </div>
+           </main>   
+    </div>
+   
+</div>
+

@@ -1,0 +1,64 @@
+.table-responsive .table thead 
+    {
+        background:white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    @media only screen and (min-width: 900px) {
+        .table-responsive{
+          max-height: 411px;
+          min-height: 50px;
+        }
+      }
+        @media only screen and (min-width: 1800px) {
+          .table-responsive{
+            max-height: 709px;
+            min-height: 50px;
+        }
+      }
+
+      // .Progressbarposition{
+      //   position: fixed;
+      //   top: 16%;
+      //   right: 28.5rem;
+      //   // border: 1px solid rgba(0, 0, 0, 0.2);
+      //   // border-radius: 0.25rem;
+      //   // padding: 2rem;
+      //   color: black;
+      //   // background: white;
+      //   font-size: 13px;
+      //    box-shadow: 0 5px 10px -5px rgb(0 0 0 / 50%);
+      //   transition: all 0.2s ease-in-out;
+      //   width: 29%;
+      //   height: 24%;
+      // font-family: 'Gotham\ Book\ Regular'
+      // }
+
+
+.progress {
+    display: flex;
+    height: 1rem;
+    overflow: hidden;
+    font-size: 0.75rem;
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+    // margin-top: 21%;
+    width: auto;
+}
+.Progressbarposition{
+    position: fixed;
+    top: 39%;
+    right: 28.5rem;
+    // border: 1px solid rgba(0, 0, 0, 0.2);
+    // border-radius: 0.25rem;
+    // padding: 2rem;
+    color: black;
+    // background: white;
+    font-size: 13px;
+     box-shadow: 0 5px 10px -5px rgb(0 0 0 / 50%);
+    transition: all 0.2s ease-in-out;
+    width: 29%;
+    height:6%;
+  font-family: 'Gotham\ Book\ Regular'
+  }

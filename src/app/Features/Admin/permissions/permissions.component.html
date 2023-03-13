@@ -1,0 +1,123 @@
+<app-header></app-header>
+<div class="container-fluid">
+    
+    <div class="row">
+       
+          <ng4-loading-spinner  ></ng4-loading-spinner>
+          <main class="col-md-9 ms-auto col-lg-10">
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div  class="top_bg d-flex align-items-center ">
+                    
+                     
+                             <div class="form-group col-xs-3 ">
+                            <label class="form-control input-group-lg reg_name">Permissions</label>
+                        </div>
+                
+
+                  </div>
+              </div>
+          
+              <div class="row justify-content-center py-4 pl-lg-3 pr-lg-4">
+				<div class="col-12 col-lg-12">
+					<div class="incent_bg">
+						<table>
+							<tbody>
+								<tr>
+									<td>
+										<div class="row">
+											<div class="col-12">
+												<div class="col-12">
+													<div class="row">
+														<div class="col-11">
+															<div class="ml-3">													
+															
+																<div class="form-group row incent">
+																	<label class="col-lg-2 align-self-center">Select a Role:</label>
+																	<div class="col-lg-10">
+																		<select (change)='onOptionsSelected($event)' [(ngModel)]="roleId">
+																		<option value='0'>-- SELECT ROLE --</option>
+																		<option  *ngFor="let item of Roles" [value]="item.R_ID">
+																			{{item.R_NAME}}
+																		</option>
+																	</select>
+																	</div>
+																	</div>																	
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+				
+									</td>
+								</tr>
+				
+								<tr>
+									<td style="width:100%; padding-left:200px;height:auto">
+										<div  *ngIf="showdata" style="text-align: center;position: relative;top:100px;font-size: 19px;">
+											<p>Please select Role to get modules data..!</p>
+										</div>
+										<div id="pnlModules" *ngIf="ShowButtons">
+											<fieldset style="width: 100%;padding:25px;">								
+												<!-- <app-loader-animation *ngIf="isLoading"></app-loader-animation> -->
+												<div class="table-responsive">
+													<table id="modules" style="color:#267fd3" class="table  w-100 history_table">
+														<tbody>
+															<tr *ngFor="let item of cmsModules">							
+																<td *ngIf="item.SMOD_MOD_ID==0" >
+																	<div><input type="checkbox" id="{{item.MOD_ID}}" class="parent"
+																			(change)="checkParent(item,$event)"
+																			[checked]="item.STATUS=='Y'"><label
+																			for="{{item.MOD_ID}}"></label><label for="{{item.MOD_ID}}"
+																			style="padding-bottom: 4px;padding-top:3px;  font-weight: 100;font-family: 'HelveticaNeue-Regular';color:black;text-transform: uppercase;">{{  item.MOD_NAME}}</label>
+																	</div>
+																	<div *ngFor="let subItem of cmsModules">
+																		<div
+																			*ngIf="subItem.SMOD_MOD_ID == item.MOD_ID ">
+																			<div style="margin-left:23px;width:375px;"><input
+																					type="checkbox"
+																					(change)="checkChild(subItem,item,$event)"
+																					[checked]="subItem.STATUS=='Y'"
+																					id="{{subItem.SMOD_ID}}"
+																					class="child{{subItem.SMOD_ID}}"><label
+																					for="{{subItem.SMOD_ID}}"></label><label
+																					for="{{subItem.SMOD_ID}}"
+																					style="padding-bottom: 4px;padding-top:3px;font-weight: 100;font-family: 'HelveticaNeue-Regular';color:black;text-transform: capitalize;">{{  subItem.MOD_NAME}}</label>
+																			</div>
+																		</div>
+																	</div>			
+																</td>															
+															</tr>					
+														</tbody>
+													</table>
+												</div>
+	
+												<div class="col-lg-12 pt-lg-5 pl-lg-4" *ngIf="ShowButtons">
+													<div class="row">
+														<div class="col-lg-2">
+															<button type="submit" class="savebutton" (click)="saveModulePermissons()">Save</button>
+														</div>
+														<!-- <div class="col-lg-2">
+															<button type="submit" class="savebutton"  (click)="cancelBack()">Cancel</button>
+														</div> -->
+													</div>
+												</div>
+							
+											</fieldset>
+																										
+										</div>
+									</td>
+								
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div> 
+          </main>
+    </div>
+    
+</div>
+
+

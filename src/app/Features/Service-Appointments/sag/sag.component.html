@@ -1,0 +1,100 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+        <ngx-spinner size="medium" [type]="globalVarComponent.g_spinnerType"></ngx-spinner>
+          <main class="col-md-9 ms-auto col-lg-10">
+            <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                <div class="top_bg d-flex align-items-center">
+                    <div class="me-4"><app-filters-popup></app-filters-popup></div>
+                    
+                    <div class="me-auto">
+                      <select #mySelect  (change)="MarketDays(mySelect.value)" class="_dropdwn">
+                          <option selected [value]="7">Fixed (7)</option>
+                          <option  [value]="6">Variable (6)</option>
+                      </select>
+                    </div>
+                   
+                    
+                    <div (click)="exportAsXLSX()" class="ms-auto " style="cursor: pointer;">
+                       <div class="d-flex align-items-center export"> Export to excel <span><img src="../../assets/images/export.png" style="margin:-5px 0 0 5px;"></span></div>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="stor_headng">
+              <div class="row">
+                <div class="store">
+                </div>
+                <div class="storebody">
+                  <h2 class="ttl-sales"><span>SAG Report</span></h2>
+                </div>
+              </div>
+          </div>
+          <div class="table-responsive service_R">
+              <table>
+                  <colgroup>
+                      
+                      <col style="background:#f8fafb">
+                      
+                      <col style="background:#f8fafb">
+                      
+                      <col style="background:#f8fafb">
+                      
+                      <col style="background:#f8fafb">
+                      
+                      <col style="background:#f8fafb">
+                    
+                      <col style="background:#f8fafb">
+                   
+                      <col style="background:#f8fafb">
+                     
+                      <col style="background:#f8fafb">
+                      
+                      <col style="background:#f8fafb">
+                      
+                      <col style="background:#f8fafb">
+                      
+                      <col style="background:#f8fafb">
+                   
+                      <col style="background:#f8fafb">
+                     
+                      <col style="background:#f8fafb">
+                    
+                      <col style="background:#f8fafb">
+                    
+                      <col style="background:#f8fafb">
+                     
+                      <col style="background:#f8fafb">
+                    
+                      <col style="background:#f8fafb">
+                   
+                      <col style="background:#f8fafb">
+                  
+                      <col style="background:#f8fafb">
+                   
+                      <col style="background:#f8fafb">
+                      
+                      <col style="background:#f8fafb">
+                      </colgroup>
+                      <thead>
+                          <tr >
+                            <th style="width: 23%; border-top: none;" class="store_name"><div class="date"></div></th>
+                           
+                            <th *ngFor="let key of Required_HeaderKey;"   style="width: 10%; border-bottom: 5px solid #65bbfa;"><span class="store_ttl">{{key}}</span></th>
+                            
+                          </tr>
+                        </thead>
+                        <tbody>                   
+                          <tr *ngFor="let item of Appointment_Loc_Name_Grid ">
+                            <td  class="store_name" >{{item['All Locations']}}</td>
+                            <td *ngFor=" let key of keys;" >{{item[key]}}</td>
+                            
+                          </tr>
+                        </tbody>
+              </table>
+          </div>
+          </main>
+    </div>
+</div>
+
+

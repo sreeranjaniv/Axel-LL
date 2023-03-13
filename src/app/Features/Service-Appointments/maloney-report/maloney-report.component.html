@@ -1,0 +1,129 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+      <div class="modal fade" id="AppointmentDetailed" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <div  class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">{{StoreName}}</h5>
+              <div (click)="exportAsXLSX_Detailed()" style="cursor: pointer;">
+                <div style="background-color: gray;" class=" export"><span><img src="../../assets/images/export.png" style="margin:4px 4px 5px 6px;"></span></div>
+             </div>
+              <!-- <div  >
+                <button (click)="exportAsXLSX()"  class="btn btn-primary" id="exporttable" style="width: 160px;margin-left: 600px;background: #4a42d4;border-color:4a42d4 ; font-weight: bold;">Export to Excel<span><img src="../../assets/images/export.png" ></span></button>
+              </div> -->
+                <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
+              
+            </div>
+            
+            <div class="modal-body table table-striped force-overflow" id="style-14" style="max-height: calc(100vh - 90px);overflow: auto;white-space: nowrap;">
+              
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead  style="background-color: #4a42d4;color: white; ">
+                        <th scope="col">Appointment Date</th>
+                        <th scope="col">Appointment Time</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Complaint Summary</th>
+                      <!-- <th  *ngFor = 'let key of DetailedAppointmentkeys' >{{key}}</th> -->
+                </thead>
+                <tbody>
+                  <ng-container *ngIf="DetailedAppointmentData.length > 0; else norecdata">
+                    <tr *ngFor="let item of DetailedAppointmentData ">
+                      <td >{{item.appointmentdate | date: 'shortDate'}}</td>
+                      <td >{{item.appointmenttime }}</td>
+                      <td >{{item.apptcustname}}</td>
+                      <td >{{item.cellular}}</td>
+                      <td >{{item.complaintsummary}}</td>
+                     <!-- <td  *ngFor = 'let key of DetailedAppointmentkeys'> {{item[key]}}</td> -->
+                    </tr>
+                    </ng-container>
+    
+                    <ng-template #norecdata>
+                        <tr >
+                          <td colspan="10" style="text-align: center;color:#6c757d"><label>No Data Found!!</label></td>
+                        </tr>
+                      </ng-template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+          <main class="col-md-9 ms-auto col-lg-10">
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div class="top_bg d-flex align-items-center">
+                      <!-- <div class="me-4"><img src="/assets/images/Filter.png"></div> -->
+                      <!-- <div class="me-auto">
+                        <select class="_dropdwn">
+                            <option>ALL STORES</option>
+                        </select>
+                      </div> -->
+                      <div (click)="exportAsXLSX()" style="cursor: pointer;" class="ms-auto ">
+                         <div  class="d-flex align-items-center export"> Export to excel <span><img src="../../assets/images/export.png" style="margin:-5px 0 0 5px;"></span></div>
+                      </div>
+                  </div>
+              </div>
+              <div class="stor_head">
+                <div class="row">
+                  <div class="store">
+                  </div>
+                  <div class="storebody">
+                    <h2 class="ttl-sales"><span>Service Appointments</span></h2>
+                  </div>
+                </div>
+            </div>
+            <ngx-spinner size="medium" [type]="globalVarComponent.g_spinnerType"></ngx-spinner>
+          
+            <div class="table-responsive service_R">
+                <table>
+                    <colgroup>
+                        
+                        <col style="background:#f8fafb">
+                        
+                        <col style="background:#f8fafb">
+                       
+                        <col style="background:#f8fafb">
+                        
+                        <col style="background:#f8fafb">
+                       
+                        <col style="background:#f8fafb">
+                      
+                        <col style="background:#f8fafb">
+                      
+                        <col style="background:#f8fafb">
+
+                        <col style="background:#f8fafb">
+
+                        <col style="background:#f8fafb">
+
+                        <col style="background:#f8fafb">
+
+                        <col style="background:#f8fafb">
+
+                        <col style="background:#f8fafb">
+
+                        <col style="background:#f8fafb">
+                        </colgroup>
+                        <thead *ngIf="datatime;">
+                            <tr  >
+                              <th style="width: 20%; border-top: none;" class="store_name"><div class="date"><span>{{datatime}}</span></div></th>
+                              <th  *ngFor="let key of Required_HeaderKey"  style=" border-bottom: 5px solid #65bbfa;">{{HeaderIndex(key)}}<span class="store_ttl"> {{keyHead1}}</span><br/><span class="store_ttl"> {{keyHead2}}</span></th>
+                              
+                            </tr>
+                          </thead>
+                          
+                          <tbody >                   
+                            <tr *ngFor="let item of Service_App_Grid "  >
+                              <td class="store_name">{{item.CompanyName}}</td>
+                              <td *ngFor=" let key of keys;" data-toggle="modal" data-target="#AppointmentDetailed" [ngStyle]="{'cursor':key === '7 DAY SCHEDULED TOTAL' ? 'not-allowed' : 'pointer' , 'color':item[key] === 'Total' ? 'not-allowed' : 'pointer' }"  (click)="AppointmentDetailed(item.AS_ID, key, item.CompanyName )" >{{item[key]}}</td></tr>
+                            
+                          </tbody>
+                </table>
+            </div>
+           
+          </main>
+    </div>
+</div>
+
+

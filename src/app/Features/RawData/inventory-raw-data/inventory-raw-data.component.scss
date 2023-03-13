@@ -1,0 +1,102 @@
+.top_bg{
+    width: 100%;
+    background-image: linear-gradient(to right, #4a42d4 , #267fd3);
+    color: #ffffff; padding: 10px 20px 35px;
+  }
+  
+  input.datepicker{
+      width: 189px;
+      height: 40px;
+      background: url(/assets/images/Calendar.png) #5957d7 95% no-repeat;
+      border: none;
+      color: #fff;
+      border-radius: 2px;
+      padding: 3px 5px;
+      text-indent:10px;
+    }
+  
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        color: transparent;
+        background: none;
+        z-index: 1;
+    }
+  
+    .modal-body {
+      position: relative;
+      flex: 1 1 auto;
+      padding: 1rem;
+      height: 410px;
+      flex-wrap: wrap;
+      overflow-y: auto;
+    }
+  
+    .table-responsive .table thead 
+      {
+          background:white;
+          position: sticky;
+          top: 0;
+          z-index: 10;
+      }
+    
+  .table-responsive .table tbody tr:last-child{border-bottom: #f1f4f6}
+  // .table-responsive .table tbody tr{min-height: 50px;}
+  .hover_ .table{position: relative; z-index: 99;}
+  // .hover_ .table th{position: sticky; z-index: 99;}
+  .hover_ .table tr td:first-child{padding-left: 20px;}
+  .hover_ .table tr.active td {font-family: 'HelveticaNeue-Bold'; font-size: .8rem;}
+  .hover_ .table tr:nth-child(even){background-color: #e8ebef;}
+  .hover_ .table tr:first-child:hover  {background-color: transparent !important;} 
+  
+  
+  
+  table tr.highlight {
+    // background-color: red !important;
+    color: black;
+    font-size: medium;
+    font-weight: bold;
+    //opacity: 1;
+  }
+  
+  // .table-responsive{
+  //   overflow-x: auto;
+  //   overflow-y: auto;
+  //   min-height: 50px;
+  //   max-height: 650px;
+  // }
+   
+  
+  @media only screen and (min-width: 900px) {
+    .table-responsive{
+      max-height: 460px;
+      min-height: 50px;
+    }
+  }
+    @media only screen and (min-width: 1800px) {
+      .table-responsive{
+        max-height: 750px;
+        min-height: 50px;
+      }
+  
+  }
+  
+  
+  .srchgroups {
+    width: 200px;
+    height: 40px;
+    border: 1px solid lightgray;
+    outline: none;
+    border-radius: 4px 4px 4px 4px;
+    text-indent:10px;
+  }
+  
+  .description{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:100px !important;
+    }
+  
+   
+  
+    .export{text-transform: uppercase;cursor: pointer;}
+    

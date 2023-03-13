@@ -1,0 +1,180 @@
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="row">
+        <ng4-loading-spinner ></ng4-loading-spinner> 
+          <main class="col-md-9 ms-auto col-lg-10">
+               <div class="row flex-wrap flex-md-nowrap align-item-center border-bottom"> 
+                <div class="top_bg d-flex align-item-center"> 
+                
+                    <div class="form-group" style="margin-right: 25px !important;margin-top: 9px;">
+                        <input type="search" placeholder=" Search VIN" name="searchvin" class="srchgroups"  [(ngModel)]="txtVin" > 
+                    </div>
+                    <div class="form-group"  style="margin-right: 10px !important;margin-top: 9px;">
+                        <input type="search"  placeholder="Stock Number" name="searchstck"  class="srchgroups" [(ngModel)]="txtStck"> 
+                    </div>
+                    <div  class="form-group"  style="margin-right: 10px !important;margin-top: 9px;">
+                        <input type="date"  name="Date" [(ngModel)]="startDate" class="datepicker">
+                    </div> 
+                    <div  class="form-group" style="margin-right: 10px !important;margin-top: 9px;">
+                        <input type="date"  name="Date" [(ngModel)]="endDate"  class="datepicker">
+                    </div>
+                    <div class="form-group" style="margin-right: 10px !important;margin-top: 9px;">
+                        <button (click)="searchdata()"type="submit" class="btn btn-primary" >Go</button>
+                    </div> 
+                     <div class="form-group" style="margin-right: 10px !important;margin-top: 18px;">
+                      <img src='./assets/images/search_cancel.png' style="height: 30px;" (click)="searchClear()">
+                  </div>
+                  <div style="cursor: pointer;" (click)="exportAsXLSX()" class="col-lg-2  ms-auto" style="margin-top: 18px;">
+                    <div class="d-flex align-items-center export" style="float: right;cursor: pointer;"><div>Export to excel</div>  <span><img src="../../assets/images/export.png" style="margin:-5px 0 0 5px;"></span></div>
+                 </div>
+                </div>
+               </div>  
+           
+               <div class="table-responsive hover_">
+                <table class="table table-striped" style="width: 100%;text-align: center;">
+                    <thead>
+                      <tr style="text-transform: uppercase;">
+                        <th>RowNo</th>
+                        <th>DealerId</th>
+                        <th>Dealer_Name</th>
+                        <th>StockId</th>
+                        <th>VIN</th>
+                        <th>New_Used</th>
+                        <th>Year</th>
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Model_Code</th>
+                        <th>Body</th>
+                        <th>Transmission</th>
+                        <th>Fuel</th>
+                        <th>Engine</th>
+                        <th>Series</th>
+                        <th>Series_Detail</th>
+                        <th>Door_Count</th>
+                        <th>Odometer</th>
+                        <th>Engine_Cylinder_Ct</th>
+                        <th>Engine_Displacement</th>
+                        <th>Drivetrain_Desc</th>
+                        <th>Colour</th>
+                        <th>Interior_Color</th>
+                        <th>Price</th>
+                        <th>MSRP</th>
+                        <th>Inventory_Date</th>
+                        <th>Certified</th>
+                        <th>Description</th>
+                        <th>Features</th>
+                        <th>City_MPG</th>
+                        <th>Highway_MPG</th>
+                        <th>Photo_Count</th>
+                        <th>Photos</th>
+                        <th>Photos_Last_Modified_Date</th>
+                        <th>Age</th>
+                      </tr> 
+                    </thead>
+
+                    <tbody>
+                        <ng-container *ngIf="InvtryData.length > 0; else norecdata">
+                            <tr *ngFor="let item of InvtryData">
+                              <td>{{item.ROWNUM}}</td>
+                                <td>{{item.DealerId }}</td>
+                                <td>{{item.Dealer_Name}}</td>
+                                <td>{{item.Stock__}}</td>
+                                <td>{{item.VIN}}</td>
+                                <td>{{(item.New_Used == null ? '---' : item.New_Used)}}</td>
+                                <td>{{(item.Year == null ?'---': item.Year)}}</td>
+                                <td>{{(item.Make == null ?'---': item.Make)}}</td>
+                                <td>{{(item.Model == null ?'---': item.Model)}}</td>
+                                <td>{{item.Model_Code}}</td>
+                                <td>{{item.Body}}</td>
+                                <td>{{item.Transmission}}</td>
+                                <td>{{item.Fuel}}</td>
+                                <td>{{item.Engine}}</td>
+                                <td>{{item.Series}}</td>
+                                <td>{{(item.Series_Detail == null ? '---' : item.Series_Detail)}}</td>
+                                <td>{{item.Door_Count}}</td>
+                                <td>{{item.Odometer}}</td>
+                                <td>{{item.Engine_Cylinder_Ct}}</td>
+                                <td>{{item.Engine_Displacement}}</td>
+                                <td>{{item.Drivetrain_Desc}}</td>
+                                <td>{{item.Colour}}</td>
+                                <td>{{item.Interior_Color}}</td>
+                                <td>{{(item.Price== null ? '---' : item.Price)}}</td>
+                                <td>{{(item.MSRP == null ? '---' : item.MSRP)}}</td>
+                                <td>{{item.Inventory_Date}}</td>
+                                <td>{{(item.Certified == null ? '---' : item.Certified)}}</td>
+                                 <td data-toggle="tooltip" data-placement="bottom" title={{item.Description}}>
+                                  <div class="description">{{item.Description}}
+                                </div>
+                                 </td>
+                                <td *ngIf="item.Features!=null"><img (click)="featuresdata(item.Features)" data-toggle="modal" data-target="#modelId" src="./assets/images/View.png" style="cursor: pointer;height: 25px;width: 25px;"></td>
+                                <td *ngIf="item.Features==null">---</td>
+                                <td>{{(item.City_MPG == null ? '---' : item.City_MPG)}}</td>
+                                <td>{{(item.Highway_MPG == null ? '---' : item.Highway_MPG)}}</td>
+                                <td>{{(item.Photo_Count == null ? '---' : item.Photo_Count)}}</td>
+                                <td *ngIf="item.Photos!=null"><img (click)="photosdata(item.Photos)" data-toggle="modal" data-target="#modelId" src="./assets/images/View.png" style="cursor: pointer;height: 25px;width: 25px;"></td>
+                                <td *ngIf="item.Photos==null">---</td>
+                                <td>{{item.Photos_Last_Modified_Date}}</td>
+                                <td>{{item.Age}}</td>  
+                            </tr>
+                    </ng-container>
+                    <ng-template #norecdata>
+                        <tr>
+                          <td colspan="16" style="text-align: center;color: #040404;font-size: 14px;border-bottom: none;"><label>No Data Found</label></td>
+                        </tr>
+                    </ng-template>
+                    </tbody>
+                  </table>
+                 
+            </div>
+             <div *ngIf="InvtryData.length > 49" style="text-align: center;" > 
+            <div  class="d-flex justify-content-center" >
+                <button style="background-color: #0d6efd;border: none;" type="button" class="btn btn-primary btn-sm"
+                    (click)="ViewMore()">View More</button>
+            </div>
+         </div> 
+           </main> 
+          
+          
+    </div>
+</div>
+<!-- Modal -->
+<div *ngIf="showModal">
+  <div class="modal" tabindex="-1" role="dialog" #modal  id="modelId">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header" >
+         <h5 class="modal-title" >Features</h5>
+         <button  type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+       </div>
+
+       <div class="modal-body" >
+         <ul *ngFor="let Features of Ftsdata?.split('|')">
+           <li *ngIf="Features!=''">{{Features}}</li>
+          </ul>
+       </div>
+     </div>
+   </div>
+ </div>
+</div>
+
+ <div *ngIf="showPhotosModal">
+  <div class="modal" tabindex="-1" role="dialog" #modal  id="modelId">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header" >
+         <h5 class="modal-title" >Photos</h5>
+         <button  type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <div class="modal-body">
+        <ul *ngFor="let Photos of Photosdata?.split('|')">
+          <li *ngIf="Photos!=null"><a href=""  target="_blank" (click)="UrlClick(Photos)">{{Photos}}</a></li>
+         </ul>
+      </div>
+     </div>
+   </div>
+ </div>
+</div>
+
+
+

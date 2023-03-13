@@ -1,0 +1,730 @@
+<app-header></app-header>
+<ng4-loading-spinner></ng4-loading-spinner>
+<div class="container-fluid" style="position: fixed;">
+    <div class="row">
+        <div class="col-lg-12 p-0">
+            <div class = "Nrep2_bg">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <div>
+                            <a (click)="PreviousUrl()" style="cursor: pointer;font-size: medium;" class="link-light">Back</a>
+                          </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-2">
+                        <input type="search" placeholder="Search"  class="form-control" name="search"  [(ngModel)]="searchKeyWord" style="line-height: 1; font-size: 0.8rem;" > 
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="NR_dropdwn">
+                            <select class="form-select"  [(ngModel)]="selectStatus">
+                                <option value="">Select Status</option>
+                                <option value="ACTIVE">ACTIVE</option>
+                                <option value="INACTIVE">INACTIVE</option>
+                                <option value="VEHICLE RECEIVED">Vehicle Received</option>
+                                <option value="TITLE RECEIVED">Title Received</option>
+                                <option value="FUNDS RELEASED">Funds Released</option>
+                              
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" style="text-align-last: end;margin-left: auto!important;">
+                       
+                            <pagination-controls  previousLabel="Prev" nextLabel="Next"  responsive="true"
+                            (pageChange)="handlePageChange($event)" [maxSize]= "4" [autoHide]="true" style="font-size: medium;"></pagination-controls>                        
+                        
+                </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 p-0">
+                        <div class="Nrep_Deal">
+                            <div class="nr_curve scroll_deals">
+                                <table class="table-fixed" >
+                                    <thead>
+                                        <tr>
+                                            <th class="_ttl">Ref ID</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Date</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">First Name</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Last Name</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Email</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Phone#</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">VIN</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Year</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Make</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Model</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">PURCHASE PRICE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Body</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">ODOMETER</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">TITLE NUMBER</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">TITLE DATE ISSUED</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">TITLE DOCUMENT</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">ADDRESS</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CITY</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">STATE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">ZIP</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 2nd FIRST NAME</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 2nd LAST NAME</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 2nd STREET ADDRESS</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 2nd CITY</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 2nd STATE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 2nd ZIP</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 2nd EMAIL</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 2nd PHONE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 3rd FIRST NAME</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 3rd LAST NAME</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 3rd STREET ADDRESS</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 3rd CITY</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 3rd STATE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 3rd ZIP</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 3rd EMAIL</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">CUST 3rd PHONE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">VEHICLE OWNERSHIP</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">TITLE PRESENT</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">MULTIPLE OWNERS</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">ALLPARTIES AVAILABLE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">LOAN LEASE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">LOAN LEASE SOURCE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">ACCOUNT NUMBER</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">10DAY PAYOFF AMOUNT</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Driver License</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Car Registration</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">ODOMETER IMAGE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">10DAY PAYOFF LETTER</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">MISCELLANEOUS DOCUMENT</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">TITLE IMAGE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Status</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Action</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Delete</th>
+                                            <th style="width: 1%;"></th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                         <ng-container *ngIf="ICOData.length > 0 ">
+                                            <tr *ngFor="let item of ICOData | filter:searchKeyWord | filter: selectStatus | paginate:config; let ioe = index;">
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.ID}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CREATED_TS == "" ? '--' : (item.CREATED_TS == null ? '--':(item.CREATED_TS | date:'MM/dd/yyyy')))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_FIRST_NAME == "" ? '--' : (item.CUST_FIRST_NAME == null ? '--':item.CUST_FIRST_NAME))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_LAST_NAME == ""  ? '--' : (item.CUST_LAST_NAME == null ? '--':item.CUST_LAST_NAME))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_EMAIL == "" ? '--' : (item.CUST_EMAIL  == null ? '--':item.CUST_EMAIL))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_PHONE == "" ? '--' : (item.CUST_PHONE  == null ? '--':item.CUST_PHONE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.VIN== "" ? '--' : (item.VIN == null ? '--':item.VIN ))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.VEHICLE_YEAR == "" ? '--' : (item.VEHICLE_YEAR == null ? '--':item.VEHICLE_YEAR))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.VEHICLE_MAKE == "" ? '--' : (item.VEHICLE_MAKE == null ? '--':item.VEHICLE_MAKE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.VEHICLE_MODEL  == "" ? '--' : (item.VEHICLE_MODEL == null ? '--':item.VEHICLE_MODEL))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.PURCHASE_PRICE == "" ? '--' : (item.PURCHASE_PRICE == null ? '--':item.PURCHASE_PRICE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.VEHICLE_BODY == "" ? '--' : (item.VEHICLE_BODY == null ? '--':item.VEHICLE_BODY))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.ODOMETER == "" ? '--' : (item.ODOMETER == null ? '--':item.ODOMETER))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.TITLE_NUMBER == "" ? '--' : (item.TITLE_NUMBER == null ? '--':item.TITLE_NUMBER))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.TITLE_DATE_ISSUED == "" ? '--' : (item.TITLE_DATE_ISSUED == null ? '--':(item.TITLE_DATE_ISSUED |  date:'MM/dd/yyyy')))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.TITLE_DOCUMENT == "" ? '--' : (item.TITLE_DOCUMENT == null ? '--':item.TITLE_DOCUMENT))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_STREET_ADDRESS == "" ? '--' : (item.CUST_STREET_ADDRESS == null ? '--':item.CUST_STREET_ADDRESS))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_CITY == "" ? '--' : (item.CUST_CITY == null ? '--':item.CUST_CITY))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_STATE == "" ? '--' : (item.CUST_STATE == null ? '--':item.CUST_STATE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_ZIP == "" ? '--' : (item.CUST_ZIP == null ? '--':item.CUST_ZIP))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_2_FIRST_NAME == "" ? '--' : (item.CUST_2_FIRST_NAME == null ? '--':item.CUST_2_FIRST_NAME))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_2_LAST_NAME == "" ? '--' : (item.CUST_2_LAST_NAME == null ? '--':item.CUST_2_LAST_NAME))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_2_STREET_ADDRESS == "" ? '--' : (item.CUST_2_STREET_ADDRESS == null ? '--':item.CUST_2_STREET_ADDRESS))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_2_CITY == "" ? '--' : (item.CUST_2_CITY == null ? '--':item.CUST_2_CITY))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_2_STATE == "" ? '--' : (item.CUST_2_STATE == null ? '--':item.CUST_2_STATE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_2_ZIP == "" ? '--' : (item.CUST_2_ZIP == null ? '--':item.CUST_2_ZIP))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_2_EMAIL == "" ? '--' : (item.CUST_2_EMAIL == null ? '--':item.CUST_2_EMAIL))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_2_PHONE == "" ? '--' : (item.CUST_2_PHONE == null ? '--':item.CUST_2_PHONE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_3_FIRST_NAME == "" ? '--' : (item.CUST_3_FIRST_NAME == null ? '--':item.CUST_3_FIRST_NAME))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_3_LAST_NAME == "" ? '--' : (item.CUST_3_LAST_NAME == null ? '--':item.CUST_3_LAST_NAME))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_3_STREET_ADDRESS == "" ? '--' : (item.CUST_3_STREET_ADDRESS == null ? '--':item.CUST_3_STREET_ADDRESS))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_3_CITY == "" ? '--' : (item.CUST_3_CITY == null ? '--':item.CUST_3_CITY))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_3_STATE == "" ? '--' : (item.CUST_3_STATE == null ? '--':item.CUST_3_STATE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_3_ZIP == "" ? '--' : (item.CUST_3_ZIP == null ? '--':item.CUST_3_ZIP))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_3_EMAIL == "" ? '--' : (item.CUST_3_EMAIL == null ? '--':item.CUST_3_EMAIL))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.CUST_3_PHONE == "" ? '--' : (item.CUST_3_PHONE == null ? '--':item.CUST_3_PHONE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{(item.VEHICLE_OWNERSHIP == "" ? '--' : (item.VEHICLE_OWNERSHIP == null ? '--':item.VEHICLE_OWNERSHIP))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="text-transform: uppercase;">{{(item.TITLE_PRESENT == "" ? '--' : (item.TITLE_PRESENT == null ? '--':item.TITLE_PRESENT))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="text-transform: uppercase;">{{(item.MULTIPLE_OWNERS == "" ? '--' : (item.MULTIPLE_OWNERS == null ? '--':item.MULTIPLE_OWNERS))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="text-transform: uppercase;">{{(item.ALlPARTIES_AVAILABLE == "" ? '--' : (item.ALlPARTIES_AVAILABLE == null ? '--':item.ALlPARTIES_AVAILABLE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="text-transform: uppercase;">{{(item.LOAN_LEASE == "" ? '--' : (item.LOAN_LEASE == null ? '--':item.LOAN_LEASE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="text-transform: uppercase;">{{(item.LOAN_LEASE_SOURCE == "" ? '--' : (item.LOAN_LEASE_SOURCE == null ? '--':item.LOAN_LEASE_SOURCE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.ACCOUNT_NUMBER == "" ? '--' : (item.ACCOUNT_NUMBER == null ? '--':item.ACCOUNT_NUMBER))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.TENDAY_PAYOFF_AMOUNT == "" ? '--' : (item.TENDAY_PAYOFF_AMOUNT == null ? '--':item.TENDAY_PAYOFF_AMOUNT))}}</td>
+                                                <td style="background: transparent !important;"></td>
+
+                                               
+                                                <td  [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >
+                                                    <div *ngIf="(item.DRIVER_LICENSE_FILE_NAME !=null) && (item.DRIVER_LICENSE_FILE_NAME !='') ">
+                                                      <img src="../../../assets/images/dwn.png" style="cursor: pointer;height: 19px;width: 19px;" (click)="downloadImage(item.DRIVER_LICENSE,item.DRIVER_LICENSE_FILE_NAME)">
+                                                    </div>
+                                                    <div  *ngIf="(item.DRIVER_LICENSE_FILE_NAME ==null) || (item.DRIVER_LICENSE_FILE_NAME =='')">--</div>
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+
+                                           
+
+                                                <td  [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >
+                                                    <div *ngIf="(item.CAR_REGISTRATION_FILE_NAME !=null) && (item.CAR_REGISTRATION_FILE_NAME !='') ">
+                                                      <img src="../../../assets/images/dwn.png" style="cursor: pointer;height: 19px;width: 19px;" (click)="downloadImage(item.CAR_REGISTRATION,item.CAR_REGISTRATION_FILE_NAME)">
+                                                    </div>
+                                                    <div  *ngIf="(item.CAR_REGISTRATION_FILE_NAME ==null) || (item.CAR_REGISTRATION_FILE_NAME =='')">--</div>
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                                
+                                                <td  [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >
+                                                    <div *ngIf="(item.ODOMETER_IMAGE_FILE_NAME !=null) && (item.ODOMETER_IMAGE_FILE_NAME !='') ">
+                                                      <img src="../../../assets/images/dwn.png" style="cursor: pointer;height: 19px;width: 19px;" (click)="downloadImage(item.ODOMETER_IMAGE,item.ODOMETER_IMAGE_FILE_NAME)">
+                                                    </div>
+                                                    <div  *ngIf="(item.ODOMETER_IMAGE_FILE_NAME ==null) || (item.ODOMETER_IMAGE_FILE_NAME =='')">--</div>
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                               
+                                                <td  [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >
+                                                    <div *ngIf="(item.TENDAY_PAYOFF_LETTER_FILE_NAME !=null) && (item.TENDAY_PAYOFF_LETTER_FILE_NAME !='') ">
+                                                      <img src="../../../assets/images/dwn.png" style="cursor: pointer;height: 19px;width: 19px;" (click)="downloadImage(item.TENDAY_PAYOFF_LETTER,item.TENDAY_PAYOFF_LETTER_FILE_NAME)">
+                                                    </div>
+                                                    <div  *ngIf="(item.TENDAY_PAYOFF_LETTER_FILE_NAME ==null) || (item.TENDAY_PAYOFF_LETTER_FILE_NAME =='')">--</div>
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                               
+                                               
+                                                <td  [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >
+                                                    <div *ngIf="(item.MISCELLANEOUS_DOCUMENT_FILE_NAME !=null) && (item.MISCELLANEOUS_DOCUMENT_FILE_NAME !='') ">
+                                                      <img src="../../../assets/images/dwn.png" style="cursor: pointer;height: 19px;width: 19px;"  (click)="downloadImage(item.MISCELLANEOUS_DOCUMENT,item.MISCELLANEOUS_DOCUMENT_FILE_NAME)">
+                                                    </div>
+                                                    <div  *ngIf="(item.MISCELLANEOUS_DOCUMENT_FILE_NAME ==null) || (item.MISCELLANEOUS_DOCUMENT_FILE_NAME =='')">--</div>
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                                
+                                                <td  [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >
+                                                    <div *ngIf="(item.TITLE_IMAGE_FILE_NAME !=null) && (item.TITLE_IMAGE_FILE_NAME !='') ">
+                                                        <img src="../../../assets/images/dwn.png" style="cursor: pointer;height: 19px;width: 19px;" (click)="downloadImage(item.TITLE_IMAGE,item.TITLE_IMAGE_FILE_NAME)">
+                                                    </div>
+                                                    <div  *ngIf="(item.TITLE_IMAGE_FILE_NAME ==null) || (item.TITLE_IMAGE_FILE_NAME =='')">--</div>
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="text-transform:uppercase ;">{{(item.ICO_STATUS == "" ? '-' : (item.ICO_STATUS == null ? '--':item.ICO_STATUS))}}</td>
+                                                <td style="background: transparent !important;"></td> 
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"><img src="../../../assets/images/edit_1.png" (click)="edit(item)" style="cursor: pointer;"
+                                                    data-bs-toggle="modal" data-bs-target="#editModal"></td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"><img src="../../../assets/images/del_gry.png" (click)="delete(item.ID)" style="cursor: pointer;width: 31%;"></td>
+                                                   
+                                                <td style="background: transparent !important;"></td>
+                                     
+                                            </tr>
+                                        </ng-container> 
+                                        <ng-container>
+                                            <tr  *ngIf="(ICOData | filter:searchKeyWord).length == 0 || (ICOData | filter:selectStatus).length == 0">
+                                              <td colspan="30" style="text-align: center;color: #040404;font-size: 14px;border-bottom: none;"><label>No Data Found</label></td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+               
+
+            </div>
+        </div>
+        
+    </div>
+
+</div>    
+
+
+      <div class="modal fade" id="editModal" tabindex="-1"aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <b style="font-size: 16px;"> Edit </b>
+                    <input type="submit" value="Update" class="process" (click)="update()">
+                    <span class="close" data-bs-dismiss="modal" id="close" aria-label="Close" style="font-size: 18px;cursor: pointer;"> X </span>
+                  </div>
+                  <div class="modal-body">
+                    <div class="col-lg-12">
+                        <div class="row justify-content-center">
+                            <div class="cancel_bg" >
+                                <div class="content_width">
+                                    <div class="row mt-4">
+                                        <div class="col-lg-6">
+                                            <div class="req_bg">
+                                                <h6>Vehicle Details</h6>
+                                                <form [formGroup]="vechDet">
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">Date</label>
+                                                        <div class="col-sm-4">
+                                                            <input type="date" class="form-control" formControlName="date"  class=datepicker >
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">VIN</label>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" class="form-control" formControlName="vin">
+                                                        </div>
+                                                       
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">Year</label>
+                                                        <div class="col-sm-2">
+                                                            <input type="text" class="form-control" formControlName="year">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Make</label>
+                                                        <div class="col-sm-2">
+                                                            <input type="text" class="form-control" formControlName="make">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Model</label>
+                                                        <div class="col-sm-2">
+                                                            <input type="text" class="form-control" formControlName="model">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">Purchase Price</label>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" class="form-control" formControlName="purchaseprice">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Body</label>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" class="form-control" formControlName="body">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">odometer</label>
+                                                        <div class="col-sm-4">
+                                                            <input type="text" class="form-control" formControlName="odometer">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Vehicle Ownership</label>
+                                                        <div class="col-sm-4">
+                                                            <select class="form-select" formControlName="vehicleOwnershp" >
+                                                                <option value="0">select</option>
+                                                                <option value="y">Yes</option>
+                                                                <option value="n">No</option>
+                                          
+                                                              </select>
+                                                        </div>
+                                                   </div>
+                                                   <div class="row align-items-center mb-2">
+                                                    <label class="col-sm-2 pe-0">All Parties Available</label>
+                                                    <div class="col-sm-4">
+                                                        <select class="form-select" formControlName="allparties" >
+                                                            <option value="0">select</option>
+                                                            <option value="y">Yes</option>
+                                                            <option value="n">No</option>
+                                                        
+                                                        </select>
+                                                    </div>
+                                                    <label class="col-sm-2 pe-0">Multiple Owners</label>
+                                                    <div class="col-sm-4">
+                                                        <select class="form-select" formControlName="mtlpeowners" >
+                                                            <option value="0">select</option>
+                                                            <option value="yes">Yes</option>
+                                                            <option value="no">No</option>
+                                                            <option value="Im not sure">I’m not sure</option>
+                                                        </select>
+                                                    </div>
+                                               </div>
+                                               <div class="row align-items-center mb-2">
+                                                 <label class="col-sm-2 pe-0">Title Present</label>
+                                                   <div class="col-sm-4">
+                                                    <select class="form-select" formControlName="allparties" >
+                                                        <option value="0">select</option>
+                                                        <option value="yes">Yes</option>
+                                                        <option value="no">No</option>
+                                                        <option value="i cant find it">I can’t find it</option>
+                                                    </select>
+                                                 </div>
+                                                    <label class="col-sm-2 pe-0">Title Number</label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control" formControlName="ttleno">
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center mb-2">
+                                                    <label class="col-sm-2 pe-0">Title Document</label>
+                                                      <div class="col-sm-4">
+                                                        <input type="text" class="form-control" formControlName="ttldoc">
+                                                    </div>
+                                                       <label class="col-sm-2 pe-0">Title Date Issued</label>
+                                                       <div class="col-sm-4">
+                                                           <input type="date" class="form-control" formControlName="ttldte"  class=datepicker >
+                                                       </div>
+                                                   </div>
+                                                   <div class="row align-items-center mb-2">
+                                                    <label class="col-sm-2 pe-0">Loan or Lease</label>
+                                                      <div class="col-sm-4">
+                                                        <select class="form-select" formControlName="loanlease" >
+                                                            <option value="0">select</option>
+                                                            <option value="loan">Loan</option>
+                                                            <option value="lease">Lease</option>
+                                                        </select>
+                                                    </div>
+                                                       <label class="col-sm-2 pe-0">Loan Lease Source</label>
+                                                       <div class="col-sm-4">
+                                                           <input type="text" class="form-control" formControlName="loansrce">
+                                                       </div>
+                                                   </div>
+                                                   <div class="row align-items-center mb-2">
+                                                    <label class="col-sm-2 pe-0">Account Number</label>
+                                                      <div class="col-sm-4">
+                                                        <input type="text" class="form-control" formControlName="acctnmbr">
+                                                    </div>
+                                                       <label class="col-sm-2 pe-0">10DAY PAYOFF AMOUNT	</label>
+                                                       <div class="col-sm-4">
+                                                           <input type="text" class="form-control" formControlName="payoffamont">
+                                                       </div>
+                                                   </div>
+                                                   <div class="row align-items-center mb-2">
+                                                    <label class="col-sm-2 pe-0">Status</label>
+                                                      <div class="col-sm-4">
+                                                        
+                                                        <select class="form-select" formControlName="status" >
+                                                            <option value="">Select Status</option>
+                                                            <option value="ACTIVE">Active</option>
+                                                            <option value="INACTIVE">Inactive</option>
+                                                            <option value="VEHICLE RECEIVED">Vehicle Received</option>
+                                                            <option value="TITLE RECEIVED">Title Received</option>
+                                                            <option value="FUNDS RELEASED">Funds Released</option>
+                                                        </select>
+                                                   
+                                                    </div>
+                                                       
+                                                   </div>
+                                                </form>
+                                            </div>
+                                            <div class="req_bg">
+                                                <h6>1st Customer Details</h6>
+                                                <form [formGroup]="FirstCustomerDet">
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">First Name</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="firstName" maxlength="49">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Last Name</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="lastName" maxlength="49">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">Email</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="email">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Phone</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="phone">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">Address</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" formControlName="address">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">City</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" formControlName="city">
+                                                        </div>
+                                                    </div>    
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">State</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="state">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Zip</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="zip">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="req_bg">
+                                                <h6>2nd Customer Details</h6>
+                                                <form [formGroup]="SecondCustomerDet">
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">First Name</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="firstName" maxlength="49">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Last Name</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="lastName" maxlength="49">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">Email</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="email">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Phone #</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="phone">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">Address</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" formControlName="address">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">City</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" formControlName="city">
+                                                        </div>
+                                                    </div>    
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">State</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="state">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Zip</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="zip">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                          
+                                           
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="req_bg">
+                                                <h6>3rd Customer Details</h6>
+                                                <form [formGroup]="ThirdCustomerDet">
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">First Name</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="firstName" maxlength="49">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Last Name</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="lastName" maxlength="49">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">Email</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="email">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Phone #</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="phone">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">Address</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" formControlName="address">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">City</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" formControlName="city">
+                                                        </div>
+                                                    </div>    
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-2 pe-0">State</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="state">
+                                                        </div>
+                                                        <label class="col-sm-2 pe-0">Zip</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" class="form-control" formControlName="zip">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="req_bg">
+                                                <h6>Documents</h6>
+                                                <form >
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-3 pe-0">Driver License</label>
+                                                        <div class="col-sm-5">
+                                                             <input id="fileuploadDrL" type="file" style="display:none;" (change)="fileChangeEvent($event,'DL')">
+                                                             <img src="assets/images/upload_icon.png" 
+                                                                style="cursor: pointer;" onclick="document.getElementById('fileuploadDrL').click()">
+                                                                 <span  class="upld_cnt">  {{driverLicenseName}} </span>
+                                                                
+                                                                <br>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-3 pe-0">Car Registration</label>
+                                                          <div class="col-sm-5">
+                                                            <input id="fileuploadRg" type="file" style="display:none;" (change)="fileChangeEvent($event,'CR')">
+                                                            <img src="assets/images/upload_icon.png" 
+                                                               style="cursor: pointer;" onclick="document.getElementById('fileuploadRg').click()">
+                                                               <span  class="upld_cnt"> {{registrationName}} </span>
+                                                                <br>
+                                                            </div>    
+                                                    </div>
+
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-3 pe-0">Odometer</label>
+                                                         <div class="col-sm-5">
+                                                               <input id="fileuploadOd" type="file" style="display:none;" (change)="fileChangeEvent($event,'ODO')">
+                                                            <img src="assets/images/upload_icon.png" 
+                                                               style="cursor: pointer;" onclick="document.getElementById('fileuploadOd').click()">
+                                                               <span  class="upld_cnt">
+                                                                    {{odometerImgName}}
+                                                                </span>
+                                                                <br>
+                                                         </div>       
+                                                    </div>
+
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-3 pe-0">Tenday PayOff Letter</label>
+                                                         <div class="col-sm-5">
+                                                               <input id="fileuploadPAY" type="file" style="display:none;" (change)="fileChangeEvent($event,'PAY')">
+                                                            <img src="assets/images/upload_icon.png" 
+                                                               style="cursor: pointer;" onclick="document.getElementById('fileuploadPAY').click()">
+                                                               <span  class="upld_cnt">
+                                                                    {{payoff_LetterName}}
+                                                                </span>
+                                                                <br>
+                                                         </div>       
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-3 pe-0">Miscellaneous </label>
+                                                          <div class="col-sm-5">
+                                                            <input id="fileuploadMS" type="file" style="display:none;" (change)="fileChangeEvent($event,'MS')">
+                                                            <img src="assets/images/upload_icon.png" 
+                                                               style="cursor: pointer;" onclick="document.getElementById('fileuploadMS').click()">
+                                                               <span  class="upld_cnt">
+                                                                    {{miscellaneousName}}
+                                                                </span>
+                                                                <br>
+                                                            </div>    
+                                                    </div>
+                                                    <div class="row align-items-center mb-2">
+                                                        <label class="col-sm-3 pe-0">Title Image </label>
+                                                        <div class="col-sm-5">
+                                                            <input id="fileuploadTI" type="file" style="display:none;" (change)="fileChangeEvent($event,'TTL')">
+                                                            <img src="assets/images/upload_icon.png" 
+                                                               style="cursor: pointer;" onclick="document.getElementById('fileuploadTI').click()">
+                                                               <span  class="upld_cnt">
+                                                                  {{titleImageName}}
+                                                                </span>
+                                                                <br>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </form>    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div> 
+
+
+
+
+
+
+
+
+
+
+

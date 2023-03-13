@@ -1,0 +1,93 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+         <ng4-loading-spinner  ></ng4-loading-spinner>
+          <main class="col-md-9 ms-auto col-lg-10">
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div class="top_bg d-flex align-items-center">
+                      <!-- <div class="me-auto">
+                        <select class="_dropdwn">
+                            <option>ALL STORES</option>
+                        </select>
+                      </div> -->
+                      <!-- <div  class="ms-auto value">
+                          <ul >
+                              <li (click)="onClick(1)" [ngClass]="{'tabactive': tab==='tab_M'}">MTD</li>
+                              <li (click)="onClick(2)" [ngClass]="{'tabactive': tab==='tab_Q'}">QTD</li>
+                              <li (click)="onClick(3)" [ngClass]="{'tabactive': tab==='tab_Y'}">YTD</li>
+                              <li>CUSTOM</li>
+                          </ul>
+                      </div> -->
+                  </div>
+              </div>
+              <div class="stor_headng">
+                <div class="row">
+                  <div class="column1">
+                  </div>
+                  <div class="column">
+                    <h2 class="ttl-sales"><span>VAUTO Inventory</span></h2>
+                  </div>
+                  <!-- <div class="column3">
+                    <h2 class="ttl-sales"><span>Revenue</span></h2>
+                  </div> -->
+                </div>
+            </div>
+            
+            <div   class="table-responsive hover_">
+              <table class="table table-striped" style="width: 100%; text-align: center;">
+                <colgroup>
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                </colgroup>
+                <thead *ngIf="Inv_Header;">
+                  <tr >
+                    <th style="width: 10%;text-transform: uppercase; border-top: none;" class="store_name"></th>
+                   
+                    <th style="width: 11%; border-bottom: 5px solid #65bbfa;"><span class="store_ttl">NEW</span> <br> <span class="store_val">{{Inv_Header.NEW}}</span></th>
+                    <th style="width: .3%; background:transparent !important;"></th>
+                    
+                    <th style="width: 11%; border-bottom: 5px solid #65bbfa;"><span class="store_ttl">PRE-OWNED</span> <br> <span class="store_val">{{Inv_Header.USED}}</span></th>
+                    <th style="width: .5%; background:transparent !important;"></th>
+
+                    <th style="width: 11%; border-bottom: 5px solid #65bbfa;"><span class="store_ttl">TOTAL</span> <br> <span class="store_val">{{Inv_Header.TOTAL}}</span></th>
+                    <th style="width: .3%; background:transparent !important;"></th>
+                </tr>
+                </thead>
+                <tbody  *ngIf="Inventory_Overview" style="cursor: pointer;">
+                 
+                  <tr   *ngFor="let item of Inventory_Overview" (click)="RedirectToDataQuery(item)">
+                    <td class="store_name">{{item.STORE_NAME | uppercase}}</td>
+                    <td>{{item.NEW}}</td>
+                    <td style="background: transparent !important;"></td>
+                    <td>{{item.USED}}</td>
+                    <!-- <td style="background: transparent !important;"></td>
+                    <td>{{item.CPO}}</td> -->
+                    <td style="background: transparent !important;"></td>
+                    <td>{{item.TOTAL}}</td>
+                    <td style="background: transparent !important;"></td>
+                    <!-- <td>{{item.FEG}}</td>
+                    <td style="background: transparent !important;"></td>
+                    <td>{{item.BEG}}</td>
+                    <td style="background: transparent !important;"></td>
+                    <td>{{item.TOTAL_GROSS}}</td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </main>
+    </div>
+</div>
+
+

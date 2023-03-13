@@ -1,0 +1,202 @@
+<p>groups-stores works!</p>
+<app-header></app-header>
+<div class="container-fluid">
+  <div class="row">
+        <ng4-loading-spinner  ></ng4-loading-spinner>
+        <main class="col-md-9 ms-auto col-lg-10" *ngIf="GroupStoreGrid">
+            
+            <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                <div class="top_bg d-flex align-items-center">
+                  <div class="form-group col-xs-3 ">
+                    <label class="form-control input-group-lg reg_name">Group Stores</label>
+                </div>
+            <div  class="form-group col-xs-6">
+                <button (click)="AddGroupStore()" type="button" class="btn btn-primary" >Add</button>
+            </div>
+                </div>
+                
+            </div>
+            
+            <div  class="table-responsive hover_">
+              <table class="table table-striped" style="width: 100%; text-align: center;">
+                  <thead>
+                    <tr style="text-transform: uppercase;">
+                      <th scope="col">Group Name</th>
+                      <th scope="col">Stores</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Edit</th>
+                      <!-- <th scope="col">Delete</th> -->
+                    </tr>
+                  </thead>
+
+                  <tbody style="cursor: pointer;">
+                      <ng-container *ngIf="GroupsStoreData" >
+                          <tr *ngFor="let item of GroupsStoreData">
+                              <td >{{item.G_Name}}</td>
+                              <td style="width:50%">{{item.STORES}}</td>
+                              <!-- <td  style="width:50%"><div style="display: flex;"><div class="divbox" *ngFor="let Groups of item.STORES?.split(',')">
+                                {{Groups}} 
+                            </div></div></td> -->
+                              <td ><span [ngStyle]="{'color': item.GS_Status=='Y' ? '#0aa40a' : item.GS_Status=='D' ? 'red' : '#ff0000' }">{{item.GS_Status=='Y' ? 'Active' : item.GS_Status=='D' ? 'Delete' : 'In-active'}}</span></td>
+                              <td title="Edit" (click)="editGroup(item.G_Id)"  ><img  style="text-align: center; cursor: pointer;" src="../../../assets/images/edit_1.png"></td>
+                              <!-- <td title="Delete" (click)="DeleteGroup(item.GS_Id, 'D')"  ><img  style="text-align: center; cursor: pointer;" src="../../../assets/images/del_gry.png"></td> -->
+                          </tr>
+                  </ng-container>
+                    <ng-template #norecdata>
+                      <tr  >
+                        <td colspan="5" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found !!</label></td>
+                      </tr>
+                    </ng-template>
+                  </tbody>
+                  
+                </table>
+            
+          </div>
+          
+        </main>
+        <main class="col-md-9 ms-auto col-lg-10" *ngIf="EditGroupStore">
+          <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+              <div class="top_bg d-flex align-items-center">
+                <div class="form-group col-xs-3 ">
+                  <label class="form-control input-group-lg reg_name">{{lbl_Action}} Group Stores</label>
+              </div>
+              </div>
+          </div>
+          <div>
+            <div class="row">
+              <div class="column1">
+              </div>
+              <div class="column">
+                <!-- <h2 class="ttl-sales"><span>Admin Modules Data</span></h2> -->
+              </div>
+            </div>
+        </div>
+        <div class="contentpanel">
+            <div class="container">
+              <div class="row">
+                <div >
+                  <div class="panel panel-default">
+
+                    <div class="panel-body">
+                      <form role="form" [formGroup]="FormGroupStores">
+                        <div class="row">
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            
+                            <div class="col-lg-12  pl-lg-4">
+                              <div class="row">
+                                <div class="col-lg-4">
+                                  <div class="form-group">
+                                    <label class="Mod_Headings" for="Groupid" >Group:</label>
+                                    <select (change)="selected($event.target.value)" [(ngModel)]="GroupStoreArraydata.Groupid"  formControlName="Groupid" class="form-control w-100 inptcs" >
+                                      <option value="" selected [disabled]="true">Select Group</option>
+                                      <option *ngFor="let i of Groups_DD" [value]="i.G_Id">{{i.G_Name}}</option>
+                                     
+                                    </select>
+                                    
+                                </div>
+                                </div>
+                                <div class="col-lg-4">
+                                  <div class="form-group" class="mt-5">
+                                    <!-- <img src="../../../assets/images/AddStore.png" style="width: 15%;margin-top: -15px;"> -->
+                                    <button data-toggle="modal" data-target="#AddGroup" class="btn" style="font-size: 13px;margin-top: -12px;margin-left: -3px; background-color: #267fd3;   color: white;
+                                    text-rendering: optimizeLegibility !important;
+                                    font-size: 15px;
+                                    font-family: HelveticaNeue-Regular">Add Group</button>
+                                    
+                                </div>
+                                </div>
+                              </div>
+                            </div>
+                            <form >
+                              <div class="modal fade" id="AddGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel">Add Group</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form role="form" [formGroup]="GroupForm">
+                                        <div class="form-group">
+                                          <label for="GroupName" class="col-form-label">Group Name:</label>
+                                          <input  [(ngModel)]="GroupArraydata.GroupName" type="text" formControlName="GroupName" placeholder="Enter Group Name" autofocus class="form-control" maxlength="51"/>
+                                          </div>
+
+                                          <div class="form-group">
+
+                                            <label class="col-form-label" for="GroupCode">Group Code:</label>
+                                            <input  [(ngModel)]="GroupArraydata.GroupCode" type="text" formControlName="GroupCode" placeholder="Enter Group Code" autofocus class="form-control" maxlength="51" />
+                                            
+                                          </div>
+                                        
+                                      </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" (click)="BackToGroupStoreEditpanned()" data-dismiss="modal">Close</button>
+                                      <button  type="button" class="btn btn-primary" (click)="UpdateGroup()"  data-dismiss="modal">Save</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                            
+                            
+                              
+                              <div class="form-group">
+                                <label  class="Mod_Headings" for="StoreIds">Stores:</label>
+                                <div id="stores" class="row">
+                                    <div *ngFor="let i of Dealer_DD" style="font-size: 17px;padding-left: 5em;"   class="form-check form-switch col ">
+                                        <input  [checked]="IsStoreChecked(i.AS_ID) == 1?true:false" (change)="HandleStoreIds(i.AS_ID)"  
+                                         id="StoreIds"  formControlName="StoreIds"  [value]="i.AS_ID"
+                                         class="form-check-input" type="checkbox" >
+                                        <label style="width: 400px;"  class="form-check-label" for="StoreIds">{{i.dealershipname}}</label>
+                                    </div>
+                                    
+                                  </div>
+                                  
+                                </div>  
+                              <div *ngIf = "GroupStoreStatus" class="form-group">
+                                <label class="Mod_Headings" for="Status">Status:</label>
+                                <div class="switch" id="switchdivpublic" tabindex="1">
+                                  <input formControlName="Status" class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnPYes" name="Status" tabindex="1"
+                                    type="radio"  [(ngModel)]="GroupStoreArraydata.Status"  checked value="Y"><label
+                                    class="switch-label switch-label-off" for="rbtnPYes">Active</label>
+                                    <input formControlName="Status" class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnPNo" name="Status" tabindex="1"
+                                     type="radio" [(ngModel)]="GroupStoreArraydata.Status"  value="N"><label
+                                    class="switch-label switch-label-on" for="rbtnPNo">In-Active</label>
+                                    <!-- <input formControlName="Status" class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnSD" name="ispblic" tabindex="1"
+                                     type="radio" [(ngModel)]="GroupStoreArraydata.Status"  value="D"><label
+                                    class="switch-label switch-label-on" for="rbtnSD">Delete</label> -->
+                                    <span class="switch-selection"></span>
+                                </div>
+                              </div>
+                            
+                          </div>
+                        </div>
+
+                        
+                     
+                        <div class="col-lg-12 pt-lg-5 pl-lg-4">
+                          <div class="row">
+                            <div class="col-lg-2">
+                              <button id="savebutton" type="button" class="savebutton"  (click)="SaveGroupStores()">Save</button>
+                            </div>
+                            <div class="col-lg-2">
+                              <button type="button" class="cancelbutton" (click)="BackToGroupGrid()">Cancel</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+      </main>
+  </div>
+ 
+</div>

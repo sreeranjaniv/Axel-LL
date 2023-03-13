@@ -1,0 +1,1913 @@
+<app-header></app-header>
+<!-- <ng4-loading-spinner></ng4-loading-spinner> -->
+<ngx-spinner size="medium" color="white" type="ball-clip-rotate">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12 p-0">
+      <div class="Nrep2_bg">
+        <div class="row" [ngClass]="{ disableds: progressbar === true, active: progressbar == false }">
+          <div class="col-lg-1" style="width: 4%;">
+            <div *ngIf="globalVarComponent.g_SideMenuItemCount > 1">
+              <a (click)="PreviousUrl()" style="cursor: pointer;font-size: medium;" class="link-light">Back</a>
+            </div>
+            <!-- <div><a href="http://localhost:4200/bWJ3XHByYXNhZC5jaGF2YWxp" target="_blank" >Redirect</a></div> -->
+
+          </div>
+          <!-- <div class="col-lg-1">
+</div> -->
+          <div class="col-lg-2" style="width: 14%;">
+            <div class="data NR_dropdwn">
+              <select id="Dealer_DDL" (change)="bindbystores($event)">
+                <option value="0">ALL STORES</option>
+                <!-- <option *ngFor="let s of stores" [value]="s.CFGM_ID" >{{s.CFGM_STORENAME}} -->
+                <option *ngFor="let s of stores" [value]="s.AS_ID">{{s.AS_DEALERNAME}}
+              </select>
+            </div>
+          </div>
+
+
+          <div class="col-lg-2" style="width: 14%;">
+            <div class="NR_dropdwn"> <select class="form-select" (change)="selectSearch($event)"
+                [(ngModel)]="searchtype">
+                <option value="">Select</option>
+                <option value="CUST_VIN">VIN </option>
+                <option value="CONTRACT_NUM">Contract ID</option>
+                <option value="CF_CUST_LASTNAME">Customer Last Name</option>
+                <option value="CF_REFERENCEID">Reference ID</option>
+
+                <!-- <option value="CF_AS_ID">Stores</option> -->
+                <!-- <option value="CF_ACTIVE">Status</option> -->
+
+              </select> </div>
+            <!-- <div  [ngClass]="{ active: searchtype !='', deactive: searchtype == '' }">
+                  <div *ngIf="searchtype!=='CF_ACTIVE' && searchtype!=='CF_AS_ID'">  <input class="form-control NR_search" placeholder="Search"
+                    type="text" autocomplete="off" #myInput [(ngModel)]="searchQuery"
+                    (ngModelChange)="searchFilter()"></div>
+                  </div> -->
+            <!-- <div *ngIf="searchtype=='CF_AS_ID'" class="NR_dropdwn"> <select class="form-select" (change)="bindbystores($event)">
+                      <option value="" disabled>Select</option>
+                    <option *ngFor="let s of stores" [value]="s.AS_ID" >{{s.AS_DEALERNAME}}
+
+                    </select> </div> -->
+
+          </div>
+          <div class="col-lg-2" style="width: 14%;">
+            <div> <input class="form-control NR_search" placeholder="Search" type="text" autocomplete="off" #myInput
+                [(ngModel)]="searchQuery" (ngModelChange)="searchFilter()"></div>
+            <!-- *ngIf="searchtype!=='CF_ACTIVE' && searchtype!=='CF_AS_ID'"   [ngClass]="{ active: searchtype !='', deactive: searchtype == '' }" -->
+          </div>
+          <div class="col-lg-2" style="width: 14%;">
+            <div class="NR_dropdwn"> <select class="form-select" (change)="bindbystatus($event.target.value)"
+                [(ngModel)]="statusType">
+                <option value="">STATUS</option>
+                <option value="Open">Open </option>
+                <option value="SP">Sent for Processing</option>
+                <option value="PP">Payment Processed</option>
+                <option value="Closed">Closed</option>
+                <option value="A">Deleted</option>
+                <option value="Approval">Approved</option>
+                <option value="Decline">Declined</option>
+
+              </select> </div>
+          </div>
+          <div class="col-lg-2" style="width: 14%;">
+            <button class="process" *ngIf="statusType=='Open' || statusType=='SP'"
+              style="text-align: left !important;cursor:pointer" (click)="UpdateStatus($event)">Process</button>
+            <!-- (click)="UpdateStatus()" [ngClass]="{ disabled: process==true }" -->
+          </div>
+          <!-- <div class="col-lg-1 text-end">
+                <div [ngClass]="{ active: startcount > 1, deactive: startcount <= 1 }">
+                <a (click)="Previousdata()" style="cursor: pointer;font-size: medium;" class="link-light" >Preview</a>
+              </div>
+            </div> -->
+          <div class="col-lg-2 text-end">
+
+            <span [ngClass]="{ active: startcount > 1, deactive: startcount <= 1 }">
+              <a (click)="Previousdata()" style="cursor: pointer;font-size: medium;" class="link-light">Preview</a>
+            </span>
+            &nbsp;&nbsp;
+            <span [ngClass]="{ active: startcount < endcount, deactive: startcount == endcount }">
+              <a (click)="Nextdata()" style="cursor: pointer;font-size: medium;" class="link-light">Next</a>
+
+            </span>
+
+          </div>
+          <div class="col-lg-1 text-end" style="margin-top: 4px;">
+            <!-- <span>No of Rows {{Rows}} - {{paginationStart}} to {{paginationEnd}} of {{cancellationData.length}}</span> -->
+
+            <span> {{paginationStart}} - {{paginationEnd}} of {{cancellationData.length}}</span>
+            <!-- <span>Page {{startcount}} of {{endcount}} - {{paginationStart}} to {{paginationEnd}} of {{cancellationData.length}}</span> -->
+
+            <!-- {{Rows}} - -->
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-12 p-0">
+            <div class="Nrep_Deal">
+              <div class="nr_curve scroll_deals">
+                <table class="table-fixed" id="MyTable">
+
+                  <thead>
+                    <tr>
+                      <!-- <th style="width:0.5%;"></th> -->
+                      <th class="_ttl">REF&nbsp;ID</th>
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl" style="width: 0% !important;">Notes</th>
+                      <th style="width:0.5%;"></th>
+
+                      <th class="_ttl" style="width: 0% !important;">Date</th>
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl" style="width: 0% !important;">Expedited</th>
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl" style="width: 0% !important;">Provider</th>
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl">VIN</th>
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl">Customer&nbsp;Name</th>
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl">Phone&nbsp;#</th>
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl" style="width: 0% !important;">Email</th>
+
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl">Cont&nbsp;Date</th>
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl">Canc&nbsp;DATE&nbsp;</th>
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl">Created&nbsp;Date</th>
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl">CC&nbsp;Pay&nbsp;Status</th>
+                      <th style="width:0.5%;"></th>
+                      <th class="_ttl" style="width:0.5%;" *ngIf="statusType=='Open' || statusType=='SP'"
+                        [ngClass]="{ disableds: process==false, enabled:process==true }">Status</th>
+                      <!-- <input type="checkbox" [(ngModel)]="mainstatus" (change)="selectAll($event)"> -->
+                      <th style="width:0.5%;" *ngIf="statusType=='Open' || statusType=='SP'"></th>
+                      <th class="_ttl" style="width:0.5%;"
+                        *ngIf="statusType=='SP' || statusType=='PP' || statusType=='Open' || statusType=='A' || statusType=='Closed'">
+                        Action
+                      <th style="width:0.5%;" *ngIf="statusType=='SP' || statusType=='PP' || statusType=='Open'"></th>
+                      <th class="_ttl" style="width:0.5%;"
+                        *ngIf="statusType=='SP' || statusType=='PP' || statusType=='Open'">Delete
+                      <th style="width:0.5%;" *ngIf="statusType=='SP' || statusType=='PP' || statusType=='Open'"></th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- <input type="checkbox" id="symbols4" class="custom-check-box" formControlName="totalLossofVehicle" disabled>
+                                  <label for="symbols4"></label> -->
+
+                    <ng-container *ngIf="cancellationData.length > 0 ">
+
+                      <tr *ngFor="let item of cancellationData.slice(start,end); let ioe = index;">
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" (click)="openform(item,'V')"
+                          style="cursor: pointer;color: blue;" data-bs-toggle="modal" data-bs-target="#editModal">
+                          {{item.CF_REFERENCEID}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"
+                          style="overflow: auto;height: 45px;display: block;width: 186px;">{{item.CF_NOTES == '' ||
+                          item.CF_NOTES == null ? '-' : item.CF_NOTES }}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.CF_CREATED_TS == '' ? '-':
+                          item.CF_CREATED_TS | date:'MM/dd/yyyy' }} </td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                          <span *ngIf="item.ResponseStatus=='A' && item.CF_REFUND_PROCESSINGFEE == 'Y'"
+                            style="cursor: pointer;"> <img src="assets/images/tick.jpg" width="25px" height="25px"
+                              (click)="getpaymentResponse(item.CF_REFERENCEID)"></span>
+                          <span
+                            *ngIf="item.ResponseStatus !='A' && item.ResponseStatus != null  && item.CF_REFUND_PROCESSINGFEE == 'Y'"
+                            (click)="getpaymentResponse(item.CF_REFERENCEID)"> <img src="assets/images/cancel.jpg"
+                              width="25px" height="25px" style="cursor: pointer;"> </span>
+                          <span *ngIf="item.ResponseStatus == null  && item.CF_REFUND_PROCESSINGFEE == 'Y'"> - </span>
+
+                          <span *ngIf="item.CF_REFUND_PROCESSINGFEE == 'N'"> -</span>
+                        </td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"> {{item.CONTRACT_TYPE == '0' ? '-':
+                          item.CONTRACT_TYPE }}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.CUST_VIN}}</td>
+
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"
+                          style='text-transform: capitalize;white-space: nowrap !important;'>{{item.CUST_NAME}}</td>
+
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="white-space: nowrap !important;">
+                          {{item.CUST_PHONE}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.CUST_EMAILID}}</td>
+                        <td style="background: transparent !important;"></td>
+
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="white-space: nowrap !important;">
+                          {{item.CONTRACT_DATE == '' || item.CONTRACT_DATE == null || item.CONTRACT_DATE == '01-01-1900'
+                          ? '-' : item.CONTRACT_DATE }}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="white-space: nowrap !important;">
+                          {{item.CANCELLATION_DATE == '' || item.CANCELLATION_DATE == null || item.CANCELLATION_DATE ==
+                          '01-01-1900' ? '-' : item.CANCELLATION_DATE }}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="white-space: nowrap !important;">
+                          {{item.CF_CREATED_TS == '' || item.CF_CREATED_TS == null || item.CF_CREATED_TS ==
+                          undefined? '-' : item.CF_CREATED_TS | date:'MM-dd-yyyy' }}</td>
+                        <!-- title="{{item.PaymentStatus == '' || item.PaymentStatus == null || item.PaymentStatus == 'null' || item.PaymentStatus == 'Approval' ? '':item.PaymentStatus }}" -->
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"
+                          style="white-space: nowrap !important;cursor: default;"
+                          [ngStyle]="{'color': item.PaymentStatus != 'Approval' && item.PaymentStatus != null ? '#ff0000' : 'black'}">
+                          <span *ngIf="item.PaymentStatus != 'Approval' && item.PaymentStatus != 'Decline'">
+                            {{item.PaymentStatus == '' || item.PaymentStatus == null || item.PaymentStatus == 'null'
+                            ? '-' : item.PaymentStatus }}</span>
+                          <span *ngIf="item.PaymentStatus === 'Approval'">Approved</span>
+                          <span *ngIf="item.PaymentStatus === 'Decline'">Declined</span>
+                        </td>
+                        <td style="background: transparent !important;"></td>
+
+
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"
+                          *ngIf="statusType=='Open' || statusType=='SP'"> <span
+                            [ngStyle]="{'pointer-events': item.CONTRACT_TYPE=='PWC'? 'visible' : 'none','opacity': item.CONTRACT_TYPE=='PWC'? '1' : '0.2'}">
+                            <input type="checkbox" id="symbols" [checked]="item.status"
+                              (change)="getselectedrecord($event,item)"> </span></td>
+                        <td style="background: transparent !important;" *ngIf="statusType=='Open' || statusType=='SP'">
+                        </td>
+
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"
+                          *ngIf="statusType=='PP' || statusType=='SP' || statusType=='Open' || statusType=='A' || statusType=='Closed'"
+                          style="cursor: pointer;"> <img src='../../../assets/images/edit_1.png'
+                            (click)="openform(item,'E')" data-bs-toggle="modal" data-bs-target="#editModal"
+                            class="pe-2">
+                          <img src='../../../assets/images/dwn.png' height="17px" (click)="PdfDownload(item)">
+                        </td>
+                        <td style="background: transparent !important;"
+                          *ngIf="statusType=='PP' || statusType=='SP' || statusType=='Open'"></td>
+
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"
+                          *ngIf="statusType=='PP' || statusType=='SP' || statusType=='Open'" style="cursor: pointer;">
+                          <img src='../../../assets/images/del_gry.png' width="30px" height="20px"
+                            (click)="ConfirmDel(item)" data-bs-toggle="modal" data-bs-target="#delConfirm" class="pe-2">
+
+                        </td>
+                        <td style="background: transparent !important;"
+                          *ngIf="statusType=='PP' || statusType=='SP' || statusType=='Open'"></td>
+                      </tr>
+
+                    </ng-container>
+
+                    <!-- <ng-container *ngIf="cancellationData.length == 0" >
+                                  <tr  >
+                                    <td  colspan="27" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found</label></td>
+                                  </tr>
+                                </ng-container> -->
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pic_cancel_bg" #screen style="position: fixed;pointer-events: none;">
+        <div class="content_width">
+          <div class="row mt-4">
+            <div class="col-lg-12">
+              <div class="req_bg">
+                <h6>Change Status</h6>
+                <div class="row align-items-center mb-3">
+                  <label class=" col-sm-3 pe-0">Status:</label>
+                  <div class="col-sm-4 ">
+                    <select class="form-select" [(ngModel)]="editstatus" disabled>
+                      <option value="" disabled>Select</option>
+                      <option value="Open">Open </option>
+                      <option value="SP">Sent for Processing</option>
+                      <option value="PP">Payment Processed</option>
+                      <option value="Closed">Closed</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row align-items-center mb-2"
+                  *ngIf="vieworedit!='E' && chequeName!='null' && chequeName!=null">
+                  <label class=" col-sm-3 pe-0">Upload Check:</label>
+                  <div class="col-sm-1" [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+
+                    <a href="javascript:void(0);" class="ms-3"><img src="assets/images/upload_icon.png"
+                        style="cursor: pointer;"></a>
+                  </div>
+                  <div class="col-sm-4 disableds" style="padding-left: 0px;"
+                    *ngIf="chequeName!='null' && chequeName!=null">
+                    <a href="{{cheque}}" target="_blank" class="ms-3"><span *ngIf="chequeName!=undefined">
+                        {{(chequeName.toString() | slice:0:15) + (chequeName.toString().length > 15 ? '...' : '') }}
+                      </span></a>
+                  </div>
+
+
+                </div>
+                <div class="row align-items-center mb-3"
+                  [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                  <label class=" col-sm-3 pe-0">Notes:</label>
+                  <div class="col-sm-4">
+                    <textarea class="form-control" style="font-size:0.7rem" [(ngModel)]="notes"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="req_bg">
+                <h6>Vehicle details</h6>
+                <form [formGroup]="VehicleDet">
+                  <div class="row align-items-center mb-2">
+                    <label class=" col-sm-3 pe-0">Customer First Name:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" formControlName="firstName">
+                    </div>
+                    <label class="col-sm-2 pe-0">Last Name:</label>
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" formControlName="lastName">
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2">
+                    <label class=" col-sm-3 pe-0">Email:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" formControlName="emailid"
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}$">
+                    </div>
+                    <label class=" col-sm-2 pe-0">Phone #:</label>
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" formControlName="phone" pattern="[0-9+( )-]{14}$">
+                    </div>
+                  </div>
+
+                  <div class="row align-items-center mb-2">
+                    <label class=" col-sm-3 pe-0">Preferred method of contact:</label>
+                    <div class="col-sm-4">
+                      <div class="radio-item">
+                        <input type="radio" id="mtconp" name="mtdofcontact" value="p" formControlName="mtdofcontact">
+                        <label for="mtconp">Phone</label>
+                      </div>
+
+                      <div class="radio-item">
+                        <input type="radio" id="mtcone" name="mtdofcontact" value="e" formControlName="mtdofcontact">
+                        <label for="mtcone">Email</label>
+                      </div>
+
+                    </div>
+
+                  </div>
+                  <div class="row align-items-center mb-2" style="pointer-events: none;">
+                    <label class=" col-sm-3 pe-0 mb-0">Processing speed:</label>
+                    <div class="col-sm-8 mb-1">
+                      <!-- <div class="radio-item"> -->
+
+                      <label>Would you like to request expedited processing of this refund? Expedited refunds
+                        receive quicker processing based on the timeline selected</label>
+
+                      <div>
+                        <div class="radio-item">
+                          <input type="radio" id="exp1" name="exportimeframe" value="150"
+                            formControlName="exportimeframe" (change)="reqProcessing($event)">
+                          <label for="exp1">$150 (5-7 days)</label>
+                        </div>
+                        <div class="radio-item">
+                          <input type="radio" id="exp2" name="exportimeframe" value="79"
+                            formControlName="exportimeframe" (change)="reqProcessing($event)">
+                          <label for="exp2">$79 (1-2 weeks)</label>
+                        </div>
+                        <div class="radio-item">
+                          <input type="radio" id="exp3" name="exportimeframe" value=0 formControlName="exportimeframe">
+                          <label for="exp3">$0 (6-8 weeks)</label>
+                        </div>
+                      </div>
+
+                      <!-- </div> -->
+
+                      <!-- <div class="radio-item">
+                        <input type="radio" id="time" name="exportimeframe" value="T" formControlName="exportimeframe">
+                        <label for="time">Longer timeframe of 4-6 weeks</label>
+                      </div> -->
+
+                    </div>
+
+                  </div>
+                  <div class="row align-items-center mb-2">
+                    <label class=" col-sm-3 pe-0">Selling Dealership:</label>
+                    <div class="col-sm-9">
+                      <!-- <select class="form-select " formControlName="sellingDealership" disabled>
+                        <option value="">&nbsp;&nbsp;SELECT</option>
+                        <option *ngFor="let s of stores" [value]="s.AS_ID">{{s.AS_DEALERNAME}}
+                    </select> -->
+                      <input type="text" class="form-control" formControlName="sellingDealership">
+
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2">
+                    <label class=" col-sm-3 pe-0">Agreement #/Contract #:
+                      <!-- <span style="float:right"><img
+                        src="../../assets/images/info_icon.png"></span> -->
+                    </label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" formControlName="contract">
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2">
+                    <label class=" col-sm-3 pe-0">VIN:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" formControlName="vin" maxlength="17">
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2" style="display: none;">
+                    <label class=" col-sm-3">Vehicle Year:</label>
+                    <div class="col-sm-2 sml">
+                      <!-- <select class="form-select " formControlName="year"  disabled>
+                        <option disabled value="0">SELECT</option>
+                        <option *ngFor="let vy of vehicleyear" [value]="vy.y_modelyear">{{vy.y_modelyear}}
+    </select> -->
+                      <input type="text" class="form-control" formControlName="year">
+
+                    </div>
+                    <label class=" col-sm-1">Make:</label>
+                    <div class="col-sm-2">
+                      <!-- <select class="form-select " formControlName="make" disabled>
+                        <option disabled value="0">SELECT</option>
+                        <option *ngFor="let vm of vehiclemake" [value]="vm.D_DivisionId">{{vm.D_DivisionName}}
+                    </select> -->
+                      <input type="text" class="form-control" formControlName="make">
+
+                    </div>
+                    <label class=" col-sm-1">Model:</label>
+                    <div class="col-sm-3 sml">
+                      <!-- <select class="form-select " formControlName="model" disabled>
+                        <option disabled value="0">SELECT</option>
+                        <option *ngFor="let vmd of vehiclemodel" [value]="vmd.m_modelid">{{vmd.m_modelname}}
+
+                    </select> -->
+                      <input type="text" class="form-control" formControlName="model">
+
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2">
+                    <label class=" col-sm-3 pe-0">Date of Contract:</label>
+                    <div class="col-sm-4">
+                      <input type="text" name="contract" class="form-control" formControlName='dateOfContract'
+                        [(ngModel)]="dtofcntrct" class=datepicker>
+
+                    </div>
+
+                  </div>
+                  <div class="row align-items-center mb-2">
+
+                    <label class=" col-sm-3 pe-0">Date of Cancellation:</label>
+                    <div class="col-sm-4 sml">
+                      <input type="text" name="cancellation" class="form-control" formControlName='dateOfCancellation'
+                        [(ngModel)]="dtofcnclton" class="datepicker">
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2">
+                    <label class=" col-sm-3 pe-0">Mileage at time of cancellation:</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" maxlength="10" formControlName="mileage">
+                    </div>
+
+                  </div>
+                </form>
+
+              </div>
+              <div class="req_bg">
+                <div class="row align-items-center">
+
+                  <div class="col-lg-6">
+                    <h6>Reason for cancellation</h6>
+                  </div>
+                  <div class="col-lg-1" *ngIf="reasonName!=''">
+                    <a href='{{uploadreason}}' target="_blank" class="ms-3"><img src="assets/images/upload_icon.png"
+                        style="cursor: pointer;"></a>
+                  </div>
+                  <!-- <div class="col-lg-5" *ngIf="reasonName!=''">
+                    <a href='{{uploadreason}}' target="_blank" class="ms-3"><span  style="cursor: pointer;">{{reasonName}}</span></a>
+                  </div>
+                  <div class="col-lg-1" *ngIf="reasonName!=''">
+                    <a href='{{uploadreason}}' target="_blank" class="ms-3"><img src="assets/images/upload_icon.png"
+                        style="cursor: pointer;"></a>
+                  </div> -->
+                  <div class="col-lg-4" *ngIf="reasonName!=''" style="padding-left: 0px;">
+                    <a href='{{uploadreason}}' target="_blank" class="ms-3"><span style="cursor: pointer;"
+                        *ngIf="reasonName!=undefined">
+                        {{(reasonName.toString() | slice:0:35) + (reasonName.toString().length > 35 ? '...' : '')
+                        }}</span></a>
+                  </div>
+                </div>
+                <form [formGroup]="ReasonsForCancel">
+                  <div>
+                    <label for="symbols"></label>
+                    <span>Select why you are canceling the contract and then upload the required document by selecting
+                      ‘Upload document’</span>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="symbols" class="custom-check-box" formControlName="customerRequest">
+                    <label for="symbols"></label>
+                    <span>No longer want product <i>(secure odometer reading required)</i></span>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="symbolsd" class="custom-check-box" formControlName="SalesDeal">
+                    <label for="symbolsd"></label>
+                    <span>Sales deal voided <i>(secure odometer reading required)</i></span>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="symbols1" class="custom-check-box" formControlName="vehicleSold">
+                    <label for="symbols1"></label>
+                    <span>Vehicle Sold / Traded <i>(trade-in / sale documentation required)</i></span>
+
+                  </div>
+                  <div>
+                    <input type="checkbox" id="symbols2" class="custom-check-box" formControlName="repossession">
+                    <label for="symbols2"></label>
+                    <span> Repossession <i> (supporting documentation required)</i></span>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="symbols3" class="custom-check-box" formControlName="satisfiedLien">
+                    <label for="symbols3"></label>
+                    <span>Satisfied Lien/Vehicle Paid Off <i> (proof of payoff documentation required)</i></span>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="symbols4" class="custom-check-box" formControlName="totalLossofVehicle">
+                    <label for="symbols4"></label>
+                    <span> Total Loss of Vehicle <i> (total loss documentation required)</i></span>
+                  </div>
+                  <div class="row">
+                    <div class=" col-sm-6"><input type="checkbox" id="symbols5" class="custom-check-box"
+                        formControlName="other">
+                      <label for="symbols5"></label>
+                      <span> Other <i> (please specify reason) </i></span>
+                    </div>
+                    <div class=" col-sm-6"> <input id="otherText" type="text" class="form-control"
+                        formControlName="otheretext"> </div>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="symbols13" class="custom-check-box" formControlName="dealercancellation"
+                      (change)="dealercancel($event)">
+                    <label for="symbols13"></label>
+                    <span> Dealer Cancellation </span>
+                  </div>
+                </form>
+
+              </div>
+              <div class="req_bg">
+                <form [formGroup]="ContractType">
+                  <div class="row align-items-center mb-3">
+                    <div class="col-lg-4" style="white-space: nowrap;">
+                      <h6 style="margin-bottom: 0;">Type of contract</h6>
+                    </div>
+                    <div class="col-lg-4" style="width:29%">
+                      <!-- <div class="row align-items-center">
+                        <div class="col-sm-12 contract">
+                          <select class="form-select" formControlName="type">
+                            <option value="0">select</option>
+                            <option value="Manufacturer">Manufacturer</option>
+                            <option value="PWC">Principal Warranty Corp</option>
+
+                          </select>
+                        </div>
+                      </div> -->
+                    </div>
+                    <!-- <div class="col-lg-4" *ngIf="ContractName!=''">
+                    <a href="{{uploadcontract}}" target="_blank" class="ms-3 " ><img src="assets/images/upload_icon.png"
+                        style="cursor: pointer;"> <span  class="upld_cnt">{{ContractName}}</span></a>
+                        <br>
+                  </div> -->
+                    <div class="col-lg-4" *ngIf="ContractName!='' && ContractName!='null'">
+                      <a href="{{uploadcontract}}" target="_blank" class="ms-3 "><img
+                          src="assets/images/upload_icon.png" style="cursor: pointer;">&nbsp;&nbsp; &nbsp;<span
+                          class="upld_cnt" *ngIf="ContractName!=undefined && ContractName!='null'">
+                          {{(ContractName.toString() | slice:0:30) + (ContractName.toString().length > 30 ? '...' : '')
+                          }}
+                        </span></a>
+                      <br>
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-3">
+                    <div class="col-lg-12">
+                      <!-- <h6 style="margin-bottom: 0;">Type of contract</h6> -->
+                      <span>Please
+                        select the company that is
+                        displayed on your contract. If the contract does not state “Principal Warranty Corp” then it is
+                        most likely a manufacturer contract. </span>
+                    </div>
+                    <!-- <div class="col-lg-4" style="width:29%">
+                      <div class="row align-items-center">
+                        <div class="col-sm-12 contract">
+                          <select class="form-select" formControlName="type">
+                            <option value="0">select</option>
+                            <option value="Manufacturer">Manufacturer</option>
+                            <option value="PWC">Principal Warranty Corp</option>
+
+                          </select>
+                        </div>
+                      </div>
+                    </div> -->
+                    <!-- <div class="col-lg-4" *ngIf="ContractName!=''">
+                    <a href="{{uploadcontract}}" target="_blank" class="ms-3 " ><img src="assets/images/upload_icon.png"
+                        style="cursor: pointer;"> <span  class="upld_cnt">{{ContractName}}</span></a>
+                        <br>
+                  </div> -->
+                    <!-- <div class="col-lg-4" *ngIf="ContractName!='' && ContractName!='null'">
+                      <a href="{{uploadcontract}}" target="_blank" class="ms-3 "><img
+                          src="assets/images/upload_icon.png" style="cursor: pointer;">&nbsp;&nbsp; &nbsp;<span
+                          class="upld_cnt" *ngIf="ContractName!=undefined && ContractName!='null'">
+                          {{(ContractName.toString() | slice:0:30) + (ContractName.toString().length > 30 ? '...' : '')
+                          }}
+                        </span></a>
+                      <br>
+                    </div> -->
+                  </div>
+                  <div class="row align-items-center">
+                    <!-- <div class="col-lg-4" style="white-space: nowrap;">
+                      <h6 style="margin-bottom: 0;">Type of contract</h6>
+                    </div> -->
+                    <div class="col-lg-6" style="width:29%">
+                      <div class="row align-items-center">
+                        <div class="col-sm-12 contract">
+                          <select class="form-select" formControlName="type">
+                            <option value="0">select</option>
+                            <option value="Manufacturer">Manufacturer</option>
+                            <option value="PWC">Principal Warranty Corp</option>
+
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="col-lg-4" *ngIf="ContractName!=''">
+                    <a href="{{uploadcontract}}" target="_blank" class="ms-3 " ><img src="assets/images/upload_icon.png"
+                        style="cursor: pointer;"> <span  class="upld_cnt">{{ContractName}}</span></a>
+                        <br>
+                  </div> -->
+                    <!-- <div class="col-lg-4" *ngIf="ContractName!='' && ContractName!='null'">
+                      <a href="{{uploadcontract}}" target="_blank" class="ms-3 "><img
+                          src="assets/images/upload_icon.png" style="cursor: pointer;">&nbsp;&nbsp; &nbsp;<span
+                          class="upld_cnt" *ngIf="ContractName!=undefined && ContractName!='null'">
+                          {{(ContractName.toString() | slice:0:30) + (ContractName.toString().length > 30 ? '...' : '')
+                          }}
+                        </span></a>
+                      <br>
+                    </div> -->
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-lg-6">
+                      <input type="checkbox" id="symbols6" class="custom-check-box"
+                        formControlName="vehicleServiceContract">
+                      <label for="symbols6"></label>
+                      <span>Vehicle Service Contract</span>
+                    </div>
+                    <div class="col-lg-6">
+                      <input type="checkbox" id="symbols7" class="custom-check-box" formControlName="gap">
+                      <label for="symbols7"></label>
+                      <span>GAP</span>
+
+                    </div>
+                    <div class="col-lg-12 d-flex align-items-center">
+                      <input type="checkbox" id="symbols8" class="custom-check-box" formControlName="ancillary"
+                        disabled>
+                      <label for="symbols8"></label>
+                      <span>Ancillary <i>(specify product type)</i></span>
+                      <div class="col-sm-6 ms-auto">
+                        <input type="text" class="form-control" formControlName="ancillaryType">
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="req_bg">
+                <h6>Cancellation refund details</h6>
+                <p>Please make refund check payable to: <i>(Lien satisfied letter from the lienholder or copy of the
+                    title is required as proof of payoff)</i>
+                </p>
+                <form [formGroup]="RefundDet">
+
+                  <div class="row align-items-center mb-2">
+                    <label class=" col-sm-2 pe-0">Contract Owner:</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" formControlName="contractOwner">
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2">
+                    <label class=" col-sm-2 pe-0">Address:</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" formControlName="address">
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2">
+                    <label class=" col-sm-2 pe-0">City:</label>
+                    <div style="width: 22%;">
+                      <input type="text" class="form-control" formControlName="city">
+                    </div>
+                    <label class="pe-0" style="width: fit-content;">State:</label>
+                    <div style="width:26%">
+                      <div class="row align-items-center">
+                        <div class="col-sm-12 contract">
+                          <!-- <select class="form-select " formControlName="state" disabled>
+                            <option value="0">select</option>
+
+                            <option *ngFor="let s of states" [value]="s.ST_CODE">{{s.ST_NAME}}
+                        </select> -->
+                          <input type="text" class="form-control" formControlName="state">
+
+                        </div>
+                      </div>
+                    </div>
+                    <label class="pe-0" style="width: fit-content;">Zip:</label>
+                    <div style="width:19%">
+                      <input type="text" class="form-control" formControlName="zip" maxlength="5">
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2">
+                    <div class="col-12">
+                      <span style="padding-right: 20px;">Do you still have an outstanding loan</span>
+                      <div class="radio-item">
+                        <input type="radio" id="ritema" name="outstandingLoan" value="Y"
+                          formControlName="outstandingLoan">
+                        <label for="ritema">Yes</label>
+                      </div>
+
+                      <div class="radio-item">
+                        <input type="radio" id="ritemb" name="outstandingLoan" value="N"
+                          formControlName="outstandingLoan">
+                        <label for="ritemb">No</label>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="row align-items-center mb-2">
+                    <div class="col-12" *ngIf="RefundDet.value.outstandingLoan === 'Y'">
+                      <span>Payment will go back to the bank.</span>
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2" style="pointer-events: none;display: none;">
+                    <div class="col-12" *ngIf="RefundDet.value.outstandingLoan === 'Y'">
+                      <div class="radio-item">
+                        <input type="radio" id="loanorleasef" name="loanleasedet" value="F"
+                          formControlName="loanleasedet">
+                        <label for="loanorleasef">Financial Institution</label>
+                      </div>
+
+                      <div class="radio-item">
+                        <input type="radio" id="loanorleasea" name="loanleasedet" value="A"
+                          formControlName="loanleasedet">
+                        <label for="loanorleasea">Account Number </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2" *ngIf="RefundDet.value.outstandingLoan === 'Y'"
+                    style="pointer-events: none;">
+                    <label class=" col-sm-3 pe-0">Financial Institution:</label>
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" formControlName="finame" maxlength="49">
+                    </div>
+                    <label class=" col-sm-3 pe-0 ">Account Number:</label>
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" formControlName="acnumber"
+                        (keypress)="keyPressAlphaNumeric($event)" maxlength="15">
+                    </div>
+                  </div>
+                  <p style="display: none;">Request Electronic Delivery (ACH) &nbsp; <input type="checkbox"
+                      id="symbols9" formControlName="ach" class="custom-check-box" disabled><label
+                      for="symbols9"></label></p>
+                  <div class="row align-items-center mb-2" *ngIf="CollectInfo=='Y'" style="display: none;">
+                    <label class=" pe-0" style="width: fit-content;">Bank Name:</label>
+                    <div style="width: 20%;">
+                      <input type="text" class="form-control" formControlName="bankName">
+                    </div>
+                    <label class="pe-0" style="width: fit-content;padding-left: 2px;">Routing #:</label>
+                    <div style="width:20%">
+                      <input type="text" class="form-control" formControlName="routing" minlength="10" maxlength="10">
+
+                    </div>
+                    <label class="pe-0" style="width: fit-content;">Acct. #:</label>
+                    <div style="width:18%">
+                      <input type="text" class="form-control" formControlName="acct">
+                    </div>
+                  </div>
+
+
+                  <div class="row align-items-center mb-2">
+                    <div *ngIf="PaymentResponse == 'A'" style="pointer-events: none;">
+                      <input type="checkbox" id="symbols12" class="custom-check-box" formControlName="reqExpedited"
+                        checked>
+                      <label for="symbols12"></label>
+                      <span>Request Expedited Processing (7-10 days) $150 processing fee charged via credit card</span>
+                    </div>
+                    <div *ngIf="PaymentResponse != 'A'" style="pointer-events: none;">
+                      <input type="checkbox" id="symbols12" class="custom-check-box" formControlName="reqExpedited">
+                      <label for="symbols12"></label>
+                      <span>Request Expedited Processing (7-10 days) $150 processing fee charged via credit card</span>
+                    </div>
+                    <div class="col-6" *ngIf="ContractType.value.gap != 'Y'" style="display: none;">
+                      <input type="checkbox" id="symbols10" class="custom-check-box" formControlName="approveExpedited">
+                      <label for="symbols10"></label>
+                      <span>I approve the Expedited Processing Fee</span>
+                    </div>
+                    <div class="col-6">
+                      <input type="checkbox" id="symbols11" class="custom-check-box" checked
+                        formControlName="agreeCancellationTerms">
+                      <label for="symbols11"></label>
+                      <span>I agree to the Terms of Cancellation</span>
+                    </div>
+                  </div>
+                  <div class="row align-items-center mb-2" style="pointer-events: none;">
+                    <label class=" col-sm-6 pe-0">Customer Signature: <input type="checkbox"
+                        formControlName="customerSignchk"></label>
+
+                  </div>
+
+                  <div class="row align-items-center mb-2">
+                    <div class="col-sm-11">
+                      <span>By selecting the checkbox, I certify that this is my digital signature and I agree to the
+                        terms and
+                        conditions of the service cancellation</span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <br><br>
+            </div>
+            <div class="col-lg-6">
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="modal fade bd-example-modal-xl" id="editModal" tabindex="-1" aria-labelledby="contModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <b style="font-size: 16px;"> Reference ID &nbsp;&nbsp;{{requestId}} </b>
+        <input type="submit" value="Update" class="process" (click)="update()"
+          *ngIf="vieworedit=='E'">&nbsp;&nbsp;&nbsp;
+        <span class="close" data-bs-dismiss="modal" id="close" aria-label="Close"
+          style="font-size: 18px;cursor: pointer;">X </span>
+        <span class="close" data-bs-dismiss="modal" [hidden]="true" id="close" aria-label="Close"
+          style="font-size: 18px;cursor: pointer;">X </span>
+
+      </div>
+      <div class="modal-body" style="height: 555px ;overflow: auto !important;">
+        <div class="col-lg-12">
+          <div class="row justify-content-center">
+            <div class="cancel_bg">
+              <div class="content_width">
+                <div class="row mt-4">
+                  <div class="col-lg-6">
+                    <div class="req_bg">
+                      <h6>Change Status</h6>
+                      <div class="row align-items-center mb-3"
+                        [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                        <label class=" col-sm-3 pe-0">Status:</label>
+                        <div class="col-sm-4 ">
+                          <select class="form-select" [(ngModel)]="editstatus" (change)="updateUserStatus()">
+                            <option value="" disabled>Select</option>
+                            <option value="Open">Open </option>
+                            <option value="SP">Sent for Processing</option>
+                            <option value="Closed" *ngIf="ContractType.value.type !='PWC'">Closed</option>
+
+                            <option value="PP"
+                              *ngIf="ContractType.value.type =='PWC' && editstatus !='Closed' &&  editstatus !='A'">
+                              Payment Processed</option>
+                            <option value="A" *ngIf="editstatus =='A'">Deleted </option>
+                          </select>
+
+                        </div>
+                      </div>
+                      <div class="row align-items-center mb-2" *ngIf="statusType=='SP' && vieworedit=='E'">
+                        <label class=" col-sm-3 pe-0">Upload Check:</label>
+                        <div class="col-sm-1" [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                          <input type="file" #filecheque style="display:none" (change)="uploadCheque($event)">
+                          <a href="javascript:void(0);" class="ms-3" (click)="filecheque.click()"><img
+                              src="assets/images/upload_icon.png" style="cursor: pointer;"></a>
+                        </div>
+                        <div class="col-sm-4" style="padding-left: 0px;"
+                          *ngIf="chequeName!=null && chequeName!='null' && chequeName!=undefined">
+                          <a class="ms-3"><span style="cursor: pointer;" *ngIf="chequeName!=undefined">
+                              {{(chequeName.toString() | slice:0:15) + (chequeName.toString().length > 15 ? '...' : '')
+                              }}
+                            </span></a>
+                        </div>
+                        <div class="col-sm-4" style="padding-left: 0px;" *ngIf="chequeName=='null' || chequeName==null"
+                          [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                          <a href="javascript:void(0);" class="ms-3" (click)="filecheque.click()"><span
+                              style="cursor: pointer;">
+                              Upload Check
+                            </span></a>
+                        </div>
+
+                      </div>
+                      <div class="row align-items-center mb-3"
+                        [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                        <label class=" col-sm-3 pe-0">Notes:</label>
+                        <div class="col-sm-4 ">
+                          <textarea class="form-control" style="font-size:0.7rem" [(ngModel)]="notes"></textarea>
+                        </div>
+                      </div>
+                      <div class="row align-items-center mb-2"
+                        *ngIf="vieworedit!='E' && chequeName!='null' && chequeName!=null">
+                        <label class=" col-sm-3 pe-0">Upload Check:</label>
+                        <div class="col-sm-1" [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+
+                          <a href="javascript:void(0);" class="ms-3"><img src="assets/images/upload_icon.png"
+                              style="cursor: pointer;"></a>
+                        </div>
+                        <div class="col-sm-4 disableds" style="padding-left: 0px;"
+                          *ngIf="chequeName!='null' && chequeName!=null">
+                          <a href="{{cheque}}" target="_blank" class="ms-3"><span style="cursor: pointer;"
+                              *ngIf="chequeName!=undefined">
+                              {{(chequeName.toString() | slice:0:15) + (chequeName.toString().length > 15 ? '...' : '')
+                              }}
+                            </span></a>
+                        </div>
+
+
+                      </div>
+                    </div>
+                    <div class="req_bg" [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                      <h6>Vehicle details</h6>
+                      <form [formGroup]="VehicleDet">
+                        <div class="row align-items-center mb-2">
+                          <label class=" col-sm-3 pe-0">Customer First Name:</label>
+                          <div class="col-sm-4">
+                            <span class="text-danger" *ngIf="VehicleDet.value.firstName.length <=0">*</span>
+
+                            <input type="text" class="form-control" formControlName="firstName" maxlength="49"
+                              style="text-transform: uppercase;">
+                          </div>
+                          <label class="col-sm-2 pe-0">Last Name:</label>
+                          <div class="col-sm-3">
+                            <span class="text-danger" *ngIf="VehicleDet.value.lastName.length <=0">*</span>
+
+                            <input type="text" class="form-control" formControlName="lastName" maxlength="49"
+                              style="text-transform: uppercase;">
+                          </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                          <label class=" col-sm-3 pe-0">Email:</label>
+                          <div class="col-sm-4">
+                            <span class="text-danger" *ngIf="VehicleDet.value.emailid.length <=0">*</span>
+
+                            <input type="text" class="form-control" formControlName="emailid"
+                              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}$" maxlength="99">
+                            <span *ngIf="!VehicleDet.controls.emailid.valid && (VehicleDet.controls.emailid.touched)">
+                              <span *ngIf="VehicleDet.controls.emailid.errors.pattern"
+                                style="color:#dc3545;white-space: nowrap ;">Please Enter Valid
+                                Format</span> </span>
+                          </div>
+                          <label class=" col-sm-2 pe-0">Phone #:</label>
+
+                          <div class="col-sm-3">
+                            <span class="text-danger" *ngIf="VehicleDet.value.phone.length <=0">*</span>
+
+                            <input type="text" class="form-control" formControlName="phone" pattern="[0-9+( )-]{14}$"
+                              [textMask]="{mask: phoneFormat}">
+                            <span *ngIf="!VehicleDet.controls.phone.valid && (VehicleDet.controls.phone.touched )">
+                              <span *ngIf="VehicleDet.controls.phone.errors.pattern"
+                                style="color:#dc3545;white-space: nowrap ;">Invalid Format</span> </span>
+                          </div>
+
+                        </div>
+
+                        <div class="row align-items-center mb-2">
+                          <label class=" col-sm-3 pe-0">Preferred method of contact:</label>
+                          <div class="col-sm-4">
+                            <div class="radio-item">
+                              <input type="radio" id="mtconp1" name="mtdofcontact" value="p"
+                                formControlName="mtdofcontact">
+                              <label for="mtconp1">Phone</label>
+                            </div>
+
+                            <div class="radio-item">
+                              <input type="radio" id="mtcone1" name="mtdofcontact" value="e"
+                                formControlName="mtdofcontact">
+                              <label for="mtcone1">Email</label>
+                            </div>
+
+                          </div>
+
+                        </div>
+                        <div class="row align-items-center mb-2" style="pointer-events: none;">
+                          <label class=" col-sm-3 pe-0 mb-0"></label>
+                          <div class="col-sm-8 mb-1">
+                            <!-- <div class="radio-item"> -->
+
+                            <!-- <input type="radio" id="exp" name="exportimeframe" value="Y"
+                                formControlName="exportimeframe" (change)="reqProcessing($event)"> -->
+                            <label>Would you like to request expedited processing of this refund? Expedited
+                              refunds
+                              receive quicker processing based on the timeline selected</label>
+
+                            <!-- <div>
+                              <div class="radio-item">
+                                <input type="radio" id="exp1" name="exportimeframe" value="150"
+                                  formControlName="exportimeframe" (change)="reqProcessing($event)">
+                                <label for="exp1">$150 (5-7 days)</label>
+                              </div>
+                              <div class="radio-item">
+                                <input type="radio" id="exp2" name="exportimeframe" value="49"
+                                  formControlName="exportimeframe" (change)="reqProcessing($event)">
+                                <label for="exp2">$49 (1-2 weeks)</label>
+                              </div>
+                              <div class="radio-item">
+                                <input type="radio" id="exp3" name="exportimeframe" value="0"
+                                  formControlName="exportimeframe">
+                                <label for="exp3">$0 (6-8 weeks)</label>
+                              </div>
+                            </div> -->
+                            <!-- </div> -->
+
+                            <!-- <div class="radio-item">
+                              <input type="radio" id="time" name="exportimeframe" value="T"
+                                formControlName="exportimeframe">
+                              <label for="time">Regular processing (4-6 weeks)</label>
+                            </div> -->
+
+                          </div>
+
+                        </div>
+                        <div class="row align-items-center mb-2" style="pointer-events: none;">
+                          <label class=" col-sm-3 pe-0 mb-0">Processing speed:</label>
+                          <div class="col-sm-8 mb-1">
+                            <!-- <div class="radio-item"> -->
+
+                            <!-- <input type="radio" id="exp" name="exportimeframe" value="Y"
+                                formControlName="exportimeframe" (change)="reqProcessing($event)"> -->
+                            <!-- <label>Would you like to request expedited processing of this refund? Expedited
+                              refunds
+                              receive quicker processing based on the timeline selected</label> -->
+
+                            <div>
+                              <div class="radio-item">
+                                <input type="radio" id="exp1" name="exportimeframe" value="150"
+                                  formControlName="exportimeframe" (change)="reqProcessing($event)">
+                                <label for="exp1">$150 (5-7 days)</label>
+                              </div>
+                              <div class="radio-item">
+                                <input type="radio" id="exp2" name="exportimeframe" value="79"
+                                  formControlName="exportimeframe" (change)="reqProcessing($event)">
+                                <label for="exp2">$79 (1-2 weeks)</label>
+                              </div>
+                              <div class="radio-item">
+                                <input type="radio" id="exp3" name="exportimeframe" value="0"
+                                  formControlName="exportimeframe">
+                                <label for="exp3">$0 (6-8 weeks)</label>
+                              </div>
+                            </div>
+                            <!-- </div> -->
+
+                            <!-- <div class="radio-item">
+                              <input type="radio" id="time" name="exportimeframe" value="T"
+                                formControlName="exportimeframe">
+                              <label for="time">Regular processing (4-6 weeks)</label>
+                            </div> -->
+
+                          </div>
+
+                        </div>
+                        <div class="row align-items-center mb-2">
+                          <label class=" col-sm-3 pe-0">Selling Dealership:</label>
+                          <div class="col-sm-9">
+                            <select class="form-select " formControlName="sellingDealership"
+                              (change)="updateEmail($event)">
+                              <option value="" disabled>&nbsp;&nbsp;SELECT</option>
+                              <!-- <option *ngFor="let s of stores" [value]="s.CFGM_ID" >{{s.CFGM_STORENAME}} -->
+                              <option *ngFor="let s of stores" [value]="s.AS_ID">{{s.AS_DEALERNAME}}
+                            </select>
+                            <!-- <input type="text" class="form-control" formControlName="sellingDealership" > -->
+
+                          </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                          <label class=" col-sm-3 pe-0">Agreement #/Contract #:
+                            <!-- <span style="float:right"><img
+                                src="../../assets/images/info_icon.png"></span> -->
+                          </label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" formControlName="contract"
+                              (keypress)="keyPressAlphaNumeric($event)" maxlength="20">
+                            <!-- <div class="col-sm-5"
+                            *ngIf="!VehicleDet.controls.contract.valid && (VehicleDet.controls.contract.touched )">
+                            <span *ngIf="VehicleDet.controls.contract.errors.minlength" style="color:#dc3545;white-space: nowrap ;">Contract # must be 12 Digits </span>
+                          </div> -->
+                          </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                          <label class=" col-sm-3 pe-0">VIN:</label>
+                          <div class="col-sm-4">
+                            <span class="text-danger" *ngIf="VehicleDet.value.vin.length <=0">*</span>
+
+                            <input type="text" class="form-control" formControlName="vin" maxlength="17" minlength="17"
+                              (keypress)="keyPressAlphaNumeric($event)">
+                            <div class="col-sm-4"
+                              *ngIf="!VehicleDet.controls.vin.valid && (VehicleDet.controls.vin.touched)">
+                              <span *ngIf="VehicleDet.controls.vin.errors.minlength"
+                                style="color:#dc3545 ;white-space: nowrap;">Please Enter Valid VIN </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row align-items-center mb-2" style="display: none;">
+                          <label class=" col-sm-3">Vehicle Year:</label>
+                          <div class="col-sm-2 sml">
+                            <select class="form-select " formControlName="year" (change)="getmake()">
+                              <option disabled value="0">SELECT</option>
+                              <option *ngFor="let vy of vehicleyear" [value]="vy.y_modelyear">{{vy.y_modelyear}}
+                            </select>
+                            <!-- <input type="text" class="form-control" formControlName="year" > -->
+
+                          </div>
+                          <label class=" col-sm-1">Make:</label>
+                          <div class="col-sm-2"
+                            [ngClass]="{ active: vehiclemake.length >0, deactive: vehiclemake.length ==0 }">
+                            <select class="form-select " formControlName="make" (change)="getmodel()">
+                              <option disabled value="0">SELECT</option>
+                              <option *ngFor="let vm of vehiclemake" [value]="vm.D_DivisionId">{{vm.D_DivisionName}}
+                            </select>
+                            <!-- <input type="text" class="form-control" formControlName="make" > -->
+
+                          </div>
+                          <label class=" col-sm-1">Model:</label>
+                          <div class="col-sm-3 sml"
+                            [ngClass]="{ active: vehiclemodel.length >0, deactive: vehiclemodel.length ==0 }">
+                            <select class="form-select " formControlName="model">
+                              <option disabled value="0">SELECT</option>
+                              <option *ngFor="let vmd of vehiclemodel" [value]="vmd.m_modelid">{{vmd.m_modelname}}
+
+                            </select>
+                            <!-- <input type="text" class="form-control" formControlName="model" > -->
+
+                          </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                          <label class=" col-sm-3 pe-0">Date of Contract:</label>
+                          <div class="col-sm-4">
+                            <input type="date" name="contract" class="form-control" formControlName='dateOfContract'
+                              [(ngModel)]="dtofcntrct" class=datepicker>
+                          </div>
+
+                        </div>
+                        <div class="row align-items-center mb-2">
+
+                          <label class=" col-sm-3 pe-0">Date of Cancellation:</label>
+                          <div class="col-sm-4 sml">
+                            <input type="date" name="cancellation" class="form-control"
+                              formControlName='dateOfCancellation' [(ngModel)]="dtofcnclton" class="datepicker">
+                          </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                          <label class=" col-sm-3 pe-0">Mileage at time of cancellation:</label>
+                          <div class="col-sm-4">
+                            <input type="text" class="form-control" maxlength="6" formControlName="mileage"
+                              (keypress)="keyPressNumbers($event)">
+                          </div>
+
+                        </div>
+                      </form>
+
+                    </div>
+                    <div class="req_bg">
+                      <form [formGroup]="ReasonsForCancel">
+
+                        <div class="row align-items-center">
+
+                          <div class="col-lg-7 col-sm-7">
+                            <h6>Reason for cancellation</h6>
+                          </div>
+                          <div class="col-lg-1 col-sm-1"
+                            [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                            <input type="file" #file style="display:none" (change)="uploadFile($event)"
+                              formControlName="upload">
+                            <a href="javascript:void(0);" class="ms-3" (click)="file.click()"><img
+                                src="assets/images/upload_icon.png" style="cursor: pointer;"></a>
+                          </div>
+                          <div class="col-lg-4 col-sm-4" *ngIf="reasonName!=''" style="padding-left: 0px;">
+                            <a href='{{uploadreason}}' target="_blank" class="ms-3"><span style="cursor: pointer;"
+                                *ngIf="reasonName!=undefined">
+                                {{(reasonName.toString() | slice:0:15) + (reasonName.toString().length > 15 ? '...' :
+                                '') }}</span></a>
+                          </div>
+
+
+                        </div>
+                      </form>
+
+                      <form [formGroup]="ReasonsForCancel"
+                        [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                        <div>
+                          <label for="symbols"></label>
+                          <span>Select why you are canceling the contract and then upload the required document by
+                            selecting
+                            ‘Upload document’</span>
+                        </div>
+                        <div>
+                          <input type="checkbox" id="symbolse" class="custom-check-box"
+                            formControlName="customerRequest">
+                          <label for="symbolse"></label>
+                          <span>No longer want product <i>(secure odometer reading required)</i></span>
+                        </div>
+                        <!-- <div>
+                          <input type="checkbox" id="symbols" class="custom-check-box" formControlName="customerRequest"  >
+                          <label for="symbols"></label>
+                          <span>No longer want product  <i>(secure odometer reading required)</i></span>
+                        </div> -->
+                        <div>
+                          <input type="checkbox" id="symbolsde" class="custom-check-box" formControlName="SalesDeal">
+                          <label for="symbolsde"></label>
+                          <span>Sales deal voided <i>(secure odometer reading required)</i></span>
+                        </div>
+                        <div>
+                          <input type="checkbox" id="symbols1e" class="custom-check-box" formControlName="vehicleSold">
+                          <label for="symbols1e"></label>
+                          <span>Vehicle Sold / Traded <i>(trade-in / sale documentation required)</i></span>
+
+                        </div>
+                        <div>
+                          <input type="checkbox" id="symbols2e" class="custom-check-box" formControlName="repossession">
+                          <label for="symbols2e"></label>
+                          <span> Repossession <i> (supporting documentation required)</i></span>
+                        </div>
+                        <div>
+                          <input type="checkbox" id="symbols3e" class="custom-check-box"
+                            formControlName="satisfiedLien">
+                          <label for="symbols3e"></label>
+                          <span> Satisfied Lien/Vehicle Paid Off <i> (proof of payoff documentation required)</i></span>
+                        </div>
+                        <div>
+                          <input type="checkbox" id="symbols4e" class="custom-check-box"
+                            formControlName="totalLossofVehicle">
+                          <label for="symbols4e"></label>
+                          <span> Total Loss of Vehicle <i> (total loss documentation required)</i></span>
+                        </div>
+                        <div class="row">
+                          <div class=" col-sm-6"><input type="checkbox" id="symbols5e" class="custom-check-box"
+                              formControlName="other" (change)="Others($event)">
+                            <label for="symbols5e"></label>
+                            <span> Other <i> (please specify reason) </i></span>
+                          </div>
+                          <div class=" col-sm-6" *ngIf="vieworedit=='E'"
+                            [ngClass]="{ active:ReasonsForCancel.value.other === true , deactive: ReasonsForCancel.value.other === false }">
+                            <input id="otherText" type="text" class="form-control" formControlName="otheretext">
+                          </div>
+                          <div class=" col-sm-6" *ngIf="vieworedit!='E'"> <input id="otherText" type="text"
+                              class="form-control" formControlName="otheretext" disabled> </div>
+                        </div>
+                        <div>
+                          <input type="checkbox" id="symbols13e" class="custom-check-box"
+                            formControlName="dealercancellation" (change)="dealercancel($event)">
+                          <label for="symbols13e"></label>
+                          <span> Dealer Cancellation </span>
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="req_bg">
+                      <form [formGroup]="ContractType">
+                        <div class="row align-items-center mb-3">
+                          <div class="col-lg-4" style="white-space: nowrap;">
+                            <h6 style="margin-bottom: 0;">Type of contract</h6>
+                          </div>
+                          <div class="col-lg-4" style="width:29%"
+                            [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                            <!-- <div class="row align-items-center">
+                              <div class="col-sm-12 contract">
+                                <select class="form-select" formControlName="type">
+                                  <option value="0">select</option>
+                                  <option value="Manufacturer">Manufacturer</option>
+                                  <option value="PWC">Principal Warranty Corp</option>
+
+                                </select>
+                              </div>
+                            </div> -->
+                          </div>
+                          <div class="col-lg-4">
+                            <input type="file" #uploadfiles style="display:none" formControlName="uploadContract"
+                              (change)="uploadContract($event)">
+                            <img src="assets/images/upload_icon.png" (click)="uploadfiles.click()"
+                              style="cursor: pointer;"
+                              [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                            <a class="ms-3 " href="{{uploadcontract}}" target="_blank"> &nbsp;<span class="upld_cnt"
+                                *ngIf="ContractName!=undefined && ContractName!='null'">
+                                {{(ContractName.toString() | slice:0:10) + (ContractName.toString().length > 10 ? '...'
+                                : '') }}
+                              </span>
+                            </a>
+                            <span style="font-size: 6px;" *ngIf="ContractName=='' || ContractName=='null'">
+                              upload contract (optional)
+                            </span>
+                            <br>
+                          </div>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                          <div class="col-lg-12">
+                            <!-- <h6 style="margin-bottom: 0;">Type of contract</h6> -->
+                            <span>Please
+                              select the company that is
+                              displayed on your contract. If the contract does not state “Principal Warranty Corp” then
+                              it is most likely a manufacturer contract.</span>
+                          </div>
+                          <!-- <div class="col-lg-4" style="width:29%"
+                            [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                            <div class="row align-items-center">
+                              <div class="col-sm-12 contract">
+                                <select class="form-select" formControlName="type">
+                                  <option value="0">select</option>
+                                  <option value="Manufacturer">Manufacturer</option>
+                                  <option value="PWC">Principal Warranty Corp</option>
+
+                                </select>
+                              </div>
+                            </div>
+                          </div> -->
+                          <!-- <div class="col-lg-4">
+                            <input type="file" #uploadfiles style="display:none" formControlName="uploadContract"
+                              (change)="uploadContract($event)">
+                            <img src="assets/images/upload_icon.png" (click)="uploadfiles.click()"
+                              style="cursor: pointer;"
+                              [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                            <a class="ms-3 " href="{{uploadcontract}}" target="_blank"> &nbsp;<span class="upld_cnt"
+                                *ngIf="ContractName!=undefined && ContractName!='null'">
+                                {{(ContractName.toString() | slice:0:10) + (ContractName.toString().length > 10 ? '...'
+                                : '') }}
+                              </span>
+                            </a>
+                            <span style="font-size: 6px;" *ngIf="ContractName=='' || ContractName=='null'">
+                              upload contract (optional)
+                            </span>
+                            <br>
+                          </div> -->
+                        </div>
+                        <div class="row align-items-center mb-3">
+
+                          <div class="col-lg-7" style="width:29%"
+                            [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                            <div class="row align-items-center">
+                              <div class="col-sm-12 contract">
+                                <select class="form-select" formControlName="type">
+                                  <option value="0">select</option>
+                                  <option value="Manufacturer">Manufacturer</option>
+                                  <option value="PWC">Principal Warranty Corp</option>
+
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- <div class="col-lg-4">
+                            <input type="file" #uploadfiles style="display:none" formControlName="uploadContract"
+                              (change)="uploadContract($event)">
+                            <img src="assets/images/upload_icon.png" (click)="uploadfiles.click()"
+                              style="cursor: pointer;"
+                              [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                            <a class="ms-3 " href="{{uploadcontract}}" target="_blank"> &nbsp;<span class="upld_cnt"
+                                *ngIf="ContractName!=undefined && ContractName!='null'">
+                                {{(ContractName.toString() | slice:0:10) + (ContractName.toString().length > 10 ? '...'
+                                : '') }}
+                              </span>
+                            </a>
+                            <span style="font-size: 6px;" *ngIf="ContractName=='' || ContractName=='null'">
+                              upload contract (optional)
+                            </span>
+                            <br>
+                          </div> -->
+                        </div>
+                        <div class="row mt-3" [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                          <div class="col-lg-6">
+                            <input type="checkbox" id="symbols6e" class="custom-check-box"
+                              formControlName="vehicleServiceContract">
+                            <label for="symbols6e"></label>
+                            <span>Vehicle Service Contract</span>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="checkbox" id="symbols7e" class="custom-check-box" formControlName="gap"
+                              (change)="gap($event)">
+                            <label for="symbols7e"></label>
+                            <span>GAP</span>
+
+                          </div>
+                          <div class="col-lg-12 d-flex align-items-center">
+                            <input type="checkbox" id="symbols8e" class="custom-check-box" formControlName="ancillary"
+                              (click)="Ancillary($event)">
+                            <label for="symbols8e"></label>
+                            <span>Ancillary <i>(specify product type)</i></span>
+                            <div class="col-sm-6 ms-auto" *ngIf="vieworedit=='E' "
+                              [ngClass]="{ active: ContractType.value.ancillary === true, deactive: ContractType.value.ancillary === false }">
+                              <input type="text" class="form-control" formControlName="ancillaryType">
+                            </div>
+                            <div class="col-sm-6 ms-auto" *ngIf="vieworedit!='E' ">
+                              <input type="text" class="form-control" formControlName="ancillaryType" disabled>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="req_bg" [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }">
+                      <h6>Cancellation refund details</h6>
+                      <p>Please make refund check payable to: <i>(Lien satisfied letter from the lienholder or copy of
+                          the title is required as proof of payoff)</i>
+                      </p>
+                      <form [formGroup]="RefundDet">
+
+                        <div class="row align-items-center mb-2">
+                          <label class=" col-sm-2 pe-0">Contract Owner:</label>
+                          <div class="col-sm-10"
+                            [ngClass]="{ active: refundcontract != true, disableds: refundcontract == true }">
+                            <input type="text" class="form-control" formControlName="contractOwner" maxlength="499">
+                          </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                          <label class=" col-sm-2 pe-0">Address:</label>
+                          <div class="col-sm-10"
+                            [ngClass]="{ active: refundcontract != true, disableds: refundcontract == true }">
+                            <input type="text" class="form-control" formControlName="address" maxlength="499">
+                          </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                          <label class=" col-sm-2 pe-0">City:</label>
+                          <div style="width: 22%;"
+                            [ngClass]="{ active: refundcontract != true, disableds: refundcontract == true }">
+                            <input type="text" class="form-control" formControlName="city" maxlength="49">
+                          </div>
+                          <label class="pe-0" style="width: fit-content;">State:</label>
+                          <div style="width:26%">
+                            <div class="row align-items-center">
+                              <div class="col-sm-12 contract"
+                                [ngClass]="{ active: refundcontract != true, disableds: refundcontract == true }">
+                                <select class="form-select " formControlName="state">
+                                  <option value="">select</option>
+
+                                  <option *ngFor="let s of states" [value]="s.ST_CODE">{{s.ST_NAME}}
+                                </select>
+                                <!-- <input type="text" class="form-control" formControlName="state" > -->
+
+                              </div>
+                            </div>
+                          </div>
+                          <label class="pe-0" style="width: fit-content;">Zip:</label>
+                          <div style="width:19%"
+                            [ngClass]="{ active: refundcontract != true, disableds: refundcontract == true }">
+                            <input type="text" class="form-control" formControlName="zip" maxlength="5"
+                              (keypress)="keyPressNumbers($event)">
+                          </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                          <div class="col-12">
+                            <span style="padding-right: 20px;">Do you still have an outstanding loan or lease?</span>
+                            <div class="radio-item"
+                              [ngClass]="{ active: refundcontract != true, disableds: refundcontract == true }">
+                              <input type="radio" id="ritemae" name="outstandingLoan" value="Y"
+                                formControlName="outstandingLoan" (change)="changeachvalues()">
+                              <label for="ritemae">Yes</label>
+                            </div>
+
+                            <div class="radio-item"
+                              [ngClass]="{ active: refundcontract != true, disableds: refundcontract == true }">
+                              <input type="radio" id="ritembe" name="outstandingLoan" value="N"
+                                formControlName="outstandingLoan" (change)="changeachvalues()">
+                              <label for="ritembe">No</label>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="row align-items-center mb-2">
+                          <div class="col-12" *ngIf="RefundDet.value.outstandingLoan === 'Y'">
+                            <span>Payment will go back to the bank. </span>
+                          </div>
+                        </div>
+                        <!-- <div class="row align-items-center mb-2"  [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }" >
+                          <div class="col-12" *ngIf="RefundDet.value.outstandingLoan === 'Y'">
+                            <div class="radio-item">
+                              <input type="radio" id="loanorleasefi" name="loanleasedet" value="F"  formControlName="loanleasedet" >
+                              <label for="loanorleasefi">Financial Institution</label>
+                            </div>
+
+                            <div class="radio-item">
+                              <input type="radio" id="loanorleasean" name="loanleasedet" value="A"  formControlName="loanleasedet" >
+                              <label for="loanorleasean">Account Number </label>
+                            </div>
+                          </div>
+                        </div> -->
+                        <div class="row align-items-center mb-2"
+                          [ngClass]="{ enabled: vieworedit=='E', disableds: vieworedit=='V' }"
+                          *ngIf="RefundDet.value.outstandingLoan === 'Y'">
+                          <label class=" col-sm-3 pe-0">Financial Institution:</label>
+                          <div class="col-sm-3"
+                            [ngClass]="{ active: refundcontract != true, disableds: refundcontract == true }">
+                            <input type="text" class="form-control" formControlName="finame" maxlength="49">
+                          </div>
+                          <label class=" col-sm-3 pe-0 ">Account Number:</label>
+                          <div class="col-sm-3"
+                            [ngClass]="{ active: refundcontract != true, disableds: refundcontract == true }">
+                            <input type="text" class="form-control" formControlName="acnumber"
+                              (keypress)="keyPressAlphaNumeric($event)" maxlength="15">
+                          </div>
+                        </div>
+                        <div *ngIf="RefundDet.value.outstandingLoan != 'Y' " style="display: none;">
+                          <p *ngIf="ContractType.value.gap === 'N' || ContractType.value.gap === false ">Request
+                            Electronic Delivery (ACH) &nbsp;<span
+                              [ngClass]="{ active: RefundDet.value.outstandingLoan === 'N', deactive: RefundDet.value.outstandingLoan != 'N' }">
+                              <input type="checkbox" id="symbols9e" formControlName="ach"
+                                class="custom-check-box"><label for="symbols9e"></label></span></p>
+                        </div>
+                        <div *ngIf="RefundDet.value.outstandingLoan === 'N'" style="display: none;">
+                          <div class="row align-items-center mb-2"
+                            *ngIf="CollectInfo=='Y' || RefundDet.value.ach === true ">
+                            <label class=" pe-0" style="width: fit-content;"
+                              *ngIf="ContractType.value.gap === false">Bank Name:</label>
+                            <div style="width: 20%;" *ngIf="ContractType.value.gap === false">
+                              <input type="text" class="form-control" formControlName="bankName">
+                            </div>
+                            <label class="pe-0" style="width: fit-content;padding-left: 2px;"
+                              *ngIf="ContractType.value.gap === false">Routing #:</label>
+                            <div style="width:20%" *ngIf="ContractType.value.gap === false">
+                              <input type="text" class="form-control" formControlName="routing" minlength="10"
+                                maxlength="10" (keypress)="keyPressNumbers($event)">
+
+                            </div>
+                            <label class="pe-0" style="width: fit-content;"
+                              *ngIf="ContractType.value.gap === false">Acct. #:</label>
+                            <div style="width:18%" *ngIf="ContractType.value.gap === false">
+                              <input type="text" class="form-control" formControlName="acct"
+                                (keypress)="keyPressAlphaNumeric($event)" maxlength="15">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row align-items-center mb-2">
+
+                          <!-- <div class="col-12" *ngIf="PaymentResponse == 'A'" style="pointer-events: none;">
+
+                            <input type="checkbox" id="symbols12e" class="custom-check-box"
+                              formControlName="reqExpedited" (change)="reqProcessing($event)" checked>
+                            <label for="symbols12e"></label>
+                            <span>Request Expedited Processing (7-10 days) $150 processing fee charged via credit
+                              card</span>
+
+                          </div> -->
+                          <!-- <div class="col-12" *ngIf="PaymentResponse != 'A'" style="pointer-events: none;">
+
+                            <input type="checkbox" id="symbols12e" class="custom-check-box"
+                              formControlName="reqExpedited" (change)="reqProcessing($event)">
+                            <label for="symbols12e"></label>
+                            <span>Request Expedited Processing (7-10 days) $150 processing fee charged via credit
+                              card</span>
+
+                          </div> -->
+                          <div class="col-6" *ngIf="ContractType.value.gap != true" style="display: none;">
+
+                            <input type="checkbox" id="symbols10e" class="custom-check-box"
+                              formControlName="approveExpedited">
+                            <label for="symbols10e"></label>
+                            <span>I approve the Expedited Processing Fee</span>
+                          </div>
+
+                          <div class="col-6">
+                            <input type="checkbox" id="symbols11" class="custom-check-box" checked
+                              formControlName="agreeCancellationTerms" disabled>
+                            <label for="symbols11e"></label>
+                            <span>I agree to the Terms of Cancellation</span>
+                          </div>
+                        </div>
+                        <div class="row align-items-center mb-2" style="pointer-events: none;">
+                          <label class=" col-sm-6 pe-0">Customer Signature: <input type="checkbox"
+                              formControlName="customerSignchk"></label>
+                          <!-- <div class="col-sm-4"> </div> -->
+
+                        </div>
+
+                        <div class="row align-items-center mb-2">
+                          <div class="col-sm-11">
+                            <span>By selecting the checkbox, I certify that this is my digital signature and I agree to
+                              the terms and
+                              conditions of the service cancellation</span>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="req_bg" style="pointer-events: none;">
+
+                      <form [formGroup]="RefundDet">
+                        <input type="checkbox" id="symbols" formControlName="acknowledge">
+                        <label for="symbols"></label> &nbsp;
+                        <span style="font-family: Gotham Bold;font-size: 0.9rem;color: black;">By selecting the
+                          checkbox, I
+                          acknowledge that:</span>
+                        <ol style="font-family:Gotham Book Regular;color: black;">
+                          <li>The refund process can take up to 45 days, from the time your completed cancellation
+                            paperwork is received. </li>
+                          <li>If any information is incorrect or missing, I agree to be contacted at the preferred
+                            method above. No refund will be issued until I have provided complete and correct documents
+                            and information. </li>
+                          <li>The refund will be prorated and is paid to the lien holder if applicable and not to me
+                          </li>
+                          <li>I will no longer have this service product after I submit the cancellation</li>
+                        </ol>
+
+                      </form>
+                    </div>
+                    <div class="col-lg-12" style="width:100%">
+                      <span style="font-family: Gotham Book Regular;font-size: 0.9rem;color: white;"
+                        *ngIf="requestId!=''"><span
+                          style="font-family: Gotham Book Regular;font-size: 0.9rem;color: white;"> If you have any
+                          questions please email
+                          <span style="color: navy;text-decoration: underline;"><a href="mailto:{{storeemail}}}"
+                              target="_blank">{{storeemail}}</a></span>.</span></span>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="redalert" *ngIf="message==true">
+  <span style="font-size: medium;">{{responceContent}}</span>
+  <div style="padding-left: 60%;"><button class="submit" (click)="closemessage()">Ok</button>
+  </div>
+</div>
+<div class="pgrsbr" *ngIf="progressbar==true">
+  <span style="font-size: medium;">Processing... Please Wait...</span>
+  <br>
+  <div class="progress">
+    <div class="progress-bar" [style.width]="progress + '%'"></div>
+  </div>
+
+</div>
+
+
+
+
+<div class="modal fade bd-example-modal-sm" id="delConfirm" tabindex="-1" aria-labelledby="contModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm" style="width: fit-content;">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <b style="font-size: 16px;"> Reference ID &nbsp;&nbsp;{{requestId}} </b>
+
+        <span class="close" data-bs-dismiss="modal" id="close" aria-label="Close"
+          style="font-size: 18px;cursor: pointer;">X </span>
+
+      </div>
+      <div class="modal-body sm">
+        <div class="col-lg-12">
+          <div class="row justify-content-center">
+            <span style="font-size: medium;" class="mb-4">&nbsp;&nbsp;&nbsp;Do you want to delete the Cancellation
+              Request? </span>
+            <!-- <div style="padding-left: 36%;"><button class="submit" (click)="closemessage()" data-bs-dismiss="modal" aria-label="Close">Yes</button>
+                <div style="padding-left: 36%;"><button class="submit" (click)="closemessage()" data-bs-dismiss="modal" aria-label="Close">No</button> -->
+            <div style="padding-left: 28%;" class="mb-4">
+              <button class="process" data-bs-dismiss="modal" aria-label="Close"
+                (click)="Delete(DelselectedReq)">Yes</button>&nbsp;&nbsp;
+              <button class="process" data-bs-dismiss="modal" aria-label="Close">No</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<button id="warningbtn" [hidden]='true' data-bs-toggle="modal" data-bs-target="#warningmessage"></button>
+<div class="modal fade bd-example-modal-lg" id="warningmessage" tabindex="-1" aria-labelledby="contModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: fit-content;padding-top: 7%;">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+
+        <b>Check Status of your Request</b>
+
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">x
+        </button>
+
+      </div> -->
+      <div class="modal-body sm">
+        <div class="col-lg-12">
+          <div class="row justify-content-center">
+            <!-- <br> -->
+            <span style="font-size: medium;padding: 12px;">&nbsp;&nbsp;{{responceContent}}</span>
+            <div style="padding-left: 36%;"><button class="submit" (click)="closemessage()" data-bs-dismiss="modal"
+                aria-label="Close">Ok</button>
+
+              <!-- <br> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="validations" tabindex="-1" aria-labelledby="contModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: fit-content;top:5rem">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+
+        <b>Check Status of your Request</b>
+
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">x
+        </button>
+
+      </div> -->
+      <div class="modal-body validation">
+        <div class="col-lg-12">
+          <div class="row justify-content-center">
+            <div
+              *ngIf="VehicleDet.value.firstName=='' || VehicleDet.value.lastName=='' ||  VehicleDet.value.phone=='' || VehicleDet.value.emailid=='' || VehicleDet.value.sellingDealership==0 || VehicleDet.value.vin=='' || reasonName=='' || (RefundDet.value.outstandingLoan=='Y' && this.RefundDet.value.finame=='') || (RefundDet.value.outstandingLoan=='Y' && RefundDet.value.acnumber=='') ">
+              <div> <span class="warning">Please Enter all information </span> </div>
+              <div>
+                <br>
+                <div *ngIf="!VehicleDet.controls.firstName.valid && (VehicleDet.controls.firstName.dirty ||submitted)">
+                  <span *ngIf="VehicleDet.controls.firstName.errors.required" style="font-size: 15px;"> Enter First Name
+                  </span>
+                </div>
+
+
+                <div *ngIf="!VehicleDet.controls.lastName.valid && (VehicleDet.controls.lastName.dirty ||submitted)">
+                  <span *ngIf="VehicleDet.controls.lastName.errors.required" style="font-size: 15px;"> Enter Last Name
+                  </span>
+                </div>
+
+
+                <div *ngIf="!VehicleDet.controls.phone.valid && (VehicleDet.controls.phone.dirty ||submitted)">
+                  <span *ngIf="VehicleDet.controls.phone.errors.required" style="font-size: 15px;"> Enter Phone
+                    Number</span>
+                </div>
+
+
+                <div *ngIf="!VehicleDet.controls.emailid.valid && (VehicleDet.controls.emailid.dirty ||submitted)">
+                  <span *ngIf="VehicleDet.controls.emailid.errors.required" style="font-size: 15px;"> Enter Email</span>
+                </div>
+                <div
+                  *ngIf="!VehicleDet.controls.sellingDealership.valid && (VehicleDet.controls.sellingDealership.dirty ||submitted)">
+                  <span style="font-size: 15px;" *ngIf="VehicleDet.controls.sellingDealership.errors.required"> Select
+                    Selling
+                    Dealership</span>
+                </div>
+
+                <div *ngIf="!VehicleDet.controls.vin.valid && (VehicleDet.controls.vin.dirty ||submitted)">
+                  <span *ngIf="VehicleDet.controls.vin.errors.required" style="font-size: 15px;"> Enter VIN
+                    Number</span>
+                </div>
+                <div *ngIf="!VehicleDet.controls.vin.valid && (VehicleDet.controls.vin.dirty ||submitted)">
+                  <span *ngIf="VehicleDet.controls.vin.errors.pattern" style="font-size: 15px;">Invalid VIN, Please
+                    Check </span>
+                </div>
+                <div *ngIf="reasonName==''">
+                  <span style="font-size: 15px;">Upload document for the cancellation reason </span>
+                </div>
+
+
+                <div *ngIf="RefundDet.value.finame=='' && this.RefundDet.value.outstandingLoan=='Y'">
+                  <span style="font-size: 15px;"> Enter Financial Institution
+                  </span>
+                </div>
+                <div *ngIf="RefundDet.value.acnumber =='' && this.RefundDet.value.outstandingLoan=='Y' ">
+                  <span style="font-size: 15px;"> Enter Account Number </span>
+                </div>
+              </div>
+              <div class="warningokbtn"><button class="submit" data-bs-dismiss="modal" aria-label="Close">Ok</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="PaymentDetails" tabindex="-1" aria-labelledby="contModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm" style="width:25%;top:5rem">
+    <div class="modal-content">
+      <div class="modal-header">
+        <b style="font-size: large;">Payment Details</b>
+        <span class="close" data-bs-dismiss="modal" id="close" aria-label="Close"
+          style="font-size: 18px;cursor: pointer;">X </span>
+      </div>
+      <div class="modal-body validation" *ngIf="paymentrecord.length>0">
+        <div class="col-lg-12" style="font-size: medium;">
+        </div>
+        <div class="col-lg-12" style="font-size: medium;">
+          <!-- <div class="row justify-content-center">
+            <div class="col-6">ReferenceId :</div>
+            <div class="col-6"> {{paymentrecord[0].ReferenceId}}</div>
+
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-6">CardNumber :</div>
+            <div class="col-6"> {{paymentrecord[0].CardNumber}}</div>
+
+          </div> -->
+          <div class="row justify-content-center">
+            <div class="col-6">Trasaction Id :</div>
+            <div class="col-6"> {{paymentrecord[0].TrasactionReferenceID}}</div>
+
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-6">Amount :</div>
+            <div class="col-6"> $ {{paymentrecord[0].Amount}}</div>
+
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-6">Response :</div>
+            <div class="col-6"> {{paymentrecord[0].ResponseText != 'Approval' && paymentrecord[0].ResponseText !=
+              'Decline' ? paymentrecord[0].ResponseText : ''}}
+              {{paymentrecord[0].ResponseText == 'Approval' ? 'Approved':''}}
+              {{paymentrecord[0].ResponseText == 'Decline' ? 'Declined':''}}
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<button id="validation" [hidden]='true' data-bs-toggle="modal" data-bs-target="#validations"> </button>
+
+<button id="payRes" [hidden]='true' data-bs-toggle="modal" data-bs-target="#PaymentDetails"> </button>
+
+
+<button id="Epicford" [hidden]='true' data-bs-toggle="modal" data-bs-target="#Epicfordalert"> </button>
+
+<!-- <div class="modal fade bd-example-modal-xl" id="Epicfordalert" tabindex="-1" aria-labelledby="contModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" >
+    <div class="modal-content">
+
+      <div class="modal-body" >
+        <div class="col-lg-12">
+          <div class="row justify-content-center">
+            <span style="font-size: medium;">Note: your contract is still valid at any of our Swickard locations. Please see them here:<a href="http://www.swickard.com/locations" target="_blank"> www.swickard.com/locations. </a>
+              <br> Would you still like to continue?</span>
+
+
+  <div style="padding-left: 35%;"><button class="confirmsubmit" data-bs-dismiss="modal" aria-label="Close">Yes</button>&nbsp;&nbsp;<button class="confirmsubmit" (click)="EpicfordCancel()" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+  </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="modal fade bd-example-modal-lg" id="Epicfordalert" tabindex="-1" aria-labelledby="contModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: fit-content;padding-top: 7%;">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+
+        <b>Check Status of your Request</b>
+
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">x
+        </button>
+
+      </div> -->
+      <div class="modal-body sm" style="height: 150px !important;">
+        <div class="col-lg-12">
+          <div class="row justify-content-center">
+            <span style="font-size: medium;padding: 1% 0% 0% 5%;">Note: your contract is still valid at any of our
+              Swickard locations. Please see them here:<a href="http://www.swickard.com/locations" target="_blank">
+                www.swickard.com/locations. </a>
+              <br> Would you still like to continue?</span>
+
+
+            <div style="padding-left: 35%;"><button class="submit" data-bs-dismiss="modal"
+                aria-label="Close">Yes</button>&nbsp;&nbsp;<button class="submit" (click)="EpicfordCancel()"
+                data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

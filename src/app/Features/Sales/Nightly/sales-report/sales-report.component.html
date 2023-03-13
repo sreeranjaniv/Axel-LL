@@ -1,0 +1,1538 @@
+<app-header></app-header>
+<ngx-spinner size="medium" [type]="globalVarComponent.g_spinnerType"></ngx-spinner>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 p-0">
+          <div [ngClass] = "{'Nrep2_bg' : (TabChange === '1' || TabChange === '2' || TabChange === '7'),  'Nrep3_bg': (TabChange === '5' || TabChange === '6')}"> 
+             <!-- //Nrep3_bg (deals/salesperson)--> 
+                  <div class="row">
+                      <div class="col-lg-2">
+                        <div *ngIf="globalVarComponent.ReportId == 0">
+                        <a (click)="PreviousUrl()" style="cursor: pointer;font-size: medium;" class="link-light">Back</a>
+                      </div>
+                    </div>
+                      <div class="col-lg-10 ">
+                        
+                              <div class="row">
+                                
+                                <div class="data NR_dropdwn">
+                                    <select id="Dealer_DDL" (change)="DealerChange($event)" >
+                                        <option   value="0">ALL STORES</option>
+                                        <option  *ngFor="let i of GetStores" [value]="i.AS_ID">{{i.DEALER_NAME}}</option>
+                                    </select>
+                                  
+                                </div>
+                                <div [ngClass]="{'disabled': globalVarComponent.ReportId != 0 }" class="date">
+                                    <div class="md-form">
+                                        <input type="date" [ngModel]="ChangeDate | date:'yyyy-MM-dd'" [max]="getToday()"  (ngModelChange)="updatedate($event)"  name="startDate" class="datepicker">
+                                    </div>
+                                </div>
+                                <div *ngIf="SortButtons" style="cursor: pointer;width: 450px;"  class="col-lg-8  ms-auto ">
+                                  <label class="Label">Sort By:</label>
+                                  <!-- <button type="button"  class="btn btn-light btn btn-space">Sales Rank</button>
+                                  <button type="button"  class="btn btn-light btn btn-space">VSC Rank</button>
+                                  <button type="button"  class="btn btn-light btn-space">Exec Rank</button> -->
+
+                                  <button type="button" [ngClass]="{'sortactive': Sortby === 'TR'}" (click)="sort('Rank')" class="btn btn-light btn btn-space " style="border-radius: 35px 0px 0px 35px;text-transform: uppercase;font-size: .8rem;
+                                  border-right: 1px solid #333;">Sales Rank</button>
+                                  <button type="button" style="border-radius: 0px 0px 0px 0px;text-transform: uppercase;font-size: .8rem;
+                                  border-right: 1px solid #333;" [ngClass]="{'sortactive': Sortby === 'VR'}" (click)="sort('Vsc Rank')" class="btn btn-light btn btn-space">VSC Rank</button>
+                                  <button type="button" style="border-radius: 0px 35px 35px 0px;text-transform: uppercase;font-size: .8rem;" [ngClass]="{'sortactive': Sortby === 'ER'}" (click)="sort('Exec Rank')" class="btn btn-light btn-space">Exec Rank</button>
+                               </div>
+                               <div *ngIf="CV_Sales_Filters" style="cursor: pointer;width: 450px;"  class="col-lg-8  ms-auto ">
+                                <label class="Label">Filter By:</label>
+                                <!-- <button type="button"  class="btn btn-light btn btn-space">Sales Rank</button>
+                                <button type="button"  class="btn btn-light btn btn-space">VSC Rank</button>
+                                <button type="button"  class="btn btn-light btn-space">Exec Rank</button> -->
+
+                                <button type="button" [ngClass]="{'sortactive': Filter_CVType_by === ''}" (click)="CV_Filters('All')" class="btn btn-light btn btn-space " style="border-radius: 35px 0px 0px 35px;text-transform: uppercase;font-size: .8rem;
+                                border-right: 1px solid #333;">All</button>
+                                <button type="button" style="border-radius: 0px 0px 0px 0px;text-transform: uppercase;font-size: .8rem;
+                                border-right: 1px solid #333;" [ngClass]="{'sortactive': Filter_CVType_by === 'CV'}" (click)="CV_Filters('CV')" class="btn btn-light btn btn-space">CV</button>
+                                <button type="button" style="border-radius: 0px 35px 35px 0px;text-transform: uppercase;font-size: .8rem;" [ngClass]="{'sortactive': Filter_CVType_by === 'Fleet'}" (click)="CV_Filters('Fleet')" class="btn btn-light btn-space">Fleet</button>
+                             </div>
+                                <div style="cursor: pointer;" (click)="exportAsXLSX()" class="col-lg-2  ms-auto ">
+                                   <div class="d-flex align-items-center export"><div>Export to excel</div>  <span><img src="/assets/images/export.png" style="margin:-5px 0 0 5px;"></span></div>
+                                </div>
+                              </div>
+                             
+                              <!-- <app-nightly-tabs></app-nightly-tabs> -->
+                              <div class="row ">
+                                <div [ngClass]="{'disabled': globalVarComponent.ReportId != 0 }" class="button2 ">
+                                    <ul >
+                                        <li><a  style="cursor: pointer;"  [ngClass]="{'active': TabChange === '1'}" (click)="TabClick('1')" >Summary</a></li>
+                                        <li><a style="cursor: pointer;"  [ngClass]="{'active': TabChange === '2'}" (click)="TabClick('2')">F&I</a></li>
+                                        <!-- <li class="disabled"><a >Service</a></li> -->
+                                        <!-- <li><a >Appointments</a></li> -->
+                                        <li><a  style="cursor: pointer;"   [ngClass]="{'active': TabChange === '5'}"  (click)="TabClick('5')" >Deals</a></li>
+                                        <li><a  style="cursor: pointer;"  [ngClass]="{'active': TabChange === '6'}" (click)="TabClick('6')" >Sales people</a></li>
+                                        <li><a  style="cursor: pointer;"  [ngClass]="{'active': TabChange === '7'}" (click)="TabClick('7')" >CV/Fleet</a></li>
+                                      </ul>
+                                </div>
+                              </div>
+                              
+                      </div>
+                  </div>
+
+
+        <div class="row" *ngIf="Sales">
+            
+          <div class="col-lg-12 p-0">
+            <div class="Nrep2">
+     
+              <div class="nr_curve"> 
+              <table>
+                    <thead>
+                      <tr >
+                        <th></th>
+                        <th ></th>
+                        <th class="_ttl">Today</th>
+                        <th ></th>
+                        <th class="_ttl">mtd</th>
+                        <th ></th>
+                        <th class="_ttl">pace </th>
+                        <th ></th>
+                        <th class="_ttl">budget </th>
+                        <th ></th>
+                        <th class="_ttl">variance </th>
+                        <th ></th>
+                        <th class="_ttl">commitment</th>
+                        <th ></th>
+                        <th class="_ttl">variance</th>
+                        <th ></th>
+                        <th class="_ttl">last month</th>
+                        <th ></th>
+                        <th class="_ttl">variance</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="SalesGridData.length > 0; else norecSalesdata" >
+                      <tr *ngFor="let item of New">
+                        <td>New</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.TODAY}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.MTD}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.PACE }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd" *ngIf="CV_Sales===false">{{item.BUDGET }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd"  *ngIf="CV_Sales===false"><label [ngClass]="{'positive' : item.BUDGET_VARIANCE.includes('-') == false,
+                          'negative' : item.BUDGET_VARIANCE.includes('-') == true }" class="td_color" >{{item.BUDGET_VARIANCE}}</label></td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.LAST_MONTH }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" ><label [ngClass]="{'positive' : item.LAST_MONTH_VARIANCE.includes('-') == false,
+                        'negative' : item.LAST_MONTH_VARIANCE.includes('-') == true }" class="td_color" >{{item.LAST_MONTH_VARIANCE}}</label></td>
+                      </tr>
+                      <tr  *ngFor="let item of PreOwned">
+                        <td>Pre-Owned</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.TODAY}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.MTD}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.PACE}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even" *ngIf="CV_Sales">-</td>
+                        <td class="even" *ngIf="CV_Sales===false">{{item.BUDGET}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even" *ngIf="CV_Sales">-</td>
+                        <td class="even" *ngIf="CV_Sales===false"><label [ngClass]="{'positive' : item.BUDGET_VARIANCE.includes('-') == false,
+                        'negative' : item.BUDGET_VARIANCE.includes('-') == true }" class="td_color" >{{item.BUDGET_VARIANCE}}</label></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">-</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">-</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.LAST_MONTH}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even" ><label [ngClass]="{'positive' : item.LAST_MONTH_VARIANCE.includes('-') == false,
+                          'negative' : item.LAST_MONTH_VARIANCE.includes('-') == true }" class="td_color" >{{item.LAST_MONTH_VARIANCE}}</label></td>
+
+                        
+                        
+                      </tr>
+                      <tr class="s_tot" *ngFor="let item of Count_SubTotal">
+                        <td class="odd">Sub Total</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.TODAY}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.MTD}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.PACE }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd" *ngIf="CV_Sales===false">{{item.BUDGET }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd" *ngIf="CV_Sales===false"><label [ngClass]="{'positive' : item.BUDGET_VARIANCE.includes('-') == false,
+                          'negative' : item.BUDGET_VARIANCE.includes('-') == true }" class="td_color" >{{item.BUDGET_VARIANCE}}</label></td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.LAST_MONTH }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" ><label [ngClass]="{'positive' : item.LAST_MONTH_VARIANCE.includes('-') == false,
+                          'negative' : item.LAST_MONTH_VARIANCE.includes('-') == true }" class="td_color" >{{item.LAST_MONTH_VARIANCE}}</label></td>
+                      </tr>
+                      <tr>
+                        <td class="even" style="text-transform: uppercase; color: #f89d1c;  font-family: 'Gotham-Light';">New gross</td>
+                        <td class="even" style="background: transparent !important;"></td>                                        
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                      </tr>
+                      <tr *ngFor="let item of New_Front_Gross">
+                        <td class="odd">Front</td>                
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.TODAY}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.MTD}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.PACE }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd" *ngIf="CV_Sales===false">{{item.BUDGET }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd" *ngIf="CV_Sales===false">
+                          <label [ngClass]="{'positive' : item.BUDGET_VARIANCE.includes('-') == false,
+                          'negative' : item.BUDGET_VARIANCE.includes('-') == true }" class="td_color" >{{item.BUDGET_VARIANCE}}</label>
+                         </td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.LAST_MONTH }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" >
+                          <label [ngClass]="{'positive' : item.LAST_MONTH_VARIANCE.includes('-') == false,
+                        'negative' : item.LAST_MONTH_VARIANCE.includes('-') == true }" class="td_color" >{{item.LAST_MONTH_VARIANCE}}</label>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let item of New_Back_Gross">
+                        <td class="even">Back</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.TODAY}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.MTD}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.PACE}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even" *ngIf="CV_Sales">-</td>
+                        <td class="even" *ngIf="CV_Sales===false">{{item.BUDGET}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even" *ngIf="CV_Sales">-</td>
+                        <td class="even" *ngIf="CV_Sales===false">
+                          <label [ngClass]="{'positive' : item.BUDGET_VARIANCE.includes('-') == false,
+                          'negative' : item.BUDGET_VARIANCE.includes('-') == true }" class="td_color" >{{item.BUDGET_VARIANCE}}</label>
+                        </td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">-</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">-</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.LAST_MONTH}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">
+                          <label [ngClass]="{'positive' : item.LAST_MONTH_VARIANCE.includes('-') == false,
+                        'negative' : item.LAST_MONTH_VARIANCE.includes('-') == true }" class="td_color" >{{item.LAST_MONTH_VARIANCE}}</label>
+                        </td>
+                      </tr>
+                      <tr class="s_tot" *ngFor="let item of New_Gross_SubTotal" >
+                        <td class="odd">Sub Total</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.TODAY}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.MTD}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.PACE }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd" *ngIf="CV_Sales===false">{{item.BUDGET }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd" *ngIf="CV_Sales===false">
+                          <label [ngClass]="{'positive' : item.BUDGET_VARIANCE.includes('-') == false,
+                          'negative' : item.BUDGET_VARIANCE.includes('-') == true }" class="td_color" >{{item.BUDGET_VARIANCE}}</label>
+                        </td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.LAST_MONTH }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" ><label [ngClass]="{'positive' : item.LAST_MONTH_VARIANCE.includes('-') == false,
+                          'negative' : item.LAST_MONTH_VARIANCE.includes('-') == true }" class="td_color" >{{item.LAST_MONTH_VARIANCE}}</label></td>
+                      </tr>
+                      <tr>
+                        <td class="even" style="text-transform: uppercase; color: #f89d1c;  font-family: 'Gotham-Light';">Pre-owned gross</td>
+                        <td class="even" style="background: transparent !important;"></td>   
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even"></td>
+                      </tr>
+                      <tr *ngFor="let item of PreOwned_Front_Gross">
+                        <td class="odd">Front</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.TODAY}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.MTD}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.PACE }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd" *ngIf="CV_Sales===false">{{item.BUDGET }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd" *ngIf="CV_Sales===false">
+                          <label [ngClass]="{'positive' : item.BUDGET_VARIANCE.includes('-') == false,
+                          'negative' : item.BUDGET_VARIANCE.includes('-') == true }" class="td_color" >{{item.BUDGET_VARIANCE}}</label>
+                        </td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.LAST_MONTH }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" >
+                          <label [ngClass]="{'positive' : item.LAST_MONTH_VARIANCE.includes('-') == false,
+                        'negative' : item.LAST_MONTH_VARIANCE.includes('-') == true }" class="td_color" >{{item.LAST_MONTH_VARIANCE}}</label>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let item of PreOwned_Back_Gross"> 
+                        <td class="even">Back</td>
+                       <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.TODAY}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.MTD}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.PACE}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even" *ngIf="CV_Sales">-</td>
+                        <td class="even" *ngIf="CV_Sales===false">{{item.BUDGET}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even" *ngIf="CV_Sales">-</td>
+                        <td class="even" *ngIf="CV_Sales===false">
+                          <label [ngClass]="{'positive' : item.BUDGET_VARIANCE.includes('-') == false,
+                          'negative' : item.BUDGET_VARIANCE.includes('-') == true }" class="td_color" >{{item.BUDGET_VARIANCE}}</label>
+                        </td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">-</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">-</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.LAST_MONTH}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even" >
+                          <label [ngClass]="{'positive' : item.LAST_MONTH_VARIANCE.includes('-') == false,
+                        'negative' : item.LAST_MONTH_VARIANCE.includes('-') == true }" class="td_color" >{{item.LAST_MONTH_VARIANCE}}</label>
+                        </td>
+                      </tr>
+                      <tr class="s_tot" *ngFor="let item of PreOwned_Gross_SubTotal">
+                        <td class="odd">Sub Total</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.TODAY}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.MTD}}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.PACE }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd" *ngIf="CV_Sales===false">{{item.BUDGET }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" *ngIf="CV_Sales">-</td>
+                        <td class="odd" *ngIf="CV_Sales===false">
+                          <label [ngClass]="{'positive' : item.BUDGET_VARIANCE.includes('-') == false,
+                          'negative' : item.BUDGET_VARIANCE.includes('-') == true }" class="td_color" >{{item.BUDGET_VARIANCE}}</label>
+                        </td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">-</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd">{{item.LAST_MONTH }}</td>
+                        <td class="odd" style="background: transparent !important;"></td>
+                        <td class="odd" >
+                          <label [ngClass]="{'positive' : item.LAST_MONTH_VARIANCE.includes('-') == false,
+                        'negative' : item.LAST_MONTH_VARIANCE.includes('-') == true }" class="td_color" >{{item.LAST_MONTH_VARIANCE}}</label>
+                        </td>
+                      </tr>
+                      <tr class="tot" *ngFor="let item of Total">
+                        <td class="even" style="text-transform: uppercase; color: #f89d1c;  font-family: 'Gotham\ Bold';;">Total</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.TODAY}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.MTD}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.PACE}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even" *ngIf="CV_Sales">-</td>
+                        <td class="even" *ngIf="CV_Sales===false">{{item.BUDGET}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even" *ngIf="CV_Sales">-</td>
+                        <td class="even" *ngIf="CV_Sales===false"><label [ngClass]="{'positive' : item.BUDGET_VARIANCE.includes('-') == false,
+                          'negative' : item.BUDGET_VARIANCE.includes('-') == true }" class="td_color" >{{item.BUDGET_VARIANCE}}</label></td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">-</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">-</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even">{{item.LAST_MONTH}}</td>
+                        <td class="even" style="background: transparent !important;"></td>
+                        <td class="even" ><label [ngClass]="{'positive' : item.LAST_MONTH_VARIANCE.includes('-') == false,
+                          'negative' : item.LAST_MONTH_VARIANCE.includes('-') == true }" class="td_color" >{{item.LAST_MONTH_VARIANCE}}</label></td>
+                      </tr>
+                    </ng-container>
+                    <ng-template #norecSalesdata>
+                      <tr  >
+                        <td colspan="27" style="text-align: center;font-size: 14px;background: transparent !important;color: black;"><label>No Data Found</label></td>
+                      </tr>
+                    </ng-template>
+                    </tbody>
+                </table>
+              </div> 
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="Summary_Sub">
+          <div class="col-lg-5 p-0"> 
+               <div class="prod-pen">
+                 <div class="nr_curve">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <td style=" width: 2%; "></td>
+                          <td style=" width: 2%; "></td>
+                          <td style=" width: 2%; "></td>
+                          <td style=" width: 2%; "></td>
+                          <th>Day%</th>
+                          <th style=" width: 2%; "></th>
+                          <th>MTD%</th>
+                          <td style=" width: 2%; "></td>
+                          <td style=" width: 2%; "></td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                       <tr>
+                         <td class="even" style="text-transform: uppercase; color: #f89d1c; word-break: break-all;  font-family: 'Gotham-Light';">Product <br>penetration</td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td class="even"></td>
+                         <td style=" width: 2%; "></td>
+                         <td class="even"></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                       </tr>
+                       
+                       <tr *ngFor="let item of SummaryGridData_FI; let ioe = index;" >
+                         <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item.Lable1}} </td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"><span>{{item['DAY%']}}%</span></td>
+                         <td style=" width: 2%; "></td>
+                         <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"><span>{{item['MTD%']}}%</span></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                       </tr>
+                       <tr>
+                         <td ></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td class="even">&nbsp;</td>
+                         <td style=" width: 2%; "></td>
+                         <td class="even">&nbsp;</td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                         <td style=" width: 2%; "></td>
+                       </tr>
+                     </tbody>
+                    </table>
+                 </div>
+               </div>
+              
+           </div> 
+           <div class="col-lg-6 ms-auto p-0"> 
+             <div class="lenders">
+               <div class="nr_curve">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <td style=" width: 2%; "></td>
+                        <td style=" width: 2%; "></td>
+                        <th>MTD</th>
+                        <th style=" width: 2%; "></th>
+                        <th>MTD%</th>
+                        <td style=" width: 2%; "></td>
+                        <th>$MTD</th>
+                        <td style=" width: 2%; "></td>
+                        <td style=" width: 2%; "></td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     <tr>
+                       <td class="even" style="text-transform: uppercase; color: #f89d1c; word-break: break-all;  font-family: 'Gotham-Light';">lenders</td>
+                       <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                       <td class="even"></td>
+                       <td style=" width: 2%; "></td>
+                       <td class="even"></td>
+                       <td style=" width: 2%; "></td>
+                       <td class="even"></td>
+                       <td style=" width: 2%; "></td>
+                          <td style=" width: 2%; "></td>
+                     </tr>
+                     <tr *ngFor="let item of SummaryGridData_LD; let i = index;">
+                       <td [ngClass]="{'odd': i%2 == 0,'even' : i%2 > 0}" >{{item.Lender_Name }} </td>
+                       <td style=" width: 2%; "></td>
+                          <td style=" width: 2%; "></td>
+                       <td [ngClass]="{'odd': i%2 == 0,'even' : i%2 > 0}">{{item.MTD}}</td>
+                       <td style=" width: 2%; "></td>
+                       <td [ngClass]="{'odd': i%2 == 0,'even' : i%2 > 0}">{{item['MTD%']}}%</td>
+                       <td style=" width: 2%; "></td>
+                       <td [ngClass]="{'odd': i%2 == 0,'even' : i%2 > 0}">{{item['$ MTD']| currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                       <td style=" width: 2%; "></td>
+                          <td style=" width: 2%; "></td>
+                     </tr>
+                   </tbody>
+                  </table>
+               </div>
+             </div>
+            
+         </div> 
+         </div>
+         <div class="row" *ngIf="Summary_Sub">
+          <div class="col-lg-12" style="margin-top: 724px;">
+          </div>
+       </div>
+       
+         <div class="row" *ngIf="Deals">
+            
+          <div class="col-lg-12 p-0">
+            <div class="Nrep_Deal">
+              <div class="nr_curve scroll_deals" > 
+              <table class="table-fixed">
+                    <thead>
+                      <tr >
+                        
+                        <th class="_ttl">Code</th>
+                        <th ></th>
+                        <th class="_ttl">DEAL #</th>
+                        <th ></th>
+                        <th style="width: 3%;"  class="_ttl">N/PO/CPO </th>
+                        <th ></th>
+                        <th style="width: 20%;" class="_ttl">SOLD UNIT </th>
+                        <th ></th>
+                        <th class="_ttl">TRADE </th>
+                        <th ></th>
+                        <th class="_ttl">STOCK #</th>
+                        <th ></th>
+                        <th style="width: 9%;" class="_ttl">PRICE</th>
+                        <th ></th>
+                        <th style="width: 9%;" class="_ttl">FEG</th>
+                        <th ></th>
+                        <th style="width: 9%;" class="_ttl">BEG</th>
+                        <th ></th>
+                        <th style="width: 11%;" class="_ttl">$ FINANCED</th>
+                        <th ></th>
+                        <th class="_ttl">LENDER</th>
+                        <th ></th>
+                        <th class="_ttl">SALESPERSON</th>
+                        <th ></th>
+                        <th class="_ttl">VSC</th>
+                        <th ></th>
+                        <th class="_ttl">EXECUTIVE&nbsp;SHIELD</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="DealesGridData.length > 0; else norecdata;  " >
+                      <tr *ngFor="let item of DealesGridData ; let ioe = index;">
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item['AS_DEALER']}}</td>
+                        <td  style="background: transparent !important;"></td>
+                        <td  style="cursor: pointer;"  [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" class="activetab"><span data-bs-toggle="modal" data-bs-target="#DealestDetailed" style="cursor: pointer;"  (click)="DealesDetailed(item.VS_ID)">{{item['DEAL #']}}</span></td>
+                        <td  style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item['N/PO/CPO']}}</td>
+                        <td  style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"  >{{item['SOLD UNIT']}}</td>
+                        <td  style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item.TRADE}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item['STOCK #']}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item.PRICE}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.FEG}}</td>
+                        <td  style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item.BEG}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item['$ FINANCED']}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item.LENDER}}</td>
+                        <td  style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item.SALESPERSON}}</td>
+                        <td  style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.VSC}}</td>
+                        <td  style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item.EXECSHIELD}}</td>
+                      </tr>
+                    </ng-container>
+                    <ng-template #norecdata>
+                      <tr  >
+                        <td colspan="27" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found</label></td>
+                      </tr>
+                    </ng-template>
+                    </tbody>
+                </table>
+              </div> 
+            </div>
+          </div>
+        </div>
+        
+       
+        <div class="modal" tabindex="-1" id="DealestDetailed" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+          <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+             <div class="modal-content" *ngFor="let item of DealesDetailedData" style="background: transparent;
+            border: none;">
+              <div class="modal-header" style="border:none;"> 
+               <!-- <div class="modal-content" *ngFor="let item of DealesDetailedData" style="background:red;border: none;"> 
+            
+              <div class="modal-header" style="background: white;border:none;">  -->
+                <div class="button3">
+                  <ul>
+                    <li><a style="width: auto;">{{item.AS_DealerName}}</a></li>
+                    <li><a>deal#: &nbsp;{{item['Deal #']}}</a></li>
+                    <li ><a style="background:#ed1b24;color: white;">Status:&nbsp; {{item.FIWIPSTATUS}}</a></li>
+                  </ul>
+                </div>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+              </div>
+              <div class="modal-body">
+            <div style="height: 80vh;">
+              <div class="table-striped force-overflow" style="max-height: calc(100vh - 90px);white-space: nowrap; margin-top: -70px;">
+               
+                <div class="row">
+                   <div class="col-lg-6">
+                    <div class="prod-pen">
+                       <div class="nr_curve_Deals_Popupdeal"> 
+                          <div></div>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th></th>
+                                      <td style=" width: 2%; "></td>
+                                       <td style=" width: 2%; "></td>
+                                       <td style=" width: 2%; "></td>
+                                       <td style=" width: 2%; "></td>
+                                       <th>Purchase Unit</th>
+                                       <th style=" width: 2%; "></th>
+                                       <td style=" width: 2%; "></td>
+                                       <td style=" width: 2%; "></td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td style=" width: 2%; "></td>
+                                      <td style=" width: 2%; "></td>
+                                      <td style=" width: 2%; "></td>
+                                      <td style=" width: 2%; "></td>
+                                      <td style=" width: 2%; "></td>
+                                      <td class="even"></td>
+                                      <td style=" width: 2%; "></td>
+                                      <td style=" width: 2%; "></td>
+                                      <td style=" width: 2%; "></td>
+                                      <td style=" width: 2%; "></td>
+                            </tr>
+                            <tr>
+                              <td class="odd" >VIN:</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td  class="odd" style="text-align: left;">{{item.VIN}}</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                            </tr>
+                            <tr>
+                              <td class="even" >VEHICLE:</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <!-- <td style="padding: 0px;"data-toggle="tooltip" data-placement="bottom" title={{item.Vehicle}}>
+                                 <div class="even d-flex p-2" style="white-space: normal;">{{item.Vehicle}}
+                                 </div>
+                               </td> -->
+                               <td class="even d-flex p-2"  style="white-space: normal;text-align: left;">{{item.Vehicle}}</td> 
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                            </tr>
+                            <tr>
+                              <td class="even" >DEAL TYPE:</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td class="odd d-flex p-2">{{item.DealType}}</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                            </tr>
+                            <tr>
+                              <td class="even" >DATE:</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td class="even d-flex p-2">{{item.Date | date: 'MM/dd/yyyy'}}</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                          </tr>
+                          <tr>
+                            <td class="even" >SOLD AMOUNT:</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td class="odd d-flex p-2">{{item['Sold Amt']}}</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                          </tr>
+                          <tr>
+                            <td class="even" >CUSTOMER:</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td class="even d-flex p-2" style="white-space: normal;text-align: left;">{{item.Customer}}</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                          </tr>
+                          <tr>
+                            <td class="even" >SALES PERSON:</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td class="odd d-flex p-2" style="white-space: normal;text-align: left;">{{item['Sales Person']}}</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                          </tr>
+                          <tr>
+                            <td class="even" >SALES MANAGER:</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td class="even d-flex p-2" style="white-space: normal;text-align: left;">{{item['Sales Mgr']}}</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                          </tr>
+                            <tr>
+                           <td ></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td class="even">&nbsp;</td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                         </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="prod-pen" style="margin-top: 390px;">
+                     <div class="nr_curve_Deals_Popupdeal"  *ngIf="Trade1" >
+                       <table>
+                         <thead>
+                           <tr>
+                             <th></th>
+                             <td style=" width: 2%; "></td>
+                                         <td style=" width: 2%; "></td>
+                                         <td style=" width: 2%; "></td>
+                                         <td style=" width: 2%; "></td>
+                                         <th>TRADE UNIT</th>
+                                         <th style=" width: 2%; "></th>
+                                         <td style=" width: 2%; "></td>
+                                         <td style=" width: 2%; "></td>
+                           </tr>      
+                         </thead>
+                         <tbody>
+                          <tr>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td class="even"></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                          </tr>
+                          <tr>
+                            <td class="odd" >MAKE:</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td  class="odd d-flex p-2">{{item.Trade1Make}}</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                          </tr>
+                          <tr>
+                            <td class="even" >MODEL:</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td class="even d-flex p-2">{{item.Trade1Model}}</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                          </tr>
+                          <tr>
+                             <td class="odd" >VIN:</td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                             <td class="odd d-flex p-2">{{item.Trade1VIN}}</td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                           </tr>
+                           <tr>
+                               <td class="even" >MILAGE:</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td class="even d-flex p-2">{{item.Trade1mileage}}</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                           </tr>
+                          
+                           <tr>
+                             <td class="even" >PAYOFF:</td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                             <td class="odd d-flex p-2">{{item.Trade1payoff}}</td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                             <td style=" width: 2%; "></td>
+                           </tr>
+                         </tbody>
+                       </table>
+                     </div>
+                     <div class="nr_curve_Deals_Popupdeal" *ngIf="Trade2" >
+                      <table>
+                        <tbody>
+                         <tr>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td class="even"></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                         </tr>
+                         <tr>
+                           <td class="odd" >MAKE:</td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td  class="odd d-flex p-2">{{item.Trade2Make}}</td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                         </tr>
+                         <tr>
+                           <td class="even" >MODEL:</td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td class="even d-flex p-2">{{item.Trade2Model}}</td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                           <td style=" width: 2%; "></td>
+                         </tr>
+                         <tr>
+                            <td class="even" >VIN:</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td class="odd d-flex p-2">{{item.Trade2VIN}}</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                          </tr>
+                          <tr>
+                              <td class="even" >MILAGE:</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td class="even d-flex p-2">{{item.Trade2mileage}}</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                          </tr>
+                          <tr>
+                            <td class="even" >PAYOFF:</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td class="even d-flex p-2">{{item.Trade2payoff}}</td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                            <td style=" width: 2%; "></td>
+                          </tr>
+                          
+                       </tbody>
+                      </table>
+      
+                    </div>
+                    </div>
+                    
+      
+      
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="lenders">
+                      <div class="nr_curve_Deals_Popupdeal">
+                        <table>
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <td style=" width: 2%; "></td>
+                                     <td style=" width: 2%; "></td>
+                                     <td style=" width: 2%; "></td>
+                                     <td style=" width: 2%; "></td>
+                                     <th>Finance Details</th>
+                                     <th style=" width: 2%; "></th>
+                                     <td style=" width: 2%; "></td>
+                                     <td style=" width: 2%; "></td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td class="even"></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                            </tr>
+                            <tr>
+                              <td class="odd" >FRONT GROSS:</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td  class="odd d-flex p-2">{{item.FEG}}</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                            </tr>
+                            <tr>
+                              <td class="even" >BACK GROSS:</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td class="even d-flex p-2">{{item.BEG}}</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                            </tr>
+                            <tr>
+                               <td class="even" >DEAL TYPE:</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td class="odd d-flex p-2">{{item.DealType}}</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                             </tr>
+                             <tr>
+                                 <td class="even" >AMOUNT FINANCED:</td>
+                                 <td style=" width: 2%; "></td>
+                                 <td style=" width: 2%; "></td>
+                                 <td style=" width: 2%; "></td>
+                                 <td style=" width: 2%; "></td>
+                                 <td class="even d-flex p-2">{{item['Financed Amt']}}</td>
+                                 <td style=" width: 2%; "></td>
+                                 <td style=" width: 2%; "></td>
+                                 <td style=" width: 2%; "></td>
+                                 <td style=" width: 2%; "></td>
+                             </tr>
+                             <tr>
+                               <td class="even" >LENDER:</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td class="odd d-flex p-2">{{item.Lender}}</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                             </tr>
+                             <tr>
+                               <td class="even" >INTREST RATE:</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td class="even d-flex p-2">{{item.Interest}}</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                             </tr>
+                             <tr>
+                               <td class="even" >TERM:</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td class="odd d-flex p-2">{{item.Term}}</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                             </tr>
+                             <tr>
+                               <td class="even" >MONTHLY:</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td class="even d-flex p-2">{{item.Monthly}}</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                             </tr>
+                             <tr>
+                               <td class="even" >SERVICE CONTRACT:</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td class="odd d-flex p-2">{{item.VSC}}</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                             </tr>
+                             <tr>
+                               <td class="even" >FINANCE MANAGER:</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td class="even d-flex p-2">{{item['Finance Mgr']}}</td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                               <td style=" width: 2%; "></td>
+                             </tr>
+                               <tr>
+                              <td ></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td class="even">&nbsp;</td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                              <td style=" width: 2%; "></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+              
+              
+              </div>
+      
+      </div>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+        
+      <div class="row" *ngIf="FI">
+            
+        <div class="col-lg-12 p-0">
+          <div class="Nrep2">
+            
+            <div class="nr_curve"> 
+            <table>
+                  <thead>
+                    <tr >
+                      <th></th>
+                      <th ></th>
+                      <th class="FI_ttl">VOLUME</th>
+                      <th ></th>
+                      <th class="FI_ttl">FEG</th>
+                      <th ></th>
+                      <th class="FI_ttl">FPVR </th>
+                      <th ></th>
+                      <th class="FI_ttl">BEG </th>
+                      <th ></th>
+                      <th class="FI_ttl">BPVR </th>
+                      <th ></th>
+                      <th class="FI_ttl">TOTAL GROSS</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngIf="FIGridData.length > 0; else norecSalesdata" >
+                    <tr *ngFor="let item of TODAY_New">
+                      <td>New</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.VOLUME}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.FEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.FPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.BEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.BPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.TOTAL_GROSS | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      
+                     
+                    </tr>
+                    <tr *ngFor="let item of TODAY_Used">
+                      <td>Pre-Owned</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.VOLUME}}</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.FEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.FPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.BEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.BPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.TOTAL_GROSS | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      
+                      
+                    </tr>
+                    <tr class="s_tot" *ngFor="let item of TODAY_Total">
+                      <td class="odd">Total</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.VOLUME}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.FEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.FPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.BEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.BPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.TOTAL_GROSS | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      
+                    </tr>
+                    <tr>
+                      <td class="even" style="text-transform: uppercase; color: #f89d1c;  font-family: 'Gotham\ Bold';">MTD</td>
+                      <td class="even" style="background: transparent !important;"></td>                                        
+                      <td class="even"></td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even"></td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even"></td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even"></td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even"></td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even"></td>
+                      
+                    </tr>
+                    <tr *ngFor="let item of MTD_New">
+                      <td class="odd">New</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.VOLUME}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.FEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.FPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.BEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.BPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.TOTAL_GROSS | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                     
+                    </tr>
+                    <tr *ngFor="let item of MTD_Used">
+                      <td class="even">Pre-Owned</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.VOLUME}}</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.FEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.FPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.BEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.BPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="even" style="background: transparent !important;"></td>
+                      <td class="even">{{item.TOTAL_GROSS | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      
+                    </tr>
+                    <tr class="s_tot" *ngFor="let item of MTD_Total">
+                      <td class="odd">Total</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.VOLUME}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.FEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.FPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.BEG | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.BPVR | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      <td class="odd" style="background: transparent !important;"></td>
+                      <td class="odd">{{item.TOTAL_GROSS | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                      
+                    </tr>
+                    
+                  </ng-container>
+                  <ng-template #norecSalesdata>
+                    <tr  >
+                      <td colspan="27" style="text-align: center;font-size: 14px;background: transparent !important;color: black;"><label>No Data Found</label></td>
+                    </tr>
+                  </ng-template>
+                  </tbody>
+              </table>
+            </div> 
+          </div>
+        </div>
+      </div>
+      <div class="row"  *ngIf="Sub">
+        <div class="col-lg-5 p-0"> 
+             <div class="prod-pen_FI">
+               <div class="nr_curve">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <td style=" width: 2%; "></td>
+                        <td style=" width: 2%; "></td>
+                        <td style=" width: 2%; "></td>
+                        <td style=" width: 2%; "></td>
+                        <th>Day%</th>
+                        <th style=" width: 2%; "></th>
+                        <th>MTD%</th>
+                        <td style=" width: 2%; "></td>
+                        <td style=" width: 2%; "></td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     <tr>
+                       <td class="even" style="text-transform: uppercase; color: #f89d1c; word-break: break-all;  font-family: 'Gotham\ Bold';">Product <br>penetration</td>
+                       <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                       <td class="even"></td>
+                       <td style=" width: 2%; "></td>
+                       <td class="even"></td>
+                       <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                     </tr>
+                     <tr *ngFor="let item of FIGridData_PP; let ioe = index;" >
+                      <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" >{{item.Lable1}} </td>
+                      <td style=" width: 2%; "></td>
+                      <td style=" width: 2%; "></td>
+                      <td style=" width: 2%; "></td>
+                      <td style=" width: 2%; "></td>
+                      <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['DAY%']}}%</td>
+                      <td style=" width: 2%; "></td>
+                      <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['MTD%']}}%</td>
+                      <td style=" width: 2%; "></td>
+                      <td style=" width: 2%; "></td>
+                      <td style=" width: 2%; "></td>
+                    </tr>
+                     <tr>
+                       <td ></td>
+                       <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                       <td class="even">&nbsp;</td>
+                       <td style=" width: 2%; "></td>
+                       <td class="even">&nbsp;</td>
+                       <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                     </tr>
+                   </tbody>
+                  </table>
+               </div>
+             </div>
+            
+         </div> 
+         <div class="col-lg-6 ms-auto p-0"> 
+           <div class="lenders_FI">
+             <div class="nr_curve">
+                <table>
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <td style=" width: 2%; "></td>
+                      <td style=" width: 2%; "></td>
+                      <th>MTD</th>
+                      <th style=" width: 2%; "></th>
+                      <th>GOAL</th>
+                      <td style=" width: 2%; "></td>
+                      <th>$ MTD</th>
+                      <td style=" width: 2%; "></td>
+                      <td style=" width: 2%; "></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                   <tr>
+                     <td class="even" style="text-transform: uppercase; color: #f89d1c; word-break: break-all;  font-family: 'Gotham\ Bold';">lenders</td>
+                     <td style=" width: 2%; "></td>
+                     <td style=" width: 2%; "></td>
+                     <td class="even"></td>
+                     <td style=" width: 2%; "></td>
+                     <td class="even"></td>
+                     <td style=" width: 2%; "></td>
+                     <td class="even"></td>
+                     <td style=" width: 2%; "></td>
+                        <td style=" width: 2%; "></td>
+                   </tr>
+                   <tr *ngFor="let item of FIGridData_LD; let i = index;">
+                    <td [ngClass]="{'odd': i%2 == 0,'even' : i%2 > 0}" >{{item.Lender_Name }} </td>
+                    <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                    <td [ngClass]="{'odd': i%2 == 0,'even' : i%2 > 0}">{{item.MTD}}</td>
+                    <td style=" width: 2%; "></td>
+                    <td [ngClass]="{'odd': i%2 == 0,'even' : i%2 > 0}">{{item['GOAL']}}</td>
+                    <td style=" width: 2%; "></td>
+                    <td [ngClass]="{'odd': i%2 == 0,'even' : i%2 > 0}">{{item['$ MTD']| currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                    <td style=" width: 2%; "></td>
+                       <td style=" width: 2%; "></td>
+                  </tr>
+                   <tr>
+                     <td ></td>
+                     <td style=" width: 2%; "></td>
+                        <td style=" width: 2%; "></td>
+                     <td class="even">&nbsp;</td>
+                     <td style=" width: 2%; "></td>
+                     <td class="even">&nbsp;</td>
+                     <td style=" width: 2%; "></td>
+                     <td class="even">&nbsp;</td>
+                     <td style=" width: 2%; "></td>
+                     <td style=" width: 2%; "></td>
+                   </tr>
+                 </tbody>
+                </table>
+             </div>
+           </div>
+          
+       </div> 
+       </div>
+    <div class="row" *ngIf="SalesPerson" >
+          
+      <div class="col-lg-12 p-0">
+        <div class="Nrep_Deal">
+          <div class="nr_curve scroll_deals" > 
+            <table class="table-fixed">
+                     
+                      <thead>
+                        <tr >                         
+                          <th class="_ttl">Code</th>
+                          <th ></th>
+                          <th class="_ttl"style="width: 12%;">Sales Person</th>
+                          <th ></th>
+                          <th class="_ttl" style="width: 3%;">NEW</th>
+                          <th ></th>
+                          <th class="_ttl">PRE-OWNED</th>
+                          <th ></th>
+                          <th class="_ttl"  >CPO</th>
+                          <th ></th>
+                          <th class="_ttl">TOTAL</th>
+                          <th ></th>
+                          <th class="_ttl" style="width: 7%;">FEG $</th>
+                          <th ></th>
+                          <th class="_ttl">RANK</th>
+                          <th ></th>
+                          <th class="_ttl">VSC%</th>
+                          <th ></th>
+                          <th class="_ttl">VSC Rank</th>
+                          <th ></th>
+                          <th class="_ttl">EXEC %</th>
+                          <th ></th>
+                          <th class="_ttl" >EXEC&nbsp;Rank</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                 
+                        <ng-container *ngIf="SalesPersonData.length > 0 ">
+                        
+                        <tr *ngFor="let item of SalesPersonData; let ioe = index;">
+                         
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.Dealer}}</td>
+                          
+                          <td style="background: transparent !important;"></td>
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['SP_Name']}}</td>
+                          <td style="background: transparent !important;"></td>
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.MTD_NEW}}</td>
+                          <td  style="background: transparent !important;"></td>
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.MTD_USED}}</td>
+                          <td style="background: transparent !important;"></td>
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.MTD_CPO}}</td>
+                          <td style="background: transparent !important;"></td>
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.MTD_Total}}</td>
+                          <td style="background: transparent !important;"></td>
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['FEG $'] | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+                          <td  style="background: transparent !important;"></td>
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.Rank}}</td>
+                          <td style="background: transparent !important;"></td>
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['VSC %']}}</td>
+                          <td  style="background: transparent !important;"></td>
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['Vsc Rank']}}</td>
+                          <td style="background: transparent !important;"></td>
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['Exec%']}}</td>
+                          <td  style="background: transparent !important;"></td>
+                          <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['Exec Rank']}}</td>                        
+                         
+                        </tr>
+                     
+                      </ng-container>
+                      <ng-container  *ngIf="DEALER_Change == 0 ">
+                        <tr  >
+                          <td  colspan="27" style="text-align: center;color: #040404;font-size: 14px;"><label>Please select a store to see Sales People Rankings</label></td>
+                        </tr>
+                      </ng-container>
+                      <ng-container *ngIf="SalesPersonData.length == 0 && DEALER_Change != 0" >
+                        <tr  >
+                          <td  colspan="27" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found</label></td>
+                        </tr>
+                      </ng-container>
+                      </tbody>                    
+            </table>
+            </div>
+        </div>
+      </div>
+  </div>
+    </div>
+
+  </div>
+</div>

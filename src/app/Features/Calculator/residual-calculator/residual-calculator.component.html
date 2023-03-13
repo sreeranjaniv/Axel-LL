@@ -1,0 +1,259 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+        <ng4-loading-spinner></ng4-loading-spinner>
+        <main class="col-md-9 ms-auto col-lg-10">
+            <!-- heading -->
+            <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                <div class="top_bg d-flex align-items-center">
+                    <div class="form-group">
+                        <label class="form-control input-group-lg reg_name">Residual Calculator</label>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div>
+            <div class="row pt-5">
+                <div class="col-lg-2">
+                </div>
+                <div class="col-lg-10 ">
+                    <div class="col-lg-10 m-auto">
+                        <form role="form" [formGroup]="CalculatorForm">
+                            <div class="form-group row text-end p-1">
+                                <label for="inputEmail3" class="col-sm-2 Mod_Headings">Year</label>
+                                <div class="col-sm-2">
+                                    <select style="width: 110%;" (change)="selectedYear($event)" formControlName="Year"
+                                        class="form-select"
+                                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; CalculatorForm.controls.Year.errors }">
+                                        <option value="" selected disabled>Select Year</option>
+                                        <option *ngFor="let y of years">{{y.years}}</option>
+                                    </select>
+                                    <div *ngIf="submitted &amp;&amp; CalculatorForm.controls.Year.errors"
+                                        class="text-danger">
+                                        <div *ngIf="CalculatorForm.controls.Year.errors.required">Select Year</div>
+                                    </div>
+                                </div>
+                                <label for="inputEmail3" class="col-sm-2 Mod_Headings">KBB Lending Price</label>
+                                <div class="col-sm-2">
+                                    <input [attr.disabled]="isHide ? 'true': null " type="text"
+                                        (change)="KBBpriceEntry($event)" [(ngModel)]="Number" maxlength="13"
+                                        (keyup)="keyupvalue(Number)" formControlName="KBBprice"
+                                        (keypress)="numberOnly($event)" style="width: 110%;" class="form-control"
+                                        placeholder="$0" (focusout)="focusFunction('$'+ Number,Number)"
+                                        (focus)="focus(Number.substring(1))"
+                                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; CalculatorForm.controls.KBBprice.errors }">
+                                    <div *ngIf="submitted &amp;&amp; CalculatorForm.controls.KBBprice.errors"
+                                        class="text-danger">
+                                        <div *ngIf="CalculatorForm.controls.KBBprice.errors.required">KBB Lending Price
+                                            is
+                                            required
+                                        </div>
+                                        <div *ngIf="CalculatorForm.controls.KBBprice.errors.maxlength">KBB Lending price
+                                            limit is
+                                            exceeded
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row text-end p-1">
+                                <label for="inputEmail3" class="col-sm-2 Mod_Headings">Make</label>
+                                <div class="col-sm-2">
+                                    <select style="width: 110%;" (change)="selectedMake($event)" formControlName="Make"
+                                        class="form-select"
+                                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; CalculatorForm.controls.Make.errors }">
+                                        <option value="" selected disabled>Select Make</option>
+                                        <option *ngFor="let b of Branddata">{{b.MakeName}}</option>
+                                    </select>
+                                    <div *ngIf="submitted &amp;&amp; CalculatorForm.controls.Make.errors"
+                                        class="text-danger">
+                                        <div *ngIf="CalculatorForm.controls.Make.errors.required">Select Make</div>
+                                    </div>
+                                </div>
+                                <label for="inputEmail3" class="col-sm-2 Mod_Headings">Sale Price</label>
+                                <div class="col-sm-2">
+                                    <input [attr.disabled]="isHide ? 'true': null " type="text" style="width: 110%;"
+                                        formControlName="SalesPrice" maxlength="14" class="form-control"
+                                        placeholder="$0" (change)="SalePriceEntry($event)" [(ngModel)]="Number3"
+                                        (keyup)="keyupvalue2(Number3)" (keypress)="numberOnly($event)"
+                                        (focusout)="focusFunction2('$'+ Number3,Number3)"
+                                        (focus)="focus2(Number3.substring(1))" [value]="Number3">
+                                    <!-- <div *ngIf="submitted &amp;&amp; CalculatorForm.controls.SalesPrice.errors"
+                                        class="text-danger">
+                                        <div *ngIf="CalculatorForm.controls.SalesPrice.errors.required">Sale Price
+                                            is
+                                            required
+                                        </div>
+                                        <div *ngIf="CalculatorForm.controls.SalesPrice.errors.maxlength">Sale Price
+                                            limit is
+                                            exceeded
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <!-- <div class="col-sm-2">
+                                    <input type="text" style="width: 110%;" formControlName="SalesPrice" class="form-control"
+                                    
+                                        placeholder="$0" (change)="SalePriceEntry($event)"
+                                        [formControl]="amountCtrl1" (keypress)="numberOnly($event)"
+                                        [value]="amountCtrl1.value | currency: 'USD':'symbol':'1.0-0'"
+                                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; CalculatorForm.controls.SalesPrice.errors }">
+                                    <div *ngIf="submitted &amp;&amp; CalculatorForm.controls.SalesPrice.errors"
+                                        class="text-danger">
+                                        <div *ngIf="CalculatorForm.controls.SalesPrice.errors.required">Sale price is
+                                            required
+                                        </div>
+                                        <div *ngIf="CalculatorForm.controls.SalesPrice.errors.pattern">Sale price must
+                                            be
+                                            Number
+                                        </div>
+                                        <div *ngIf="CalculatorForm.controls.SalesPrice.errors.maxlength">Sale price
+                                            limit is
+                                            exceeded
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+
+                            <div class="form-group row text-end p-1">
+                                <label for="inputEmail3" class="col-sm-2 Mod_Headings">Model</label>
+                                <div class="col-sm-2">
+                                    <input type="text" style="width: 110%;" class="form-control" placeholder="Model">
+                                </div>
+                                <label for="inputEmail3" class="col-sm-2 Mod_Headings">Down Payment</label>
+                                <div class="col-sm-2">
+                                    <input [attr.disabled]="isHide ? 'true': null " type="text"
+                                        (keypress)="numberOnly($event)" [(ngModel)]="Number2" maxlength="10"
+                                        (keyup)="keyupvalue1(Number2)" style="width: 110%;" formControlName="DownPay"
+                                        class="form-control" placeholder="$0" (change)="DownPayEntry($event)"
+                                        (focusout)="focusFunction1('$'+ Number2, Number2)"
+                                        (focus)="focus1(Number2.substring(1))">
+                                </div>
+                            </div>
+
+                            <div class="form-group row text-end p-1">
+                                <label for="inputEmail3" class="col-sm-2 Mod_Headings">Lease Term Mileage</label>
+                                <div class="col-sm-2">
+                                    <select style="width: 110%;" (change)="selectedMileage($event)"
+                                        formControlName="Mileage" class="form-select" placeholder="Mileage"
+                                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; CalculatorForm.controls.Mileage.errors }">
+                                        <option value="" selected disabled>Select</option>
+                                        <option *ngFor="let y of Mileagedata">{{y.Mileage}}</option>
+                                    </select>
+                                    <div *ngIf="submitted &amp;&amp; CalculatorForm.controls.Mileage.errors"
+                                        class="text-danger">
+                                        <div *ngIf="CalculatorForm.controls.Mileage.errors.required">Select Mileage
+                                        </div>
+                                    </div>
+                                </div>
+                                <label for="inputEmail3" class="col-sm-2 Mod_Headings">Net Price</label>
+                                <div class="col-sm-2">
+                                    <input type="text" style="width: 110%;" class="form-control" placeholder="Price"
+                                        [formControl]="NetCntrl" [value]="Price | currency: 'USD':'symbol':'1.0-0'"
+                                        disabled>
+                                </div>
+                            </div>
+
+
+
+                            <!-- <div class="form-group row text-end p-1">
+                                <label for="inputEmail3" class="col-sm-2 Mod_Headings">Current Mileage</label>
+                                <div class="col-sm-2">
+                                    <input type="text" (keypress)="numberOnly($event)" style="width: 110%;"
+                                        class="form-control" placeholder="Current Mileage">
+                                </div>
+                            </div> -->
+
+                            <div class="form-group row text-end p-1">
+                                 <label for="inputEmail3" class="col-sm-2 Mod_Headings">Current Mileage</label>
+                                <div class="col-sm-2">
+                                    <input type="text" style="width: 110%;" formControlName="CurrentMileage" maxlength="10"
+                                        class="form-control" placeholder="Current Mileage" (change)="CurrentMileage($event)"
+                                        (keypress)="numberOnly($event)">
+                                </div>
+                                <!-- 
+                                <tr>
+                                    <td>
+                                    
+                                      <label>numvalue</label>
+                                      <label> : </label>
+                                      <input type="text" formControlName="numValue"  maxlength="10" (change)="change()"> 
+                                        <small class="errormessage" *ngIf="submit1 && Form.numValue.hasError('min')">
+                                         Min value is 12
+                                        </small>
+                                  
+                                          <small class="errormessage" *ngIf="submit1 && Form.numValue.hasError('max')">
+                                       Max value is 36
+                                        </small>
+                                        
+                                    
+                                    </td>
+                                  </tr> -->
+
+
+                                <label class="col-sm-2 Mod_Headings">Residual Value</label>
+                                <div class="col-sm-2">
+                                    <input type="text" style="width: 110%;" class="form-control" placeholder="$0"                                       
+                                        [value]="ResidualValue | currency: 'USD':'symbol':'1.0-0'" disabled>
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group row text-end p-1" style="height:20px">
+
+                            </div>
+
+                            <div class="form-group row text-end p-1">
+                               
+                                <label for="inputEmail3" class="col-sm-2 Mod_Headings">Term</label>
+                                <div class="col-sm-2">
+                                    <input type="text" (change)="TermEntry($event)"
+                                        (keypress)="numberOnly($event)" style="width: 110%;" class="form-control"
+                                        placeholder="Term" formControlName="Term" maxlength="2"
+                                        [ngClass]="{ 'is-invalid': submit1 &amp;&amp; CalculatorForm.controls.Term.errors }">
+                                    <!-- <select style="width: 110%;" (change)="selectedTerm($event)" formControlName="Term"
+                                        class="form-select"
+                                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; CalculatorForm.controls.Term.errors }">
+                                        <option value="" selected disabled>Select Term</option>
+                                        <option *ngFor="let t of TERM">{{t.data}}</option>
+                                    </select> -->
+                                    <div class="text-danger">
+                                        <div *ngIf="submit1 && Form.Term.hasError('min')"> Min value is 12</div>
+                                        <div *ngIf="submit1 && Form.Term.hasError('max')"> Max value is 36</div>
+                                        <div *ngIf="submit1 && Form.Term.hasError('required')"> Term is
+                                            required</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="savebutton" style="width: 110%;"
+                                        (click)="Calculate()">Calculate</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="panel-body" style="top: 2rem; position: relative;">
+                    <div class="tbl-values">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="tbl-font">Residual Value</td>
+                                    <td>{{(this.RVoutputs.length == 0)? "--": this.RVoutputs[0]?.Residual |
+                                        currency: 'USD':'symbol':'1.0-0'}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="tbl-font">Lease Factor</td>
+                                    <td>0.004</td>
+                                </tr>
+                                <tr>
+                                    <td class="tbl-font">Payment</td>
+                                    <td>{{(this.RVoutputs.length == 0)? "--": this.RVoutputs[0]?.Lease_Payment |
+                                        currency: 'USD':'symbol':'1.0-0'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>

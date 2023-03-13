@@ -1,0 +1,109 @@
+<app-header></app-header>
+<ng4-loading-spinner  ></ng4-loading-spinner>
+<div class="container-fluid">
+    <div class="row">
+        
+          <main class="col-md-9 ms-auto col-lg-10">
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div class="top_bg d-flex align-items-center">
+                    <div class="me-auto" style="margin-right: 25px !important">
+                        <select [ngModel]="year" (change)="DMSFilter($event, 'Year')" class="_dropdwn"  >
+                            <option selected value="">Select Year</option>
+                            <option *ngFor="let i of Year_DD_Data" [value]="i.Y_ModelYear">{{i.Y_ModelYear}}</option>
+                          </select>
+                      </div>
+                      <div  class="me-auto" style="margin-right: 10px !important">
+                        <select [ngModel]="division" (change)="DMSFilter($event, 'Division')"  class="_dropdwn" >
+                            <option selected value="" >Select Division</option>
+                            <option *ngFor="let i of Division_DD_Data" [value]="i.D_DivisionId">{{i.D_DivisionName}}</option>
+                          </select>
+                      </div>
+                      <div id="make" class="me-auto" style="margin-right: 10px !important">
+                        <select [ngModel]="make" (change)="DMSFilter($event, 'Make')"  class="_dropdwn" >
+                            <option selected value="" >Select Model</option>
+                            <option *ngFor="let i of Model_DD_Data" [value]="i.M_ModelID">{{i.M_ModelName}}</option>
+                          </select>
+                      </div>
+                      <div class="me-auto" style="margin-right: 10px !important">
+                        <button (click)="OnSubmit()"type="submit" class="btn btn-primary">Go</button>
+                    </div>
+                    <div id="btnReset" value="Reset" (click)="ClearAll()" class="form-group">
+                        <span  class="badge badge-light"><img style="height: 30px;width: 30px;" src="/assets/images/search_cancel.png"></span>
+                    </div>
+                    <div  (click)="exportAsXLSX()" style="cursor: pointer;" class="ms-auto ">
+                        <div  class="d-flex align-items-center export"> Export to excel <span><img src="../../assets/images/export.png" style="margin:-5px 0 0 5px;"></span></div>
+                     </div>
+                  </div>
+              </div>
+              <div class="stor_headng">
+                <div class="row">
+                  <div class="store">
+                  </div>
+                  <div class="storebody">
+                    <h2 class="ttl-sales"><span>Chrome Data</span></h2>
+                  </div>
+                </div>
+            </div>
+            <div class="table-responsive service_R">
+                <table>
+                    <colgroup>
+                        
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        </colgroup>
+                        <thead>
+                            <tr >
+                                    <th style="width: 2%; border-bottom: 5px solid #65bbfa;">Row No</th>
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">Year</th>	
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">Division Name</th>
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">Model Name</th>
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">Style Name</th>
+                            </tr>
+                          </thead>
+                        <tbody>
+                            <ng-container *ngIf="StylesGridData.length > 0; else norecdata" >                 
+                                <tr *ngFor="let item of StylesGridData">
+                                    <td style="text-align: center;">{{item.ROWNUM}}</td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td>{{item.S_ModelYear}}</td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td>{{item.DivisionName}}</td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td>{{item.ModelName}}</td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td>{{item.StyleName}}</td>
+                                </tr>
+                            </ng-container>
+                            <ng-template #norecdata>
+                                <tr >
+                                <td colspan="10" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found</label></td>
+                                </tr>
+                          </ng-template>
+                          </tbody>
+                </table>
+            </div>
+           
+              <div *ngIf="StylesGridData.length > 99  &&  viewmore" class="d-flex justify-content-center" style="margin: 10px">
+                  <button style="background-color: #0d6efd;border: none;" type="button" class="btn btn-primary btn-sm"
+                      (click)="ViewMore()">View More</button>
+              </div>
+          
+          </main>
+          
+    </div>
+</div>
+
+

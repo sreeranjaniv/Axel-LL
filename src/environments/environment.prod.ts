@@ -1,0 +1,15 @@
+export const environment = {
+  production: true,
+  //ApiUrl:'http://apimw.azaz.com/api/',
+  DMSapiUrl:'http://dmsapi.servautomotive.com/api/',
+ // AXELapiUrl:'http://axelapi.azaz.com/api/',
+  AXELapiUrl:'http://axelapi.axelautomotive.com/api/',
+  USerDataApiUrl:'http://axeluserapi.azaz.com/api/',
+  CustomerSwickardUrl:'http://swickardapi.axelautomotive.com/api/',
+  AXELWebUrl: "https://axel.swickard.com/",
+  PoweredByAxel_Url: 'http://api.poweredbyaxel.com/api/',
+  PoweredByAxel_devUrl: 'http://devapi.poweredbyaxel.com/api/',
+  TouchXpressApiUrl:'http://touchxpressapi.azaz.com/api/',
+  ELeadsAPI :'http://axelelapi.axelautomotive.com/api/',
+  InternalAPI: 'http://internalapi.swickard.com/api/',
+};

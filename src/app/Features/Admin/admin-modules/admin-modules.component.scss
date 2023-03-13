@@ -1,0 +1,55 @@
+.top_bg{
+    width: 100%;
+    background-image: linear-gradient(to right, #4a42d4 , #267fd3);
+    color: #ffffff; padding: 10px 20px 20px;
+  }
+.contentpanel{width: 100%; height: auto;; 
+    border: 1px solid #267fd3; 
+    border-radius: 5px; 
+    padding: 25px 30px; 
+    margin-bottom: 30px;
+}
+
+.Mod_Headings{
+    font-size: 17px;
+    padding: 5px;
+    }
+.savebutton {
+    background: #267fd3;
+    border: 1px solid #267fd3;
+    border-radius: 3px;
+    padding: 5px;
+    outline: 0;
+    font-weight: 400;
+    font-size: 14px;
+    color: #fff;
+    text-transform: uppercase;
+    width: 100%;
+}
+.logoPointer {
+    margin: 5px 5px 0px 5px;
+    cursor: pointer;
+    background-color: #267fd3;
+}
+.closebtn{
+    background: #267fd3;
+    border: 1px solid #267fd3;
+    border-radius: 3px;
+    padding: 2px;
+    outline: 0;
+    font-weight: 20;
+    font-size: 12px;
+    color: #fff;
+    text-transform: uppercase;
+    float:left;
+   // margin-left: 50px;
+}
+.Active{
+    color: green;
+    text-align: center;
+}
+.InActive{
+    color: Red;
+    text-align: center;
+    text-transform: uppercase;
+}

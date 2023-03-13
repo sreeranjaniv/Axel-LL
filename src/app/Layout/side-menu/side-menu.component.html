@@ -1,0 +1,16 @@
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 px-0 d-md-block sidebar collapse">
+  <div   class="position-sticky pt-4">
+      <ul *ngFor="let ParentMod of ParentModules;let indexOfelement=index;" class="nav flex-column">
+        <li  class="nav-item">
+          <a  class="nav-link active" aria-current="page" >
+          <img  src="../../assets/images/{{ParentModulesImg[indexOfelement].split('|')[1]}}" style="margin-top: -5px;" class="feather">{{ParentMod}} </a>
+          <ng-container *ngIf="SubModuleArry(ParentMod)" >
+          <ul *ngFor="let SubModule of SModuleArray " class="child">
+          <li [ngClass]="{'activeClass':  globalVarComponent.g_SelectedMenuItem == SubModule.SMOD_FILENAME}" (click)="SideTabClick(SubModule.SMOD_FILENAME)"   ><a  >{{SubModule.SMOD_NAME}}</a></li>
+          </ul>
+          <!-- <a target="_blank" href="{{SubModule.SMOD_FILENAME}}"></a> -->
+        </ng-container>
+        </li>
+      </ul>
+    </div>
+</nav>

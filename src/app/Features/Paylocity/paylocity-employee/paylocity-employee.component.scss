@@ -1,0 +1,58 @@
+.table-responsive .table thead 
+{
+    background:white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.table-responsive .table tbody tr:last-child{border-bottom: #f1f4f6}
+// .table-responsive .table tbody tr{min-height: 50px;}
+.hover_ .table{position: relative; z-index: 99;}
+// .hover_ .table th{position: sticky; z-index: 99;}
+.hover_ .table tr td:first-child{padding-left: 20px;}
+.hover_ .table tr.active td {font-family: 'HelveticaNeue-Bold'; font-size: .8rem;}
+.hover_ .table tr:nth-child(even){background-color: #e8ebef;}
+.hover_ .table tr:first-child:hover  {background-color: transparent !important;} 
+
+
+
+table tr.highlight {
+// background-color: red !important;
+color: black;
+font-size: medium;
+font-weight: bold;
+//opacity: 1;
+}
+
+// .table-responsive{
+//   overflow-x: auto;
+//   overflow-y: auto;
+//   min-height: 50px;
+//   max-height: 650px;
+// }
+
+
+@media only screen and (min-width: 900px) {
+.table-responsive{
+max-height: 400px;
+min-height: 50px;
+}
+}
+@media only screen and (min-width: 1800px) {
+.table-responsive{
+  max-height: 709px;
+  min-height: 50px;
+}
+
+}
+
+
+#srchgroups {
+width: 198px;
+height: 29px;
+border: 1px solid lightgray;
+outline: none;
+border-radius: 4px 4px 4px 4px;
+text-indent:10px;
+}

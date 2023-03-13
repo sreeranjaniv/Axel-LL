@@ -1,0 +1,136 @@
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="row">
+          <ng4-loading-spinner  ></ng4-loading-spinner>
+          <main class="col-md-9 ms-auto col-lg-10" *ngIf="StoresBrandsGrid" >
+              
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div class="top_bg d-flex align-items-center">
+                    <div class="form-group col-xs-3 ">
+                      <label class="form-control input-group-lg reg_name">Brand Assignment</label>
+                  </div>
+              <!-- <div  class="form-group col-xs-6">
+                  <button (click)="AddStoreBrand()" type="button" class="btn btn-primary" >Add</button>
+              </div> -->
+                  </div>
+                  
+              </div>
+              
+              <div  class="table-responsive hover_">
+                <table class="table table-striped" style="width: 100%; text-align: center;">
+                    <thead>
+                      <tr style="text-transform: uppercase;">
+                        <th scope="col" class="store_name" style="padding-left: 20px;">Store Names</th>
+                        <th scope="col" class="store_name" style="padding-left: 20px;">Brands</th>
+                        <!-- <th scope="col">Status</th> -->
+                        <th scope="col">Action</th>
+                        <!-- <th scope="col">Delete</th> -->
+                      </tr>
+                    </thead>
+  
+                    <tbody style="cursor: pointer;">
+                        <ng-container *ngIf="StoresBrandGridData" >
+                            <tr *ngFor="let item of StoresBrandGridData">
+                                <td class="store_name" style="padding-left: 20px;">{{item.AS_DEALERNAME | uppercase}}</td>
+                                <td class="store_name" style="width:50%;padding-left: 20px;">{{item.BRANDS}}</td>
+                               
+                                <!-- <td ><span [ngStyle]="{'color': item.GS_Status=='Y' ? '#0aa40a' : item.GS_Status=='D' ? 'red' : '#ff0000' }">{{item.GS_Status=='Y' ? 'Active' : item.GS_Status=='D' ? 'Delete' : 'In-active'}}</span></td> -->
+                                <!-- <td title="Edit" (click)="editGroup(item.AS_ID)"  ><button>Add</button> </td> -->
+                                <td style="background: transparent !important;"><button (click)="editGroup(item.AS_ID)" type="submit" style="width: 60%;background-color:#267fd3;color: white;" class="btn-primary">Update</button></td>
+                              
+                                <!-- <td title="Delete" (click)="DeleteGroup(item.GS_Id, 'D')"  ><img  style="text-align: center; cursor: pointer;" src="../../../assets/images/del_gry.png"></td> -->
+                            </tr>
+                    </ng-container>
+                      <ng-template #norecdata>
+                        <tr  >
+                          <td colspan="5" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found !!</label></td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                    
+                  </table>
+              
+            </div>
+            
+          </main>
+          <main class="col-md-9 ms-auto col-lg-10" *ngIf="EditStoreBrands">
+            <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                <div class="top_bg d-flex align-items-center">
+                  <div class="form-group col-xs-3 ">
+                    <label class="form-control input-group-lg reg_name">Edit Brands</label>
+                </div>
+                </div>
+            </div>
+            <div>
+              <div class="row">
+                <div class="column1">
+                </div>
+                <div class="column">
+                  <!-- <h2 class="ttl-sales"><span>Admin Modules Data</span></h2> -->
+                </div>
+              </div>
+          </div>
+          <div class="contentpanel">
+              <div class="container">
+                <div class="row">
+                  <div >
+                    <div class="panel panel-default">
+  
+                      <div class="panel-body">
+                        <form role="form" [formGroup]="FormStoresBrands">
+                          <div class="row">
+                            <div >
+                              
+  
+                              <div class="form-group">
+                                  <label class="Mod_Headings" for="Storeid" >Stores:</label>
+                                  <select  style="width: 40% !important;" formControlName="Storeid" [(ngModel)]="StoresBrandArraydata.Storeid" class="form-control w-75 inptcs" >
+                                    <option value="" selected [disabled]="true">Select Store</option>
+                                    <option *ngFor="let i of Dealer_DD" [value]="i.AS_ID">{{i.DEALER_NAME}}</option>
+                                  </select>
+                                  
+                                </div>
+                                
+                                
+                                <div class="form-group">
+                                  <label  class="Mod_Headings" for="brandids">Brands:</label>
+                                  <div id="stores" class="row">
+                                      <div  *ngFor="let i of GetBrands" style="font-size: 17px;padding-left: 5em;"   class="form-check form-switch col ">
+                                          <input  [checked]="IsStoreChecked(i.brand_chrome_id) == 1?true:false" (change)="HandleStoreIds(i.brand_chrome_id)" 
+                                           id="brandids"  formControlName="brandids"  [value]="i.brand_chrome_id"
+                                           class="form-check-input" type="checkbox" >
+                                          <label style="width: 200px;"  class="form-check-label" for="brandids">{{i.brand_name}}</label>
+                                        </div>
+                                        
+                                    </div>
+                                  </div>  
+                               
+                              
+                            </div>
+                          </div>
+  
+                          
+                       
+                          <div class="col-lg-12 pt-lg-5 pl-lg-4">
+                            <div class="row">
+                              <div class="col-lg-2">
+                                <button id="savebutton" type="button" class="savebutton"  (click)="SaveStoresBrands()">Save</button>
+                              </div>
+                              <div class="col-lg-2">
+                                <button type="button" class="cancelbutton" (click)="BackToBrandsGrid()">Cancel</button>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+        </main>
+    </div>
+   
+  </div>

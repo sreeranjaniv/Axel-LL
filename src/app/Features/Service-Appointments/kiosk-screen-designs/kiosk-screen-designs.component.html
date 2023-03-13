@@ -1,0 +1,627 @@
+<app-header></app-header>
+<ng4-loading-spinner></ng4-loading-spinner>
+<div class="container-fluid" style="position: fixed;">
+    <div class="row">
+        <main class="container p-0" *ngIf="AdminGrid">
+            <div class="col-lg-12 p-0">
+                <div class="Nrep2_bg">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <div *ngIf=" this.globalVarComponent.g_SideMenuItemCount > 1">
+                                <a (click)="PreviousUrl()" style="cursor: pointer;font-size: medium;"
+                                    class="link-light">Back</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-2">
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="NR_dropdwn">
+                                <select class="form-select" (change)="searchstores($event.target.value)"
+                                    [(ngModel)]="storedefault" [disabled]="true">
+                                    <option value="0">select store</option>
+                                    <option *ngFor="let s of stores" [value]="s.CORA_ACCT_CODE">{{s.DEALER_NAME}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="NR_dropdwn">
+                                <select class="form-select" (change)="getkisok($event.target.value)"
+                                    [(ngModel)]="kioskdefault">
+                                    <option value="0">select kiosk</option>
+                                    <option *ngFor="let s of searchstoredata" [value]="s.K_ID">{{s.K_NUMBER}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" style="text-align-last: end;margin-left: auto!important;">
+
+                            <!-- <pagination-controls previousLabel="Prev" nextLabel="Next" responsive="true"
+                            (pageChange)="handlePageChange($event)" [maxSize]="4" [autoHide]="true"
+                            style="font-size: medium;"></pagination-controls> -->
+                            <button (click)="AdminAdd('A')" type="submit" class="savebutton">ADD</button>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 p-0">
+                            <div class="Nrep_Deal">
+                                <div class="nr_curve scroll_deals">
+                                    <table class="table-fixed">
+                                        <thead>
+                                            <tr>
+                                                <th class="_ttl">SCREEN NUMBER</th>
+                                                <th style="width: 1%;"></th>
+                                                <th class="_ttl">COMPONENT</th>
+                                                <th style="width: 1%;"></th>
+                                                <th class="_ttl">CONTROL TEXT</th>
+                                                <th style="width: 1%;"></th>
+                                                <th class="_ttl">CONTROL TEXTCOLOR</th>
+                                                <th style="width: 1%;"></th>
+                                                <th class="_ttl">CONTROL COLOR</th>
+                                                <th style="width: 1%;"></th>
+                                                <th class="_ttl">IMAGE URL</th>
+                                                <th style="width: 1%;"></th>
+                                                <th class="_ttl">SEQUENCE</th>
+                                                <th style="width: 1%;"></th>
+                                                <th class="_ttl">STATUS</th>
+                                                <th style="width: 1%;"></th>
+                                                <th class="_ttl">EDIT</th>
+                                                <th style="width: 1%;"></th>
+                                                <th class="_ttl">View</th>
+                                                <th style="width: 1%;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngIf="AdminData!='' ; else norecdata">
+                                                <tr *ngFor="let item of AdminData; let ioe=index">
+                                                    <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                        {{item.TSD_SCREEN_NUMBER=== '' ? '-' :item.TSD_SCREEN_NUMBER}}
+                                                    </td>
+                                                    <td style="background: transparent !important;"></td>
+                                                    <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                        <div *ngFor="let item1 of item.Details;let index=index"
+                                                            class="grid">
+                                                            {{item1.TSC_NAME=== '' ? '-' :item1.TSC_NAME}}
+                                                        </div>
+                                                    </td>
+                                                    <td style="background: transparent !important;"></td>
+                                                    <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                        <div *ngFor="let item1 of item.Details;let index=index"
+                                                            class="grid1">
+                                                            {{item1.TSD_CONTROL_TEXT=== '' ? '-'
+                                                            :item1.TSD_CONTROL_TEXT}}
+                                                        </div>
+                                                    </td>
+                                                    <td style="background: transparent !important;"></td>
+                                                    <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                        <div *ngFor="let item1 of item.Details" class="grid">
+                                                            {{item1.TSD_CONTROL_TEXTCOLOR=== null ||
+                                                            item1.TSD_CONTROL_TEXTCOLOR=== ''
+                                                            ||item1.TSD_CONTROL_TEXTCOLOR=== "null" ? '-'
+                                                            :item1.TSD_CONTROL_TEXTCOLOR}}
+                                                        </div>
+                                                    </td>
+                                                    <td style="background: transparent !important;"></td>
+                                                    <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                        <div *ngFor="let item1 of item.Details" class="grid">
+                                                            {{item1.TSD_CONTROL_COLOR === '' ? '-'
+                                                            :item1.TSD_CONTROL_COLOR}}
+                                                        </div>
+                                                    </td>
+                                                    <td style="background: transparent !important;"></td>
+                                                    <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                        <div *ngFor="let item1 of item.Details" class="grid1"
+                                                            style="cursor: pointer;" data-toggle="modal"
+                                                            title="{{item1.TSD_IMAGE_URL}}" data-target="#myModal"
+                                                            (click)="imageclick(item1.TSD_IMAGE_URL)">
+                                                            <u
+                                                                *ngIf="item1.TSD_IMAGE_URL != '' && item1.TSD_IMAGE_URL != null">
+                                                                {{item1.TSD_IMAGE_URL === '' || item1.TSD_IMAGE_URL ===
+                                                                null
+                                                                ? '-' : (item1.TSD_IMAGE_URL.toString() | slice:0:15) +
+
+                                                                (item1.TSD_IMAGE_URL.length > 15 ? '...' : '') }}</u>
+                                                            <span
+                                                                *ngIf="item1.TSD_IMAGE_URL === '' || item1.TSD_IMAGE_URL === null">
+                                                                {{item1.TSD_IMAGE_URL === '' || item1.TSD_IMAGE_URL ===
+                                                                null
+                                                                ? '-' : item1.TSD_IMAGE_URL }}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td style="background: transparent !important;"></td>
+                                                    <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                        <div *ngFor="let item1 of item.Details" class="grid">
+                                                            {{item1.TSD_SEQ === '' ? '-' :item1.TSD_SEQ}}
+                                                        </div>
+                                                    </td>
+                                                    <td style="background: transparent !important;"></td>
+                                                    <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                        <div *ngFor="let item1 of item.Details" class="grid">
+                                                            <span
+                                                                [ngStyle]="{'color': item1.TSD_STATUS=='Y' ? '#0aa40a' : '#ff0000' }">{{item1.TSD_STATUS=='Y'
+                                                                ? 'Active' : 'In-active'}}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td style="background: transparent !important;"></td>
+                                                    <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                        <div *ngFor="let item1 of item.Details"
+                                                            style="text-align: center; cursor: pointer;">
+                                                            <img src="assets/images/edit_1.png"
+                                                                (click)="EditAdmin(item1,'U',item1.TSD_ID,item)" />
+                                                        </div>
+                                                    </td>
+                                                    <td style="background: transparent !important;"></td>
+                                                    <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                        <i class="fa fa-eye" style="cursor: pointer;font-size: large;"
+                                                            (click)="viewScreen(item)" data-toggle="modal"
+                                                            data-target="#exampleModalPreview"></i>
+                                                    </td>
+                                                    <td style="background: transparent !important;"></td>
+                                                </tr>
+                                            </ng-container>
+                                            <ng-template #norecdata>
+                                                <tr>
+                                                    <td colspan="17"
+                                                        style="text-align: center;color: #040404;font-size: 14px;">
+                                                        <label>No
+                                                            Data Found
+                                                            !!</label>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+        <main class="container p-0" *ngIf="AddAdmin">
+            <div class="col-lg-12 p-0">
+                <div class="Nrep2_bg">
+                    <div class="align-items-center border-bottom">
+                        <div class="top_bg d-flex align-items-center ">
+                            <div class="form-group col-xs-3 ">
+                                <label class="form-control input-group-lg reg_name" style="height: 36px;">Add/Edit
+                                    Screen Design</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <div class="column1">
+                            </div>
+                            <div class="column">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contentpanel">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-4">
+                                    <div class="panel panel-default">
+
+                                        <div class="panel-body">
+                                            <form role="form" [formGroup]="ScreenDesignForm">
+                                                <div class="row mb-3">
+
+                                                    <div class="NR_dropdwn col-lg-6 pr-0">
+                                                        <div class="form-group grp grp_det">
+                                                            <label>Stores :</label>
+                                                            <select formControlName="stores" [disabled]="true"
+                                                                (change)="searchstores($event.target.value)">
+                                                                <option value="">Select</option>
+                                                                <option *ngFor="let s of stores"
+                                                                    [value]="s.CORA_ACCT_CODE">{{s.DEALER_NAME}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="NR_dropdwn col-lg-6">
+                                                        <div class="form-group grp grp_det">
+                                                            <label for="kiosk_id">Kiosk Number:</label>
+                                                            <select formControlName="kiosk_id"
+                                                                (change)="getcomponent($event)">
+                                                                <option value="">Select</option>
+                                                                <option *ngFor="let s of searchstoredata"
+                                                                    [value]="s.K_ID">{{s.K_NUMBER}}</option>
+                                                            </select>
+                                                            <div *ngIf="submitted &amp;&amp; ScreenDesignForm.controls.kiosk_id.errors"
+                                                                class="text-danger">
+                                                                <div
+                                                                    *ngIf="ScreenDesignForm.controls.kiosk_id.errors.required">
+                                                                    Kiosk Number is required
+                                                                </div>
+                                                            </div>
+                                                            <!-- <input type="text" formControlName="kiosk_id" class="form-control" placeholder="Kiosk Number" autofocus maxlength="51" [ngClass]="{ 'is-invalid': submitted &amp;&amp; ScreenDesignForm.controls.kiosk_id.errors }"
+                                />
+                                <div *ngIf="submitted &amp;&amp; ScreenDesignForm.controls.kiosk_id.errors" class="text-danger">
+                                  <div *ngIf="ScreenDesignForm.controls.kiosk_id.errors.required">Kiosk Number is required</div>
+                                  <div *ngIf="ScreenDesignForm.controls.kiosk_id.errors.maxlength">Kiosk Number Limit is Exceeded</div>
+                                </div> -->
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="col-xs-6 col-sm-6 col-md-6"> -->
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group grp grp_det">
+                                                            <label for="screen_number">Screen Number:</label>
+                                                            <input type="text" formControlName="screen_number"
+                                                                class="form-control" placeholder="Screen Number"
+                                                                autofocus maxlength="51"
+                                                                [ngClass]="{ 'is-invalid': submitted &amp;&amp; ScreenDesignForm.controls.screen_number.errors }" />
+                                                            <div *ngIf="submitted &amp;&amp; ScreenDesignForm.controls.screen_number.errors"
+                                                                class="text-danger">
+                                                                <div
+                                                                    *ngIf="ScreenDesignForm.controls.screen_number.errors.required">
+                                                                    Screen Number is
+                                                                    required</div>
+                                                                <!-- <div *ngIf="ScreenDesignForm.controls.screen_number.errors.maxlength">Screen Number Limit is Exceeded</div> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="NR_dropdwn col-lg-6 pr-0">
+                                                        <div class="form-group grp grp_det">
+                                                            <label>Component :</label>
+                                                            <select formControlName="component"
+                                                                (change)="getcomponent($event)">
+
+                                                                <option value="">Select</option>
+                                                                <!-- screencomponents -->
+                                                                <option *ngFor="let component of screencomponents"
+                                                                    [value]="component.TSC_ID">
+                                                                    {{component.TSC_NAME}}</option>
+
+                                                            </select>
+                                                            <div *ngIf="submitted &amp;&amp; ScreenDesignForm.controls.component.errors"
+                                                                class="text-danger">
+                                                                <div
+                                                                    *ngIf="ScreenDesignForm.controls.component.errors.required">
+                                                                    Component is required</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <div class="NR_dropdwn col-lg-6 pr-0">
+                                                        <div class="form-group grp grp_det">
+                                                            <label>Control :</label>
+                                                            <select formControlName="control"
+                                                                [(ngModel)]="defaultControl"
+                                                                (change)="getcontrol($event)">
+
+                                                                <option value="0">Select</option>
+
+
+                                                                <option *ngFor="let control of controls"
+                                                                    [value]="control.TC_ID">{{control.TC_NAME}}
+                                                                </option>
+
+
+                                                            </select>
+
+                                                            <div *ngIf="submitted &amp;&amp; ScreenDesignForm.controls.control.errors"
+                                                                class="text-danger">
+                                                                <div
+                                                                    *ngIf="ScreenDesignForm.controls.control.errors.required">
+                                                                    Control is required</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group grp grp_det">
+
+                                                            <label for="control_text">Control Text:</label>&nbsp;<span>
+                                                                <button type="button" class="breakbutton"
+                                                                    (click)="addbreak()">&lt;/BR&gt;</button></span>
+                                                            <angular-editor formControlName="control_text"
+                                                                style="background: #f2eeed;" [config]="config"
+                                                                [(ngModel)]="editor"></angular-editor>
+
+
+
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="NR_dropdwn col-lg-6 pr-0"
+                                                        *ngIf="ScreenDesignForm.controls.control.value== '1'||ScreenDesignForm.controls.control.value=='3' ">
+                                                        <div class="form-group grp grp_det">
+                                                            <label>Control Type:</label>
+                                                            <select formControlName="controltype"
+                                                                (change)="getcontroltype($event)">
+                                                                <option value="0">Select</option>
+                                                                <option *ngFor="let control of controlstypes"
+                                                                    [value]="control.CT_TC_ID">{{control.CT_NAME}}
+                                                                </option>
+
+
+                                                            </select>
+
+                                                            <!-- <div *ngIf="submitted &amp;&amp; ScreenDesignForm.controlstypes.control.errors"
+                              class="text-danger">
+                              <div *ngIf="ScreenDesignForm.controlstypes.control.errors.required">Control is required</div>
+                            </div> -->
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row mb-3">
+
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="form-group grp grp_det">
+
+                                                            <label for="control_color">Control Color:</label>
+
+                                                            <input type="text" formControlName="control_color"
+                                                                class="form-control" placeholder="Control Color"
+                                                                autofocus />
+                                                            <!-- <div *ngIf="submitted &amp;&amp; ScreenDesignForm.controls.control_color.errors" class="text-danger">
+                                  <div *ngIf="ScreenDesignForm.controls.control_color.errors.required">Control Color is required</div>
+                                </div> -->
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                    <div class="col-lg-6">
+
+                                                        <div class="form-group grp grp_det">
+
+                                                            <label for="control_color">Control TextColor:</label>
+
+                                                            <input type="text" formControlName="control_textcolor"
+                                                                class="form-control" placeholder="Control TextColor"
+                                                                autofocus />
+                                                            <!-- <div *ngIf="submitted &amp;&amp; ScreenDesignForm.controls.control_color.errors" class="text-danger">
+                                  <div *ngIf="ScreenDesignForm.controls.control_color.errors.required">Control Color is required</div>
+                                </div> -->
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group grp grp_det">
+
+                                                            <label for="mod_seq">Sequence :</label>
+
+                                                            <input type="text" formControlName="mod_seq"
+                                                                class="form-control" placeholder="Sequence"
+                                                                maxlength="6"
+                                                                [ngClass]="{ 'is-invalid': submitted &amp;&amp; ScreenDesignForm.controls.mod_seq.errors }" />
+                                                            <div *ngIf="submitted &amp;&amp; ScreenDesignForm.controls.mod_seq.errors"
+                                                                class="text-danger">
+                                                                <div
+                                                                    *ngIf="ScreenDesignForm.controls.mod_seq.errors.required">
+                                                                    Sequence is required</div>
+                                                                <div
+                                                                    *ngIf="ScreenDesignForm.controls.mod_seq.errors.pattern">
+                                                                    Sequence must be Number</div>
+                                                                <div
+                                                                    *ngIf="ScreenDesignForm.controls.mod_seq.errors.maxlength">
+                                                                    Sequence limit Exceeded
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group grp grp_det" style="padding-top: 15px;">
+                                                            <label for="mod_seq"></label>
+
+                                                            <img src="../../assets/images/Upload-Icon.png"
+                                                                class="logoPointer" (click)="selectFile.click()">
+                                                            <input style="display: none" type="file" name="image"
+                                                                formControlName="mod_image"
+                                                                (change)="processFile($event)" #selectFile />
+                                                            <!-- <div *ngIf="fileData==''">
+                                  <img src='{{previewUrl}}'>
+                                  </div> -->
+
+                                                            <div style="display: contents;" class="image-preview"
+                                                                *ngIf="previewUrl">
+
+                                                                <img [src]="previewUrl" height="100" width="100" />
+                                                                <span><i class="fa fa-close"
+                                                                        (click)="resetFileUploader()"
+                                                                        style=" font-size: 15px;padding: 0.5rem 14.5rem; margin: -6.5rem -5.5rem 4.5rem auto; display: block; "></i></span>
+                                                            </div>
+
+                                                            <!-- <div *ngIf="uploadedFilePath">
+                                    {{uploadedFilePath}}
+                                  </div> -->
+                                                            <!-- <div *ngIf="submitted &amp;&amp; ScreenDesignForm.controls.mod_image.errors" class="text-danger">
+                                    <div *ngIf="ScreenDesignForm.controls.mod_image.errors.required"> Image is required</div>
+                                  </div> -->
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="row mb-3">
+                           
+                          </div> -->
+
+                                                <!-- <div class="row" *ngIf="AdminStatus"> -->
+                                                <div class="row mb-3">
+                                                    <div class="col-xs-3 col-sm-3 col-md-3">
+                                                        <div class="form-group grp grp_det">
+                                                            <label for="mod_status">Status :</label>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <input type="checkbox" formControlName="mod_status"
+                                                                value="y"
+                                                                [ngClass]="{ 'is-invalid': submitted &amp;&amp; ScreenDesignForm.controls.mod_status.errors }" />
+                                                            <div *ngIf="submitted &amp;&amp; ScreenDesignForm.controls.mod_status.errors"
+                                                                class="text-danger">
+                                                                <div
+                                                                    *ngIf="ScreenDesignForm.controls.mod_status.errors">
+                                                                    Status required</div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-lg-12">
+                                                    <div class="row">
+                                                        <div class="col-lg-2">
+                                                            <button type="button" class="savebutton"
+                                                                (click)="AdminSaving()">Save</button>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <button type="button" (click)="BackTOAdminGrid()"
+                                                                class="savebutton">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+</div>
+
+
+<!-- popups -->
+<div class="containerpopup" *ngIf="image !='' && image !=null">
+
+
+    <div class="modal fade bd-example-modal-sm" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <button type="button" #closebutton class="btn-close" data-dismiss="modal" style="padding: 0.5rem 0.5rem;
+            margin: -0.5rem -0.5rem -0.5rem auto;display: block;">&times;</button>
+
+                    <img [src]="imagepopup" height="100" style="width:95px;margin-left: 32%;margin-top: 24px;
+          " />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade right" id="exampleModalPreview" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalPreviewLabel" aria-hidden="true">
+    <div class="modal-dialog-full-width modal-dialog momodel modal-fluid" role="document">
+        <div class="modal-content-full-width modal-content content">
+            <div class=" modal-header-full-width   modal-header text-center btnClose">
+
+                <button type="button" class="btn-close" data-dismiss="modal" style="padding: 0.5rem 0.5rem;
+          margin: -0.5rem -0.5rem -0.5rem auto;display: block;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div *ngFor="let v of result.Details">
+                    <img class="bgImage" *ngIf="v.TSD_TSC_ID == '6'" src="{{Imagepath}}{{v.TSD_IMAGE_URL}}">
+                    <img class="bgImage1" *ngIf="v.TSD_IMAGE_URL == ''" src="{{Imagepath}}{{imageURl}}">
+                    <img class="bgImage1" *ngIf="v.TSD_TSC_ID != '6' && v.TSD_IMAGE_URL != ''"
+                        src="{{Imagepath}}{{imageURl}}">
+
+
+                    <div class="col-lg-12" *ngIf="v.TSD_TSC_ID == '1' && v.TSD_CONTROL_TEXT == ''"><img
+                            class="headerLogo"
+                            src="http://touchxpressapi.azaz.com/api/v1/resources/images/{{v.TSD_IMAGE_URL}}"></div>
+                    <div class="col-lg-12" *ngIf="v.TSD_TSC_ID != '1' && v.TSD_CONTROL_TEXT != ''"><img
+                            class="headerLogo"
+                            src="http://touchxpressapi.azaz.com/api/v1/resources/images/{{headerImage}}"></div>
+                    <div class="col-lg-12" *ngIf="v.TSD_TSC_ID == '1'&& v.TSD_CONTROL_TEXT != 'Line'">
+                        <h1 class="brand_name" [innerHTML]="v.TSD_CONTROL_TEXT"></h1>
+                    </div>
+                    <div class="col-lg-12" *ngIf="v.TSD_TSC_ID != '1'">
+                        <h1 class="brand_name" [innerHTML]="brandName"></h1>
+                    </div>
+
+                    <div class="col-lg-12" *ngIf="v.TSD_TSC_ID == '1'&& v.TSD_CONTROL_TEXT == 'Line'"
+                        [style.border-top]="v.TSD_CONTROL_COLOR"></div>
+
+
+                    <div *ngIf="v.TSD_TSC_ID == '2' && v.TC_NAME == 'Textbox' && v.TSC_NAME == 'Body1'"><input
+                            type="text" class="textboxClass" [placeholder]="v.TSD_CONTROL_TEXT"></div>
+                    <div *ngIf="v.TSD_TSC_ID == '2' && v.TC_NAME == 'Label' && v.TSC_NAME == 'Body1'"
+                        [style.color]="v.TSD_CONTROL_TEXTCOLOR" class="textboxClass" [innerHTML]="v.TSD_CONTROL_TEXT">
+                    </div>
+                    <div *ngIf="v.TSD_TSC_ID == '2' && v.TC_NAME == 'button' && v.TSC_NAME == 'Body1'"><input
+                            type="Button" class="textboxClass" [value]="v.TSD_CONTROL_TEXT"
+                            [style.color]="v.TSD_CONTROL_TEXTCOLOR" [style.background-color]="v.TSD_CONTROL_COLOR">
+                    </div>
+
+                    <div *ngIf="v.TSD_TSC_ID == '3' && v.TC_NAME == 'Textbox' && v.TSC_NAME == 'Body2'"><input
+                            type="text" class="scanQrCode" [placeholder]="v.TSD_CONTROL_TEXT"></div>
+                    <div *ngIf="v.TSD_TSC_ID == '3' && v.TC_NAME == 'Label' && v.TSC_NAME == 'Body2'"
+                        [style.color]="v.TSD_CONTROL_TEXTCOLOR" class="scanQrCode" [innerHTML]="v.TSD_CONTROL_TEXT">
+                    </div>
+                    <div *ngIf="v.TSD_TSC_ID == '3' && v.TC_NAME == 'button' && v.TSC_NAME == 'Body2'"><input
+                            type="Button" class="scanQrCode" [value]="v.TSD_CONTROL_TEXT"
+                            [style.color]="v.TSD_CONTROL_TEXTCOLOR" [style.background-color]="v.TSD_CONTROL_COLOR">
+                    </div>
+
+                    <div *ngIf="v.TSD_TSC_ID == '4' && v.TC_NAME == 'Textbox' && v.TSC_NAME == 'Body3'"><input
+                            type="text" class="getHelp" [placeholder]="v.TSD_CONTROL_TEXT"></div>
+                    <div *ngIf="v.TSD_TSC_ID == '4' && v.TC_NAME == 'Label' && v.TSC_NAME == 'Body3'"
+                        [style.color]="v.TSD_CONTROL_TEXTCOLOR" class="getHelp" [innerHTML]="v.TSD_CONTROL_TEXT"></div>
+                    <div *ngIf="v.TSD_TSC_ID == '4' && v.TC_NAME == 'button' && v.TSC_NAME == 'Body3'"><input
+                            type="Button" class="getHelp" [value]="v.TSD_CONTROL_TEXT"
+                            [style.color]="v.TSD_CONTROL_TEXTCOLOR" [style.background-color]="v.TSD_CONTROL_COLOR">
+                    </div>
+
+                    <div *ngIf="v.TC_NAME == 'button' && v.TSC_NAME == 'Footer'"><input type="Button" class="footer"
+                            [value]="v.TSD_CONTROL_TEXT" [style.color]="v.TSD_CONTROL_TEXTCOLOR"
+                            [style.background-color]="v.TSD_CONTROL_COLOR"></div>
+
+                </div>
+            </div>
+            <!-- <div class="viewScreen">
+          <img src="../../assets/images/bg1.png" style="position: absolute;" alt="">
+  
+          <div class="" style="position: relative;
+          top: 0%;
+          z-index: 99;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;">
+            <h5>SWIIGY</h5>
+            <h5>SWIIGY</h5>
+            <h5>SWIIGY</h5>
+          </div>
+              </div> -->
+        </div>
+    </div>
+</div>

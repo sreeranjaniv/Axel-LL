@@ -1,0 +1,197 @@
+<app-header></app-header>
+<ng4-loading-spinner></ng4-loading-spinner>
+<div class="container-fluid" style="position: fixed;">
+    <div class="row">
+        <div class="col-lg-12 p-0">
+            <div class = "Nrep2_bg">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <div *ngIf=" this.globalVarComponent.g_SideMenuItemCount > 1">
+                            <a (click)="PreviousUrl()" style="cursor: pointer;font-size: medium;" class="link-light">Back</a>
+                          </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-2">
+                        <div class="NR_dropdwn">
+                            <select class="form-select" [(ngModel)]="SelectStore" (change)="storeChange($event.target.value)" >
+                                <option value="">Select Store</option>
+                                <option *ngFor="let x of StoreList" value="{{x.DMS_ID}}">{{x.AS_DEALERNAME}}</option>                            
+                            </select>
+                        </div>
+                    </div>  
+                   
+                    <div class="col-lg-2">
+                        <div class="date">
+                            <div class="md-form">
+                              <input type="date" name="Date" [ngModel]="startDate | date:'yyyy-MM-dd'" 
+                              [max]=getToday() (ngModelChange)="updatedate($event)" class="datepicker">
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col-lg-3">
+                         <input type="search" placeholder="Search by Opportunity ID" class="form-control" name="search"  [(ngModel)]="SelectedOppID" style = "line-height:1; font-size: 0.8rem;width: 75%;float: right;" > 
+                    </div>
+                    <div class="col-lg-2" >
+                         <button (click)="searchById(SelectedOppID)"type="submit" class="button2" >Go</button>
+                    </div>
+                
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 p-0">
+                        <div class="Nrep_Deal">
+                            <div class="nr_curve scroll_deals">
+                                <table class="table-fixed">
+                                    <thead>
+                                        <tr>
+                                            <th class="_ttl" style="width: 15%;">History Id</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">OPPORTUNITY ID</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">ACTIVITY TYPE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">CATEGORY</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">NAME</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">COMPLETED DATE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">DUE DATE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">CLOSED DATE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">OUTCOME</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">CREATED BY</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">ASSIGNED TO</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">COMPLETED BY</th>
+                                            <th style="width: 1%;"></th>
+                                    
+                                            <th class="_ttl" style="width: 15%;">UPTYPE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">SOURCE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">SUBSOURCE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">CREATED BY USERID</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">ASSIGNED TO USERID</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 15%;">COMPLETED BY USERID</th>
+                                            <th style="width: 1%;"></th>
+
+
+                                        </tr>    
+                                    </thead>
+                                    <tbody>
+                                         <ng-container *ngIf="GridData.length > 0; else norecdata"> 
+                                        <tr *ngFor ="let item of GridData; let ioe = index;"> 
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" [ngStyle]="{'color': item.AHBOI_OUTCOMES_COUNT_BYHISTORYID!='0' ? 'blue' : 'black', 'cursor': item.AHBOI_OUTCOMES_COUNT_BYHISTORYID!='0' ? 'pointer': 'default' }" (click)="OpenModal(item)" data-toggle="modal" data-target="#modelId" >{{(item.AHBOI_HISTORY_ID == "" ? '--' : (item.AHBOI_HISTORY_ID == null ? '--':item.AHBOI_HISTORY_ID))}}</td>
+                                            <td style="background: transparent !important;"></td> 
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_OPPORTUNITYID == "" ? '--' : (item.AHBOI_OPPORTUNITYID == null ? '--':item.AHBOI_OPPORTUNITYID))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_ACTIVITYTYPE == "" ? '--' : (item.AHBOI_ACTIVITYTYPE == null ? '--':item.AHBOI_ACTIVITYTYPE))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_CATEGORY == "" ? '--' : (item.AHBOI_CATEGORY == null ? '--':item.AHBOI_CATEGORY))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_NAME == "" ? '--' : (item.AHBOI_NAME == null ? '--':item.AHBOI_NAME))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_COMPLETEDDATE == "" ? '--' : (item.AHBOI_COMPLETEDDATE == null ? '--':(item.AHBOI_COMPLETEDDATE | date:'short':'GMT')))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_DUEDATE == "" ? '--' : (item.AHBOI_DUEDATE == null ? '--': (item.AHBOI_DUEDATE| date:'short':'GMT') ))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_CLOSEDDATE == "" ? '--' : (item.AHBOI_CLOSEDDATE == null ? '--': (item.AHBOI_CLOSEDDATE| date:'short':'GMT') ))}}</td>
+                                            <td style="background: transparent !important;"></td>  
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_OUTCOME == "" ? '--' : (item.AHBOI_OUTCOME == null ? '--':item.AHBOI_OUTCOME))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_CREATEDBY == "" ? '--' : (item.AHBOI_CREATEDBY == null ? '--':item.AHBOI_CREATEDBY))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_ASSIGNEDTO == "" ? '--' : (item.AHBOI_ASSIGNEDTO == null ? '--':item.AHBOI_ASSIGNEDTO))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_COMPLETEDBY == "" ? '--' : (item.AHBOI_COMPLETEDBY == null ? '--':item.AHBOI_COMPLETEDBY))}}</td>
+                                            <td style="background: transparent !important;"></td>
+
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_UPTYPE == "" ? '--' : (item.AHBOI_UPTYPE == null ? '--':item.AHBOI_UPTYPE))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_SOURCE == "" ? '--' : (item.AHBOI_SOURCE == null ? '--':item.AHBOI_SOURCE))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_SUBSOURCE == "" ? '--' : (item.AHBOI_SUBSOURCE == null ? '--':item.AHBOI_SUBSOURCE))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_CREATEDBYUSERID == "" ? '--' : (item.AHBOI_CREATEDBYUSERID == null ? '--':item.AHBOI_CREATEDBYUSERID))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_ASSIGNEDTOUSERID == "" ? '--' : (item.AHBOI_ASSIGNEDTOUSERID == null ? '--':item.AHBOI_ASSIGNEDTOUSERID))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                            <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.AHBOI_COMPLETEDBYUSERID == "" ? '--' : (item.AHBOI_COMPLETEDBYUSERID == null ? '--':item.AHBOI_COMPLETEDBYUSERID))}}</td>
+                                            <td style="background: transparent !important;"></td>
+                                        </tr> 
+                                         </ng-container> 
+                                     <ng-template  #norecdata> 
+                                            <tr *ngIf="GridData.length == 0"> 
+                                                <td colspan="25" style="text-align: center;color: #040404;font-size: 14px;border-bottom: none;"><label>No Data Found</label></td>
+                                              </tr>
+                                        </ng-template>
+                                        <!-- <ng-container  > 
+                                            <tr *ngIf="GridData.length > 99" style="text-align: center;" > 
+                                                <td colspan="25" style="text-align: center;color: #040404;font-size: 14px;border-bottom: none;">
+                                                         <button style="background-color: #0d6efd;border: none;" type="button" class="btn btn-primary btn-sm"
+                                                        (click)="ViewMore()">View More</button>
+                                                </td>
+                                               
+                                            </tr>
+                                        </ng-container> -->
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" class="viewmore">
+                <div *ngIf="GridData.length > 99" > 
+                    <div  class="d-flex justify-content-center" >
+                        <button style="background-color: #0d6efd;border: none;" type="button" class="btn btn-primary btn-sm"
+                            (click)="ViewMore()">View More</button>
+                    </div>
+                 </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="ShowModal">
+    <div class="modal" tabindex="-1" role="dialog" #modal  id="modelId">
+     <div class="modal-dialog" role="document" style="min-width: 1086px;max-width: min-content;">
+       <div class="modal-content" style="overflow: auto;">
+         <div class="modal-header" >
+             <ul>
+                 <h5 class="modal-title">{{SelectStoreName}}</h5>
+                <h6 class="modal-title">Outcomes by History ID: {{SelectedHistoryID}}</h6>
+             </ul>
+           
+           <button  type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body" style="padding: 2rem;">
+            <div class="row" style="margin-top: 25px;">
+                <table class="Subtables" *ngIf ="SubData.length > 0">
+                  <thead  style="background-color: #85a7a9;text-transform: uppercase;">
+                     <th  *ngFor = 'let key of keys'>{{key}}</th>
+                   </thead>
+                   <tbody>
+                           <tr *ngFor="let item of SubData">
+                            <td  *ngFor = 'let key of keys'> 
+                                <span *ngIf = "item[key]==null || item[key] == '' ">--</span>
+                                <span *ngIf = "item[key]!=null && item[key] != '' ">{{item[key]}}</span></td>
+                           </tr> 
+                   </tbody>
+                   </table>
+                   
+          </div>
+       </div>
+     </div>
+   </div>
+  </div>
+

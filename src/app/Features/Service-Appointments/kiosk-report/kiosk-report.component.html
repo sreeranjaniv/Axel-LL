@@ -1,0 +1,137 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+     
+          <main class="col-md-9 ms-auto col-lg-10">
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div class="top_bg d-flex align-items-center">
+                    <div class="pt-3 " style ="margin-right:15px !important">
+                      <select id="Dealer_DDL" (change)="DealerChange($event)" class="_dropdwn">
+                          <option  value="0">All Stores</option>
+                          <option  *ngFor="let i of Dealer_DD" [value]="i.AS_ID">{{i.DEALER_NAME}}</option>
+                      </select>
+                    </div>
+                    
+                      <div  class="date pt-3 "  >
+                        <input type="date"  [(ngModel)]="ChangeDate" [max]="getToday()" (ngModelChange)="updateDate($event)"  name="startDate" class="datepicker">  
+                    </div>
+
+                    <div  *ngIf="varIsNoShowExist"><input type="checkbox" id="chk_NoShow" class="parent"
+                      (change)="checkNoShow($event)">
+                      <label
+                      for="chk_NoShow"></label><label for="chk_NoShow"
+                      style="padding-bottom: 4px;padding-top:25px; padding-left:4px; font-weight: 100;font-family: 'HelveticaNeue-Regular';text-transform: uppercase;">No Show</label>
+                    </div>
+
+                      <div (click)="exportAsXLSX()" style="cursor: pointer;" class="ms-auto ">
+                         <div  class="d-flex align-items-center export"> Export to excel <span><img src="../../assets/images/export.png" style="margin:-5px 0 0 5px;"></span></div>
+                      </div>
+                  </div>
+              </div>
+              <div class="stor_head">
+                <div class="row">
+                  <div class="store">
+                  </div>
+                  <div class="storebody">
+                    <div style="direction:rtl;color: #fff;display:flex;">
+                      <div> Total&nbsp;Count:  <span style="font-size:15px">{{varTotalCount}}</span></div>
+                      &nbsp;&nbsp;&nbsp;
+                      <div *ngIf="varIsNoShowExist"> No&nbsp;Show&nbsp;Count: <span style="font-size:15px">{{varNoShowCount}}</span></div>
+                  </div>
+                    <h2 class="ttl-sales"><span>Kiosk Report</span></h2>
+                  </div>
+                </div>
+            </div>
+            <ng4-loading-spinner  ></ng4-loading-spinner>
+          
+            <div class="table-responsive service_R">
+                <table>
+                    <colgroup>
+                        
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        <col style="background:#f8fafb">
+                        </colgroup>
+                        <thead >
+                          <tr >
+                            <th style="width: 11%; border-bottom: 5px solid #5bdd97;"><span class="store_ttl">Code</span> </th>
+                            <th style="width: .3%; background:transparent !important;"></th>
+                            
+                            <th style="width: 11%; border-bottom: 5px solid #5bdd97;"><span class="store_ttl">Customer Name </span> </th>
+                            <th style="width: .5%; background:transparent !important;"></th>
+        
+                            <th style="width: 9.5%;border-bottom: 5px solid #5bdd97; " ><span class="store_ttl">Phone #</span> </th>
+                            <th style="width: .3%; background:transparent !important;"></th>
+        
+                            <th style="width: 11%; border-bottom: 5px solid #5bdd97;"><span class="store_ttl">Appointment time</span> </th>
+                            <th style="width: .3%; background:transparent !important;"></th>
+        
+                            <th style="width: 12.5%; border-bottom: 5px solid #5bdd97;"><span class="store_ttl">vin </span> </th>
+                            <th style="width: .5%; background:transparent !important;"></th>
+        
+        
+                            <th style="width: 12%; border-bottom: 5px solid #5bdd97;"><span class="store_ttl">make </span></th>
+                            <th style="width: .5%; background:transparent !important;"></th>
+
+                            <th style="width: 12%; border-bottom: 5px solid #5bdd97;"><span class="store_ttl">model  </span></th>
+                            <th style="width: .5%; background:transparent !important;"></th>
+
+                            <th style="width: 12%; border-bottom: 5px solid #5bdd97;"><span class="store_ttl">loaner </span></th>
+                            <th style="width: .5%; background:transparent !important;"></th>
+
+                            <th style="width: 12%; border-bottom: 5px solid #5bdd97; " *ngIf="varIsNoShowExist"><span class="store_ttl">No&nbsp;Show  </span></th>
+
+                          </tr>
+                        </thead>
+                        <tbody style="cursor: pointer;">
+                          <ng-container *ngIf="ServiceAppointmentsCurrentDate.length > 0; else norecSalesdata" >
+                          <tr *ngFor="let item of ServiceAppointmentsCurrentDate" >
+                            <td>{{item.CORA_ACCT_CODE}}</td>
+                            <td style="background: transparent !important;"></td>
+                            <td style="text-align: left;">{{item.APPTCUSTNAME}}</td>
+                            <td style="background: transparent !important;"></td>
+                            <td>{{item.APPTCONTACTPHONE}}</td>
+                            <td style="background: transparent !important;"></td>
+                            <td>{{item.APPOINTMENTTIME}}</td>
+                            <td style="background: transparent !important;"></td>
+                            <td>{{item.VIN}}</td>
+                            <td style="background: transparent !important;"></td>
+                            <td>{{item.MAKE}}</td>
+                            <td style="background: transparent !important;"></td>
+                            <td>{{item.MODEL}}</td>
+                            <td style="background: transparent !important;"></td>
+                            <td>{{item.LOANER}}</td>
+                            <td style="background: transparent !important;"  *ngIf="varIsNoShowExist"></td>
+                            <td  *ngIf="varIsNoShowExist">{{item.NOSHOWFLAG}}</td>
+
+                          </tr>
+                        </ng-container>
+                        <ng-template #norecSalesdata>
+                          <tr  >
+                            <td colspan="27" style="text-align: center;font-size: 14px;background: transparent !important;color: black;"><label>No Data Found</label></td>
+                          </tr>
+                        </ng-template>
+                        </tbody>
+                </table>
+                
+            </div>
+          
+           
+          </main>
+    </div>
+</div>
+
+

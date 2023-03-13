@@ -1,0 +1,192 @@
+<app-header></app-header>
+<ng4-loading-spinner></ng4-loading-spinner>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 p-0">
+            <div class="Nrep2_bg">
+                <div class="row" [ngClass]="{ disableds: progressbar === true, active: progressbar == false }">
+                    <div class="col-lg-1" style="width: 4%;">
+                        <div *ngIf=" this.globalVarComponent.g_SideMenuItemCount > 1">
+                            <a (click)="PreviousUrl()" style="cursor: pointer;font-size: medium;"
+                                class="link-light">Back</a>
+                        </div>
+
+                    </div>
+                    <!-- <div class="col-lg-1">
+</div> -->
+                    <div class="col-lg-2" style="width: 14%;">
+                        <div class="data NR_dropdwn">
+                            <select id="Dealer_DDL" [(ngModel)]="storedefault" (change)="searchstores($event)">
+                                <option value="0">SELECT STORE</option>
+                                <!-- <option *ngFor="let s of stores" [value]="s.CFGM_ID" >{{s.CFGM_STORENAME}} -->
+                                <option *ngFor="let s of stores" [value]="s.CORA_ACCT_CODE">{{s.DEALER_NAME}}
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-1" style="width: 14%;">
+                        <div class="NR_dropdwn">
+                            <select class="form-select" [(ngModel)]="checksign"
+                                (change)="searchchecksign($event.target.value)">
+                                <option value="0">ALL</option>
+                                <option value="1">Show Checked In</option>
+                                <!-- <option value="2">Show Signed</option> -->
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3" style="display: flex;">
+                        <input type="search" placeholder="Search by Contact Number" class="form-control" name="search"
+                            [(ngModel)]="searchQuery" style="line-height:1; font-size: 0.8rem;width: 75%;">
+                        <div style="padding:2px 0px 0px 10px;">
+                            <button (click)="searchFilter()" type="submit" class="button2">Go</button>
+                        </div>
+                    </div>
+                    <!-- <div class="col-lg-2" style="width: 14%;display: flex;">
+                        <input class="form-control NR_search" placeholder="Phone" type="text" autocomplete="off"
+                            #myInput [(ngModel)]="searchQuery" >
+                            <i class="fa fa-search srch" (click)="searchFilter()"></i>
+                    </div> -->
+
+                    <div class="col-lg-2" style="display: contents;" id="col1">
+                        <div class="md-form">
+                            <span style="margin-top:5px;">Start Date: </span>
+                            <input type="date" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker"
+                                (ngModelChange)="startDate($event)" name="startDate" class="datepicker">
+                        </div>
+                    </div>&nbsp;
+                    <div class="col-lg-2" style="display: contents;" id="col2">
+                        <div class="md-form">
+                            <span style="margin-top:5px;">End Date: </span>
+                            <input type="date" [(ngModel)]="model1" ngbDatepicker #d1="ngbDatepicker"
+                                (ngModelChange)="endDate($event)" name="endDate" class="datepicker">
+                        </div>
+                    </div>
+                    <div>
+                        <ul style="float:right;" class="pagination"
+                            [ngClass]="{'hide':AppointmentDATA.length<25 && pageIndex==0,'show':AppointmentDATA.length<=25 && pageIndex>0}">
+                            <li class="page-item" [ngClass]="{'disabled':pageIndex==0}"><a (click)="prevIndex()"
+                                    class="page-link"><</a>
+                            </li>
+                            &nbsp;
+                            <li style="padding-top: 5px;"><a>PAGE:{{pageIndex+1}}</a></li>
+                            &nbsp;
+                            <li class="page-item" [ngClass]="{'disabled':AppointmentDATA.length<25}"><a
+                                    class="page-link" (click)="nextIndex()">></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-12 p-0">
+                        <div class="Nrep_Deal">
+                            <div class="nr_curve scroll_deals">
+                                <table class="table-fixed" id="MyTable">
+
+                                    <thead>
+                                        <tr>
+                                            <!-- <th style="width: 1%;"></th> -->
+                                            <th class="_ttl">CUSTOMER NAME</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 10%;">CONTACT NUMBER</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 10%;">APPOINTMENT DATE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 3%;">APPOINTMENT TIME</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 3%;">CHECKED IN TIME</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 13%;">CUSTOMER SIGNATURE</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 13%;">RO</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" style="width: 13%;">WAITING (OR) DROP OFF</th>
+                                            <th style="width: 1%;"></th>
+                                            <!-- <th class="_ttl" style="width: 13%;">WAITING (OR) DROP OFF</th>
+                                            <th style="width: 1%;"></th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- <input type="checkbox" id="symbols4" class="custom-check-box" formControlName="totalLossofVehicle" disabled>
+                                  <label for="symbols4"></label> -->
+
+                                        <ng-container *ngIf="AppointmentDATA.length > 0; else norecdata">
+
+                                            <tr *ngFor="let x of AppointmentDATA; let ioe = index;">
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{x.apptcustname
+                                                    === '' || x.apptcustname === null ? '-': x.apptcustname}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"
+                                                    style="pointer-events: none;">
+                                                    {{x.apptcontactphone=== '' || x.apptcontactphone === null ? '-' :
+                                                    x.apptcontactphone}}
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"> {{x.apptdate
+                                                    === '' || x.apptdate === null ? '-' : x.apptdate}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{x.appointmenttime ==='' || x.appointmenttime === null ? '-'
+                                                    :x.appointmenttime}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{x.CheckedTime
+                                                    ==='' ||
+                                                    x.CheckedTime === null ? '-' :x.CheckedTime}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    <u style="text-transform: uppercase;text-align: center;cursor: pointer;white-space: nowrap;"
+                                                        data-toggle="modal" data-target="#myModal"
+                                                        (click)="imageclick(x.CustSign)"
+                                                        *ngIf="x.CustSign != '' && x.CustSign != null && x.CustSign != '-'">{{x.CustSign
+                                                        ==='' || x.CustSign === null ? '-' :x.CustSign}}</u>
+                                                    <span
+                                                        *ngIf="x.CustSign === '' || x.CustSign === null || x.CustSign === '-' ">
+                                                        {{x.CustSign=== '' || x.CustSign === null ? '-' : x.CustSign
+                                                        }}</span>
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{x.RO ===''||
+                                                    x.RO === null ? '-' : x.RO}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{x.WaitingStatus ===''||
+                                                    x.WaitingStatus === null ? '-' : x.WaitingStatus}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                            </tr>
+                                        </ng-container>
+                                        <ng-template #norecdata>
+                                            <tr>
+                                                <td colspan="17"
+                                                    style="text-align: center;color: #040404;font-size: 14px;"><label>No
+                                                        Data Found
+                                                        !!</label></td>
+                                            </tr>
+                                        </ng-template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="containerpopup" *ngIf="image !='' && image !=null  && image !='-'">
+    <div class="modal fade bd-example-modal-sm" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" #closebutton class="btn-close" data-dismiss="modal"
+                        style="padding: 0.5rem 0.5rem;display: block;">&times;</button>
+                    <img [src]="imagepopup" height="100" style="width:95px;margin-left: 32%;margin-top: 24px;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

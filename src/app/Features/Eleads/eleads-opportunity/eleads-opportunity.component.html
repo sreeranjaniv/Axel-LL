@@ -1,0 +1,153 @@
+<app-header></app-header>
+<ng4-loading-spinner></ng4-loading-spinner>
+<div class="container-fluid" style="position: fixed;">
+    <div class="row">
+        <div class="col-lg-12 p-0">
+            <div class = "Nrep2_bg">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <div *ngIf=" this.globalVarComponent.g_SideMenuItemCount > 1">
+                            <a (click)="PreviousUrl()" style="cursor: pointer;font-size: medium;" class="link-light">Back</a>
+                          </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+
+                    <div class="col-lg-2">
+                        <div class="NR_dropdwn">
+                            <select class="form-select" [(ngModel)]="SelectStore" (change)="storeChange($event.target.value)" >
+                                <option value="">Select Store</option>
+                                <option *ngFor="let x of StoreList" value="{{x.DMS_ID}}">{{x.AS_DEALERNAME}}</option>
+                                                           
+                            </select>
+                        </div>    
+                    </div>  
+                    <div class="col-lg-2">
+                        <div class="date">
+                            <div class="md-form">
+                              <input type="date" name="Date" [ngModel]="startDate | date:'yyyy-MM-dd'" 
+                              [max]=getToday() (ngModelChange)="updatedate($event)" class="datepicker">
+                            </div>
+                          </div>
+                    </div>
+
+ 
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 p-0">
+                        <div class="Nrep_Deal">
+                            <div class="nr_curve scroll_deals">
+                                <table class="table-fixed">
+                                    <thead>
+                                        <tr>
+                                           
+                                            <th class="_ttl" style="width: 15%;">Item ID</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl" >Customer ID</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Date In</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Source</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Status</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Sub Status</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">UP Type</th>
+                                            <th style="width: 1%;"></th>
+                                           
+
+                                        </tr>    
+                                    </thead>
+                                    <tbody>
+                                       
+                                              <tr *ngFor ="let item of GridData; let ioe = index;">
+                                                
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" (click)="OpenModal(item)" data-toggle="modal" data-target="#modelId" style="cursor: pointer;">{{(item.OPPTS_ITEM_ID == "" ? '--' : (item.OPPTS_ITEM_ID == null ? '--':item.OPPTS_ITEM_ID))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.OPPTS_CUST_ID == "" ? '--' : (item.OPPTS_CUST_ID == null ? '--':item.OPPTS_CUST_ID))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.OPPTS_DATEIN == "" ? '--' : (item.OPPTS_DATEIN == null ? '--':(item.OPPTS_DATEIN | date:'MM/dd/yyyy')))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.OPPTS_SOURCE == "" ? '--' : (item.OPPTS_SOURCE == null ? '--':item.OPPTS_SOURCE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.OPPTS_STATUS == "" ? '--' : (item.OPPTS_STATUS == null ? '--':item.OPPTS_STATUS))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.OPPTS_SUBSTATUS == "" ? '--' : (item.OPPTS_SUBSTATUS == null ? '--':item.OPPTS_SUBSTATUS))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.OPPTS_UPTYPE == "" ? '--' : (item.OPPTS_UPTYPE == null ? '--':item.OPPTS_UPTYPE))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                
+                                               
+                                            </tr> 
+                                            <!-- <tr *ngIf="SelectStore == '' && SelectPosition == ''">
+                                                <td colspan="15" style="text-align:center;color:black;font-size: 14px;border-bottom: none;">Select Store</td>
+                                            </tr> -->
+                                            <tr *ngIf="ELeadsData1">
+                                                <td colspan="15" style="text-align:center;color:black;font-size: 14px;border-bottom: none;">No Data Found</td>
+                                            </tr> 
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="row" class="viewmore">
+                    <div *ngIf="viewmore"> 
+                        <div  class="d-flex justify-content-center" >
+                            <button style="background-color: #0d6efd;border: none;" type="button" class="btn btn-primary btn-sm"
+                                (click)="ViewMore()">View More</button>
+                        </div>
+                     </div>
+                    </div>  
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="ShowModal">
+    <div class="modal" tabindex="-1" role="dialog" #modal  id="modelId">
+     <div class="modal-dialog" role="document" style="min-width: 1000px;max-width: min-content;">
+       <div class="modal-content" style="overflow: auto;">
+         <div class="modal-header">
+             <ul>
+                <h5 class="modal-title">{{SelectStoreName}}</h5>
+                <h6 class="modal-title">Item ID: {{SelectedItem_ID}}</h6>
+             </ul>
+           <button  type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body" style="padding: 2rem;">
+            <div class="row ">
+                <div class="button2 ">
+                    <ul >
+                        <li><a  style="cursor: pointer;"  [ngClass]="{'active': TabChange === '1'}" (click)="TabClick('1')" >SOUGHT</a></li>
+                        <li><a style="cursor: pointer;"  [ngClass]="{'active': TabChange === '2'}" (click)="TabClick('2')">SALES</a></li>
+                        <li><a  style="cursor: pointer;"   [ngClass]="{'active': TabChange === '3'}"  (click)="TabClick('3')" >TRADEINS</a></li>
+                        <li><a  style="cursor: pointer;"  [ngClass]="{'active': TabChange === '4'}" (click)="TabClick('4')" >LINKS</a></li>
+                        
+                      </ul>
+                </div>
+              </div>
+            
+              <div class="row" style="margin-top: 25px;">
+              <table class="Subtables" *ngIf ="SubTabledata.length > 0">
+                <thead  style="background-color: #85a7a9;text-transform: uppercase;">
+                   <th  *ngFor = 'let key of keys'>{{key}}</th>
+                 </thead>
+                 <tbody>
+                         <tr *ngFor="let item of SubTabledata">
+                          <td  *ngFor = 'let key of keys'> {{item[key]}}</td>
+                         </tr> 
+                 </tbody>
+                 </table>
+                 <label *ngIf = "SubTabledata.length == 0" style="text-align: center;"> No Data Found</label>
+        </div>
+    </div>
+       </div>
+     </div>
+   </div>
+  </div>
+

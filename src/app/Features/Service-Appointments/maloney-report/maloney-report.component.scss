@@ -1,0 +1,68 @@
+
+.date{font-size: .8rem; color: #4a42d4; padding-top: 10px;position: absolute;padding-right: 50px;}
+.stor_head {
+  margin-top: -67px !important;
+}
+.export{text-transform: uppercase;}
+   .service_R{
+   table {
+    border-collapse: separate;
+    border-spacing: 0.2rem;
+    font-size:.8rem;
+    white-space: nowrap;
+    margin: 0;
+    border: none;
+    table-layout: fixed;
+    overflow:auto;
+   
+  }
+  table td,
+  table th {
+   // border: 1px solid black;
+    padding: 0.5rem 1rem;
+  }
+  table thead th {
+    padding:20px 5px;
+    top: 0;
+    z-index: 1;
+    width: 25vw;
+    background: #fff;
+    text-align: center;
+    position: relative;
+  }
+  table tr:nth-child(even){background-color: #f4f5f7;}
+  
+  table td {
+    //background: #fff;
+    padding: 5px;
+    text-align: center;
+  }
+  
+
+  table thead th:first-child {
+    background:linear-gradient(#4a42d4 43%,#f1f4f6 40%) ;
+    position: sticky;
+    left: 0;
+    z-index: 2;
+  }
+  table tbody td:first-child {
+    position: sticky;
+    left: 0;
+    background: white;
+    padding: 5px 10px 5px 15px;
+    text-align: left;
+  }
+  
+.store {
+  float: left;
+  width: 20% !important;
+}
+.storebody {
+float: left;
+width: 80%;
+}
+table tbody tr:last-child{background: #6a6a6a; color: #fff;}
+
+table tbody tr:last-child > td:first-child{background: #6a6a6a; color: #fff;}
+
+}

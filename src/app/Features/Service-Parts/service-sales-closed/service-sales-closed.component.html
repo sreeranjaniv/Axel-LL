@@ -1,0 +1,270 @@
+<app-header></app-header>
+<ngx-spinner size="medium" [type]="globalVarComponent.g_spinnerType"></ngx-spinner>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12 p-0">
+      <div class="Nrep2_bg">
+        <div class="row">
+          <div class="col-lg-2">
+            <div *ngIf="globalVarComponent.ReportId == 0">
+              <a (click)="PreviousUrl()" style="cursor: pointer;font-size: medium;font-weight: bold;"
+                class="link-light">Back</a>
+            </div>
+          </div>
+          <div class="col-lg-10 ">
+            <div class="row">
+              <div *ngIf="TabChange==='2'" class="data NR_dropdwn">
+                <select id="Dealer_DDL" (change)="DealerChange($event)">
+                  <option value="0">ALL STORES</option>
+                  <option *ngFor="let i of GetStores" [value]="i.CORA_ACCT_CODE">{{i.DEALER_NAME}}</option>
+                </select>
+
+              </div>
+              <div class="ro_fltr">
+                <label>RO TYPE:</label>
+                <div class="checkbox-column">
+                  <div class="chk_blk">
+                    <input type="checkbox" id="Customer" value="C" (change)="Rochange($event)" [checked]="true">&nbsp;
+                    <label class="chk_lbl" for="Customer" style="justify-content: left;">Customer</label>
+                  </div>
+                  <div class="chk_blk">
+                    <input type="checkbox" id="Internal" value="I" (change)="Rochange($event)" [checked]="true">&nbsp;
+                    <label class="chk_lbl" for="Internal" style="justify-content: left;">Internal</label>
+                  </div>
+                  <div class="chk_blk">
+                    <input type="checkbox" id="Summary" value="W" (change)="Rochange($event)" [checked]="true">&nbsp;
+                    <label class="chk_lbl" for="Summary" style="justify-content: left;">Summary</label>
+                  </div>
+                </div>
+              </div>
+              <div class="date" style="display: contents;">
+                <div class="md-form">
+                  <label>Filter dates: </label>
+                  <input type="date" [ngModel]="StartDate | date:'yyyy-MM-dd'" (ngModelChange)="setStartdate($event)"
+                    name="startDate" class="datepicker">
+                </div>
+                <div class="md-form">
+                  <label>to: </label>
+                  <input type="date" [ngModel]="EndDate | date:'yyyy-MM-dd'" (ngModelChange)="setEnddate($event)"
+                    name="EndDate" class="datepicker">
+                </div>
+              </div>
+              <div style="cursor: pointer;" (click)="exportAsXLSX()" class="col-lg-2  ms-auto" style="margin-top: 18px;">
+                <div class="d-flex align-items-center export" style="float: right;cursor: pointer;"><div>Export to excel</div>  <span><img src="../../assets/images/export.png" style="margin:-5px 0 0 5px;"></span></div>
+             </div>
+              <div class="row ">
+                <div [ngClass]="{'disabled': globalVarComponent.ReportId != 0 }" class="button2 ">
+                  <ul>
+                    <li><a style="cursor: pointer;" [ngClass]="{'active': TabChange === '1'}"
+                        (click)="TabClick('1')">STORE SUMMARY</a></li>
+                    <li><a style="cursor: pointer;" [ngClass]="{'active': TabChange === '2'}"
+                        (click)="TabClick('2')">ADVISOR SUMMARY</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row" *ngIf="Store">
+          <div class="col-lg-12 p-0">
+            <div class="Nrep_Deal">
+              <div class="nr_curve scroll_deals">
+                <table class="table-fixed">
+
+                  <thead>
+                    <tr>
+
+                      <th  style="width: auto;">Dealership</th>
+                      <th></th>
+                      <th  style="width: auto;">Repair Orders</th>
+                      <th></th>
+                      <th  style="width: auto;">Sold Hours</th>
+                      <th></th>
+                      <th  style="width: auto;">Hours per RO</th>
+                      <th></th>
+                      <th  style="width: auto;">ELR</th>
+                      <th></th>
+                      <th  style="width: auto;">Labor Sales</th>
+                      <th></th>
+                      <th  style="width: auto;">Parts Sales</th>
+                      <th></th>
+                      <th  style="width: auto;">Total Sales</th>
+                      <th></th>
+                      <th  style="width: auto;">Labor Gross</th>
+                      <th></th>
+                      <th  style="width: auto;">Parts Gross</th>
+                      <th></th>
+                      <th  style="width: auto;">Total Gross</th>
+                      <th></th>
+                      <th  style="width: 6%;">Labor Gross Margin</th>
+                      <th></th>
+                      <th style="width: 6%;">Parts Gross Margin</th>
+                      <th></th>
+                      <th style="width: 6%;">Total Gross Margin</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <ng-container *ngIf="ReportGridData.length > 0 ">
+
+                      <tr *ngFor="let item of ReportGridData; let ioe = index;">
+
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="font-family: 'Gotham Bold'">{{item.Store}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.totRO | number}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.soldhours | number:'2.0-0'}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.HrsperRO | number:'1.0-2'}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.ELR == 0 ? '-' : (item.ELR |
+                          currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.laborsale == 0 ? '-' :
+                          (item.laborsale | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.partsale == 0 ? '-' :
+                          (item.partsale | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.Totsale == 0 ? '-' :
+                          (item.Totsale | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.laborgross == 0 ? '-' :
+                          (item.laborgross | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.partsgross == 0 ? '-' :
+                          (item.partsgross | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.totgross == 0 ? '-' :
+                          (item.totgross | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['Labor Gross Margin'] | percent}}
+                        </td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['Parts Gross Margin'] | percent}}
+                        </td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['Total Gross Margin'] | percent}}
+                        </td>
+                      </tr>
+
+                    </ng-container>
+                    <ng-container *ngIf="ReportGridData.length == 0">
+                      <tr>
+                        <td colspan="31" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data
+                            Found</label></td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="Advisory">
+          <div class="col-lg-12 p-0">
+            <div class="Nrep_Deal">
+              <div class="nr_curve scroll_deals">
+                <table class="table-fixed">
+
+                  <thead>
+                    <tr>
+                      <th style="width: auto;">Advisor</th>
+                      <th></th>
+                      <th style="width: auto;">Store</th>
+                      <th></th>
+                      <th style="width: auto;">Repair Orders</th>
+                      <th></th>
+                      <th style="width: auto;">Sold Hours</th>
+                      <th></th>
+                      <th style="width: auto;">Hours per RO</th>
+                      <th></th>
+                      <th style="width: auto;">ELR</th>
+                      <th></th>
+                      <th style="width: auto;">Labor Sales</th>
+                      <th></th>
+                      <th style="width: auto;">Parts Sales</th>
+                      <th></th>
+                      <th style="width: auto;">Total Sales</th>
+                      <th></th>
+                      <th style="width: auto;">Labor Gross</th>
+                      <th></th>
+                      <th style="width: auto;">Parts Gross</th>
+                      <th></th>
+                      <th style="width: auto;">Total Gross</th>
+                      <th></th>
+                      <th style="width: 6%;">Labor Gross Margin</th>
+                      <th></th>
+                      <th style="width: 6%;">Parts Gross Margin</th>
+                      <th></th>
+                      <th style="width: 6%;">Total Gross Margin</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <ng-container *ngIf="ReportGridData.length > 0 ">
+
+                      <tr *ngFor="let item of ReportGridData; let ioe = index;">
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="font-family: 'Gotham Bold';text-transform: uppercase;">{{item.Advisor}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }" style="font-family: 'Gotham Bold'">{{item.Store }}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.totRO | number}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.soldhours | number:'2.0-0'}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item.HrsperRO | number:'1.0-2'}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.ELR == 0 ? '-' : (item.ELR |
+                          currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.laborsale == 0 ? '-' :
+                          (item.laborsale | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.partsale == 0 ? '-' :
+                          (item.partsale | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.Totsale == 0 ? '-' :
+                          (item.Totsale | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.laborgross == 0 ? '-' :
+                          (item.laborgross | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.partsgross == 0 ? '-' :
+                          (item.partsgross | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.totgross == 0 ? '-' :
+                          (item.totgross | currency : 'USD' : 'symbol' : '1.0-0'))}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['Labor Gross Margin'] |
+                          percent:'2.0-5'}}</td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['Parts Gross Margin'] | percent}}
+                        </td>
+                        <td style="background: transparent !important;"></td>
+                        <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{item['Total Gross Margin'] | percent}}
+                        </td>
+                      </tr>
+
+                    </ng-container>
+                    <ng-container *ngIf="ReportGridData.length == 0">
+                      <tr>
+                        <td colspan="33" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data
+                            Found</label></td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

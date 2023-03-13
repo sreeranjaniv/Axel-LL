@@ -1,0 +1,50 @@
+
+.date{font-size: .8rem; color: #4a42d4; padding-top: 10px; position: absolute;padding-right: 50px;}
+.export{text-transform: uppercase;}
+.service_R{
+  table {
+   border-collapse: separate;
+  //  border-spacing: 0.1rem;
+   font-size:.8rem;
+   white-space: nowrap;
+   margin: 0;
+   border: none;
+   table-layout: fixed;
+   overflow:auto;
+  
+ }
+  table td,
+  table th {
+   // border: 1px solid black;
+    padding: 0.5rem 1rem;
+  }
+  table thead th {
+    padding:20px 5px;
+    top: 0;
+    z-index: 1;
+    width: 25vw;
+    background: #fff;
+    text-align: center;
+    position: relative;
+  }
+  table tr:nth-child(even){background-color: #f4f5f7;}
+  
+  table td {
+    //background: #fff;
+    padding: 4px 5px;
+    text-align: center;
+  }
+  
+
+  table thead th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+  }
+  table tbody td:first-child {
+    position: sticky;
+    left: 0;
+    text-align: left;
+    // background: white;
+  }
+}

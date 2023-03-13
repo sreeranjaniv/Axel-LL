@@ -1,0 +1,115 @@
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="row">
+        
+          <ng4-loading-spinner  ></ng4-loading-spinner>
+          <main class="col-md-9 ms-auto col-lg-10">
+            
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div class="top_bg d-flex align-items-center">
+                    <!-- <div class="me-4"><img src="/assets/images/Filter.png"></div> -->
+                  
+                      <div class="me-auto pt-3">
+                        <select id="Dealer_DDL" (change)="DealerChange($event)" class="_dropdwn">
+                            <option  value="0">All Stores</option>
+                            <option  *ngFor="let i of Dealer_DD" [value]="i.AS_ID">{{i.DEALER_NAME}}</option>
+                        </select>
+                      </div>
+                      <div  class="ms-auto value">
+                          <ul >
+                              <li (click)="onClick(1)" [ngClass]="{'tabactive': tab==='tab_M'}">MTD</li>
+                              <li (click)="onClick(2)" [ngClass]="{'tabactive': tab==='tab_Q'}">QTD</li>
+                              <li (click)="onClick(3)" [ngClass]="{'tabactive': tab==='tab_Y'}">YTD</li>
+                              <!-- <li>CUSTOM</li> -->
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              <div class="stor_headng">
+                <div class="row">
+                  <div class="column1">
+                  </div>
+                  <div class="column2">
+                    <h2 class="ttl-sales"><span>Sales</span></h2>
+                  </div>
+                  <div class="column3">
+                    <h2 class="ttl-sales"><span>Revenue</span></h2>
+                  </div>
+                </div>
+            </div>
+            <div   class="table-responsive hover_">
+              <table class="table table-striped  " style="width: 100%; text-align: center;">
+                <colgroup>
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                <col>
+                <col style="background:#f1f1f1">
+                </colgroup>
+                <thead *ngIf="Header;">
+                  <tr >
+                    <th style="width: 22%; border-top: none;" class="store_name"></th>
+                   
+                    <th style="width: 9.5%; border-bottom: 5px solid #65bbfa;"><span class="store_ttl">NEW</span> <br> <span class="store_val">{{Header.NEW}}</span></th>
+                    <th style="width: .3%; background:transparent !important;"></th>
+                    <th style="width: 9.5%; border-bottom: 5px solid #65bbfa;"><span class="store_ttl">Pre-Owned</span> <br> <span class="store_val">{{Header.USED}}</span></th>
+                    <th style="width: .5%; background:transparent !important;"></th>
+
+                    <th style="width: 9.5%; border-bottom: 5px solid #65bbfa;"><span class="store_ttl">CPO</span> <br> <span class="store_val">{{Header.CPO}}</span></th>
+                    <th style="width: .3%; background:transparent !important;"></th>
+
+                    <th style="width: 9.5%; border-bottom: 5px solid #65bbfa;"><span class="store_ttl">TOTAL</span> <br> <span class="store_val">{{Header.TOTAL_UNITS}}</span></th>
+                    <th style="width: .3%; background:transparent !important;"></th>
+
+                    <th style="width: 12.5%; border-bottom: 5px solid #5bdd97;"><span class="store_ttl">FRONTEND<br> GROSS</span> <br><span class="store_val">{{Header.FEG}}</span></th>
+                    <th style="width: .5%; background:transparent !important;"></th>
+
+                    <th style="width: 12.5%; border-bottom: 5px solid #5bdd97;"><span class="store_ttl">BACKEND<br> GROSS</span> <br> <span class="store_val">{{Header.BEG}}</span></th>
+                    <th style="width: .5%; background:transparent !important;"></th>
+
+                    <th style="width: 12%; border-bottom: 5px solid #5bdd97;"><span class="store_ttl">TOTAL</span> <br> <span class="store_val">{{Header.TOTAL_GROSS}}</span></th>
+                  </tr>
+                </thead>
+                <tbody  style="cursor: pointer;">
+                  <ng-container *ngIf="list_items.length > 0; else norecdata" > 
+                    <tr  *ngFor="let item of list_items" (click)="highlightRow(item)" 
+                    [ngClass] = "{'incative' :Isinactive,'highlight' : item.STORE_TITLE == selectedName,'highlighttr':item.type==selecttr}">
+                      <td class="store_name">{{item.STORE_TITLE}}</td>
+                      <td style="float: right;">{{item.NEW}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td style="float: right;">{{item.USED}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td style="float: right;">{{item.CPO}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td style="float: right;">{{item.TOTAL_UNITS}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td style="float: right;">{{item.FEG}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td style="float: right;">{{item.BEG}}</td>
+                      <td style="background: transparent !important;"></td>
+                      <td style="float: right;">{{item.TOTAL_GROSS}}</td>
+                    </tr>
+                  </ng-container>
+                  <ng-template #norecdata>
+                    <tr *ngIf="NoMoreRecords">
+                      <td colspan="15" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found !!</label></td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </table>
+            </div>
+          </main>
+    </div>
+</div>
+
+

@@ -1,0 +1,366 @@
+<app-header></app-header>
+<ng4-loading-spinner></ng4-loading-spinner>
+<div class="container-fluid" style="position: fixed;">
+    <div class="row">
+
+        <div class="col-lg-12 p-0">
+
+            <div class="Nrep2_bg">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <div>
+                            <a (click)="PreviousUrl()" style="cursor: pointer;font-size: medium;font-weight: bold;"
+                                class="link-light">Back</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="NR_dropdwn">
+                            <select (change)="storechange($event)" class="_dropdwn">
+                                <option selected value="">All Stores</option>
+                                <option *ngFor="let i of storesData" [value]="i.StoreCode">{{i.StoreName}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="search" placeholder="Search" class="form-control" name="search"
+                            [(ngModel)]="searchKeyWord" style="line-height:1; font-size: 0.8rem">
+                    </div>
+                    <div class="col-lg-2">
+
+                        <div class="NR_dropdwn">
+
+                            <select class="_dropdwn" (change)="selectStatus($event)" [(ngModel)]="SelectStatus">
+
+                                <option value="">Search By Status</option>
+
+                                <option value="In Process">In Process</option>
+
+                                <option value="Docs Requested">Docs Requested</option>
+
+                                <option value="Complete">Complete</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 p-0">
+                        <div class="Nrep_Deal">
+                            <div class="nr_curve scroll_deals">
+                                <table class="table-fixed">
+                                    <thead>
+                                        <tr>
+                                            <th class="_ttl" style="width: 1%;">Store Code <i
+                                                    (click)="onSortClick($event)" class="my-icon fa fa-chevron-up"
+                                                    style="cursor: pointer;"></i></th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Submitted Date</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">First Name</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Last Name</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Email</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Phone</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">street address</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">city</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">state</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Zip</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">VIN</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Year</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Make</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Model</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">vehicle mileage</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">lienholder name</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">account number</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">payoff amount</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">vehicle purchase price</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">good through date</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">daily perdiem amount</th>
+                                            <th style="width: 1%;"></th>
+                                            <!-- <th class="_ttl">purchaser name</th>
+                                            <th style="width: 1%;"></th> -->
+                                            <th class="_ttl">purchaser contact</th>
+                                            <th style="width: 1%;"></th>
+                                            <!-- <th class="_ttl">purchase price</th>
+                                            <th style="width: 1%;"></th> -->
+                                            <th class="_ttl">attachments</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Check Request</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Notes</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Title Status</th>
+                                            <th style="width: 1%;"></th>
+                                            <th class="_ttl">Action</th>
+                                            <th style="width: 1%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngIf="ICOdata.length > 0">
+                                            <tr
+                                                *ngFor="let item of showSelectedStatus(ICOdata) | filter: searchKeyWord;let ioe= index">
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.storecode == "" ? '--' : (item.storecode == null ?
+                                                    '--':item.storecode == 'NA' ? '--' : item.storecode == undefined ?
+                                                    '--' : item.storecode == 'na' ? '--': item.storecode == "undefined" ?
+                                                    '--': (item.storecode )))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.created_ts == "" ? '--' : (item.created_ts == null ?
+                                                    '--':item.created_ts == 'NA' ? '--' : item.created_ts == undefined ?
+                                                    '--':  item.created_ts == 'na' ? '--': item.created_ts == "undefined" ?
+                                                    '--':(item.created_ts | date:'MM/dd/yyyy')))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.firstname == "" ? '--' : (item.firstname == null
+                                                    ? '--':item.firstname == 'NA' ? '--' : item.firstname == undefined ?
+                                                    '--':  item.firstname == 'na' ? '--': item.firstname == "undefined" ?
+                                                    '--': item.firstname))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.lastname == "" ? '--' : (item.lastname == null ?
+                                                    '--':item.lastname == 'NA' ? '--' : item.lastname == undefined ?
+                                                    '--':  item.lastname == 'na' ? '--': item.lastname == "undefined" ?
+                                                    '--': item.lastname))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.email == "" ? '--' : (item.email == null ?
+                                                    '--' : item.email == 'NA' ? '--' : item.email == undefined ? '--' :
+                                                    item.email == 'na' ? '--': item.email == "undefined" ?
+                                                    '--': item.email))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.phone == "" ? '--' : (item.phone == null ?
+                                                    '--': item.phone == 'NA' ? '--' : item.phone == undefined ? '--':
+                                                    item.phone == 'na' ? '--': item.phone == "undefined" ?
+                                                    '--': item.phone))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.street_address == "" ? '--' : (item.street_address
+                                                    == null ? '--': item.street_address == 'NA' ? '--' :
+                                                    item.street_address == undefined ? '--':  item.street_address == 'na' ? '--': item.street_address == "undefined" ?
+                                                    '--': item.street_address ))}}
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.city == "" ? '--' : (item.city == null ?
+                                                    '--': item.city == 'NA' ? '--' : item.city == undefined ? '--':
+                                                    item.city == 'na' ? '--': item.city == "undefined" ?
+                                                    '--': item.city)) | slice:0:10}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.state == "" ? '--' : (item.state == null ?
+                                                    '--': item.state == 'NA' ? '--' : item.state == undefined ? '--':
+                                                    item.state == 'na' ? '--': item.state == "undefined" ?
+                                                    '--': item.state)) | slice:0:10}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.zip == "" ? '--' : (item.zip == null ?
+                                                    '--': item.zip == 'NA' ? '--' : item.zip == undefined ? '--':
+                                                    item.zip == 'na' ? '--': item.zip == "undefined" ?
+                                                    '--': item.zip))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">{{(item.vin ==
+                                                    "" ? '--' : (item.vin == null ? '--': item.vin == 'NA' ? '--' :
+                                                    item.vin == undefined ? '--':  item.vin == 'na' ? '--': item.vin == "undefined" ?
+                                                    '--': item.vin))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.year == "" ? '--' : (item.year == null ?
+                                                    '--': item.year == 'NA' ? '--' : item.year == undefined ? '--':
+                                                    item.year == 'na' ? '--': item.year == "undefined" ?
+                                                    '--': item.year))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.make == "" ? '--' : (item.make == null ?
+                                                    '--': item.make == 'NA' ? '--' : item.make == undefined ? '--':
+                                                    item.make == 'na' ? '--': item.make == "undefined" ?
+                                                    '--': item.make))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.model == "" ? '--' : (item.model == null ?
+                                                    '--': item.model == 'NA' ? '--' : item.model == undefined ? '--':
+                                                    item.model == 'na' ? '--': item.model == "undefined" ?
+                                                    '--': item.model))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.vehiclemilage == "" ? '--' : (item.vehiclemilage == null ?
+                                                    '--': item.vehiclemilage == 'NA' ? '--' : item.vehiclemilage ==
+                                                    undefined ? '--':  item.vehiclemilage == 'na' ? '--': item.vehiclemilage == "undefined" ?
+                                                    '--': item.vehiclemilage))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.lienholdername == "" ? '--' : (item.lienholdername == null ?
+                                                    '--' : item.lienholdername == 'NA' ? '--' : item.lienholdername ==
+                                                    undefined ? '--':  item.lienholdername == 'na' ? '--': item.lienholdername == "undefined" ?
+                                                    '--': item.lienholdername))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.accountnumber == "" ? '--' : (item.accountnumber == null ?
+                                                    '--': item.accountnumber == 'NA' ? '--': item.accountnumber ==
+                                                    undefined ? '--':  item.accountnumber == 'na' ? '--': item.accountnumber == "undefined" ?
+                                                    '--': item.accountnumber))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.payoffamount == "" ? '--' : (item.payoffamount == null ?
+                                                    '--': item.payoffamount == 'NA' ? '--' : item.payoffamount ==
+                                                    undefined ? '--':  item.payoffamount == 'na' ? '--': item.payoffamount == "undefined" ?
+                                                    '--': item.payoffamount))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.vehiclepurchaseprice == "" ? '--' :
+                                                    (item.vehiclepurchaseprice == null ?
+                                                    '--': item.vehiclepurchaseprice == 'NA' ? '--' :
+                                                    item.vehiclepurchaseprice == undefined ? '--':
+                                                    item.vehiclepurchaseprice == 'na' ? '--': item.vehiclepurchaseprice == "undefined" ?
+                                                    '--': item.vehiclepurchaseprice))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.goodthroughdate == "" ? '--' : (item.goodthroughdate == null
+                                                    ?
+                                                    '--': item.goodthroughdate == 'NA' ? '--' : item.goodthroughdate ==
+                                                    undefined ? '--':  item.goodthroughdate == 'na' ? '--': item.goodthroughdate == "undefined" ?
+                                                    '--': item.goodthroughdate | date:'MM/dd/yyyy'))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.dailyperdiemamount == "" ? '--' : (item.dailyperdiemamount
+                                                    == null ?
+                                                    '--': item.dailyperdiemamount == 'NA' ? '--' :
+                                                    item.dailyperdiemamount == undefined ? '--':
+                                                    item.dailyperdiemamount == 'na' ? '--': item.dailyperdiemamount == "undefined" ?
+                                                    '--': item.dailyperdiemamount))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <!-- <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.purchasername == "" ? '--' : (item.purchasername == null ?
+                                                    '--':item.purchasername))}}</td>
+                                                <td style="background: transparent !important;"></td> -->
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.purchasercontact == "" ? '--' : (item.purchasercontact ==
+                                                    null ?
+                                                    '--': item.purchasercontact == 'NA' ? '--' : item.purchasercontact
+                                                    == undefined ? '--':  item.purchasercontact == 'na' ? '--': item.purchasercontact == "undefined" ?
+                                                    '--': item.purchasercontact))}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <!-- <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.purchaseprice == "" ? '--' : (item.purchaseprice == null ?
+                                                    '--':item.purchaseprice))}}</td>
+                                                <td style="background: transparent !important;"></td> -->
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    <!-- <a href="" data-toggle="modal" data-target="#myModal"
+                                                          (click)="ClickURL(item.attachments)">attachment</a> -->
+                                                    <span *ngIf="item.attachments.length > 0">
+                                                        <span *ngFor=" let ele of item.attachments">
+                                                            <a class="b" title="Click to download"
+                                                                (click)="downloadImage(ele)">{{ele.originalfilename}}
+                                                            </a><br>
+                                                        </span>
+                                                    </span>
+                                                    <span *ngIf="item.attachments.length == 0">
+                                                        --
+                                                    </span>
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    <div
+                                                        [ngClass]="{'description':item.ivr_log != '' && item.ivr_log != null}">
+                                                        {{(item.status == "" ? '--' : (item.status == null ?
+                                                        '--': item.status == 'NA' ? '--' : item.status == undefined ?
+                                                        '--':  item.status == 'na' ? '--': item.status == "undefined" ?
+                                                        '--': item.status))}}</div>
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.notes == "" || item.notes == undefined ? '--': item.notes == 'NA' ? '--' : item.notes == 'na' ? '--': item.notes == "undefined" ?
+                                                    '--': item.notes)}}
+                                                </td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }">
+                                                    {{(item.titlestatus == "" || item.titlestatus == undefined ? '--':
+                                                    item.titlestatus == 'na' ? '--': item.titlestatus == "undefined" ?
+                                                    '--': item.titlestatus)}}</td>
+                                                <td style="background: transparent !important;"></td>
+                                                <td [ngClass]="{'odd': ioe%2 == 0, 'even': ioe%2 > 0 }"><img
+                                                        src="../../../assets/images/edit_1.png"
+                                                        (click)="edit(item, mymodal)" style="cursor: pointer;"></td>
+                                            </tr>
+                                        </ng-container>
+                                        <ng-container>
+                                            <tr
+                                                *ngIf="((showSelectedStatus(ICOdata) | filter:searchKeyWord).length == 0)">
+                                                <td colspan="30"
+                                                    style="text-align: center;color: #040404;font-size: 14px;border-bottom: none;">
+                                                    <label>No Data Found</label>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" #closebutton class="btn-close" data-dismiss="modal" style="padding: 0.5rem 0.5rem;
+          margin: -0.5rem -0.5rem -0.5rem auto;display: block;">&times;</button>
+                <img height="100" [src]="imagepopup" style="width:95px;margin-left: 32%;margin-top: 24px;" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #mymodal let-modal style="max-width:400px">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title" *ngIf="popUpType == 'E' ">Status</h4>
+        <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="modal.close()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body" *ngIf="popUpType == 'E' ">
+
+        <input type="radio" id="inProcess" name="Status" [(ngModel)]="Status" value="In Process"
+            (click)="statuschange('In Process')" style="vertical-align: middle;">&nbsp;
+        <label for="inProcess" style="font-family: Gotham Bold;">In Process</label><br><br>
+        <input type="radio" id="docsRequested" name="Status" [(ngModel)]="Status" value="Docs Requested"
+            (click)="statuschange('Docs Requested')" style="vertical-align: middle;">&nbsp;
+        <label for="docsRequested" style="font-family: Gotham Bold;"> Docs Requested</label><br><br>
+        <input type="radio" id="complete" name="Status" [(ngModel)]="Status" value="Complete"
+            (click)="statuschange('Complete')" style="vertical-align: middle;">&nbsp;
+        <label for="complete" style="font-family: Gotham Bold;">Complete</label><br><br><br>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="saveStatus()" *ngIf="popUpType == 'E' ">OK</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()"
+            *ngIf="popUpType == 'D' ">Close</button>
+    </div>
+</ng-template>

@@ -1,0 +1,150 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+          <ng4-loading-spinner  ></ng4-loading-spinner>
+          <main class="col-md-9 ms-auto col-lg-10" *ngIf="GroupGrid">
+              
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div class="top_bg d-flex align-items-center">
+                    <div class="form-group col-xs-3 ">
+                      <label class="form-control input-group-lg reg_name">Groups</label>
+                  </div>
+              <div  class="form-group col-xs-6">
+                  <button (click)="AddGroup()" type="button" class="btn btn-primary" >Add</button>
+              </div>
+                    <!-- <button (click)="add()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddEdit">
+                        Add Role
+                      </button> -->
+                  </div>
+                  
+              </div>
+              
+              <div  class="table-responsive hover_">
+                <table class="table table-striped" style="width: 100%; text-align: center;">
+                    <thead>
+                      <tr style="text-transform: uppercase;">
+                        <th scope="col">Group Name</th>
+                        <th scope="col">Group Code</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                      </tr>
+                    </thead>
+
+                    <tbody style="cursor: pointer;">
+                        <ng-container *ngIf="GroupsData.length > 0; else norecdata" >
+                            <tr *ngFor="let item of GroupsData">
+                                <td >{{item.G_Name}}</td>
+                                <td >{{item.G_Code}}</td>
+                                <td ><span [ngStyle]="{'color': item.G_Status=='Y' ? '#0aa40a' : item.G_Status=='D' ? 'red' : '#ff0000' }">{{item.G_Status=='Y' ? 'Active' : item.G_Status=='D' ? 'Delete' : 'In-active'}}</span></td>
+                                <td title="Edit" (click)="editGroup(item.G_Id)"  ><img  style="text-align: center; cursor: pointer;" src="../../../assets/images/edit_1.png"></td>
+                                <td title="Delete" (click)="DeleteGroup(item.G_Id, 'D')"  ><img  style="text-align: center; cursor: pointer;" src="../../../assets/images/del_gry.png"></td>
+                            </tr>
+                    </ng-container>
+                      <ng-template #norecdata>
+                        <tr  >
+                          <td colspan="5" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found !!</label></td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                    
+                  </table>
+              
+            </div>
+            
+          </main>
+          <main class="col-md-9 ms-auto col-lg-10" *ngIf="EditGroup">
+            <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                <div class="top_bg d-flex align-items-center">
+                  <div class="form-group col-xs-3 ">
+                    <label class="form-control input-group-lg reg_name">{{lbl_Action}} Group</label>
+                </div>
+                
+                </div>
+                
+            </div>
+            <div>
+              <div class="row">
+                <div class="column1">
+                </div>
+                <div class="column">
+                  <!-- <h2 class="ttl-sales"><span>Admin Modules Data</span></h2> -->
+                </div>
+              </div>
+          </div>
+          <div class="contentpanel">
+            <div class="container">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-4">
+                  <div class="panel panel-default">
+
+                    <div class="panel-body">
+                      <form role="form" [formGroup]="GroupForm">
+                        <div class="row">
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+
+                              <label class="Mod_Headings" for="GroupName">Group Name:</label>
+                              <input  [(ngModel)]="GroupArraydata.GroupName" type="text" formControlName="GroupName" placeholder="Ad User Name" autofocus class="form-control" maxlength="51"/>
+                              <!-- <div *ngIf="submitted &amp;&amp; SubModuleForm.controls.smod_name.errors" class="text-danger">
+                                <div *ngIf="SubModuleForm.controls.smod_name.errors.required">AD User Name is required</div>
+                                <div *ngIf="SubModuleForm.controls.smod_name.errors.pattern">Module Name must be String</div>
+                                <div *ngIf="SubModuleForm.controls.smod_name.errors.maxlength">Module Name Limit is Exceeded</div>
+                              </div> -->
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="Mod_Headings" for="GroupCode">Group Code:</label>
+                                <input  [(ngModel)]="GroupArraydata.GropCode" type="text" formControlName="GroupCode" placeholder="Ad User Name" autofocus class="form-control" maxlength="51" />
+                                <!-- <div *ngIf="submitted &amp;&amp; SubModuleForm.controls.smod_name.errors" class="text-danger">
+                                  <div *ngIf="SubModuleForm.controls.smod_name.errors.required">AD User Name is required</div>
+                                  <div *ngIf="SubModuleForm.controls.smod_name.errors.pattern">Module Name must be String</div>
+                                  <div *ngIf="SubModuleForm.controls.smod_name.errors.maxlength">Module Name Limit is Exceeded</div>
+                                </div> -->
+                              </div>
+
+                           
+                              <div *ngIf = "GroupStatus" class="form-group">
+                                <label class="Mod_Headings" for="Status">Status:</label>
+                                <div class="switch" id="switchdivpublic" tabindex="1">
+                                  <input formControlName="Status" class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnPYes" name="Status" tabindex="1"
+                                    type="radio"  [(ngModel)]="GroupArraydata.Status"  checked value="Y"><label
+                                    class="switch-label switch-label-off" for="rbtnPYes">Active</label>
+                                    <input formControlName="Status" class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnPNo" name="Status" tabindex="1"
+                                     type="radio" [(ngModel)]="GroupArraydata.Status"  value="N"><label
+                                    class="switch-label switch-label-on" for="rbtnPNo">In-Active</label>
+                                    <input formControlName="Status" class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnSD" name="Status" tabindex="1"
+                                     type="radio" [(ngModel)]="GroupArraydata.Status"  value="D"><label
+                                    class="switch-label switch-label-on" for="rbtnSD">Delete</label><span class="switch-selection"></span>
+                                    
+                                </div>
+                              </div>
+                            
+                          </div>
+                        </div>
+
+                        
+                     
+                        <div class="col-lg-12 pt-lg-5 pl-lg-4">
+                          <div class="row">
+                            <div class="col-lg-2">
+                              <button type="button" class="savebutton" (click)="UpdateGroup()">Save</button>
+                            </div>
+                            <div class="col-lg-2">
+                              <button type="button" class="cancelbutton" (click)="BackToGroupGrid()">Cancel</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+        </main>
+    </div>
+   
+</div>

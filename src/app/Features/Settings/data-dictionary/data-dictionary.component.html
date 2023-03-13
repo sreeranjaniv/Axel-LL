@@ -1,0 +1,185 @@
+<app-header></app-header>
+<ng4-loading-spinner  ></ng4-loading-spinner>
+<div class="container-fluid">
+    <div class="row">
+        
+          <main class="col-md-9 ms-auto col-lg-10">
+              <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                  <div class="top_bg d-flex align-items-center">
+                    <div (click)="exportAsXLSXGrid()" style="cursor: pointer;" class="ms-auto ">
+                        <div  class="d-flex align-items-center export"> Export to excel <span><img src="../../assets/images/export.png" style="margin:-5px 0 0 5px;"></span></div>
+                     </div>
+                  </div>
+              </div>
+              <div class="stor_headng">
+                <div class="row">
+                  <div class="store">
+                  </div>
+                  <div class="storebody">
+                    <h2 class="ttl-sales"><span>Data Dictionary</span></h2>
+                  </div>
+                </div>
+                <div style="width: 20%; border-top: none;color: white;font-size: 16px; "  class="store_name">{{Date | date:'MM/dd/yy h:mm:ss'}}</div>
+                
+            </div>
+            <div class="table-responsive service_R" >
+                <table>
+                    <colgroup>
+                        
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                        <col>
+                        <col style="background:#f8fafb">
+                       
+                        </colgroup>
+                        <thead>
+                            <tr >
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">Object Name</th>
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 3%; border-bottom: 5px solid #65bbfa;">View Data</th>
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">Object Type</th>	
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">DB Name</th>
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">Type</th>
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">Source Name</th>
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">Source Description</th>
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">Updated Date Time</th>
+                                    <th style="width: .01%; background:transparent !important;"></th>
+                                    <th style="width: 10%; border-bottom: 5px solid #65bbfa;">Row Last Updated</th>
+                            </tr>
+                          </thead>
+                          <tbody>  
+                            <ng-container *ngIf="DataDicData.length > 0; else norecdata">                 
+                                <tr *ngFor="let item of DataDicData">
+                                    <td  (click)="TableDetails(item.DD_OBJECT_NAME, item.DD_DB_NAME, item.DD_DESC)" style="cursor: pointer;" data-toggle="modal" data-target="#TabelDetailed" >{{item.DD_OBJECT_NAME}}</td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td> <a (click)="TableData(item.DD_OBJECT_NAME, item.DD_DB_NAME)"  data-toggle="modal" data-target="#ViewTableData"><img style="cursor: pointer;height: 30px;width: 30px;" src="assets/images/View.png" /></a></td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td>{{item.DD_OBJECT_TYPE}}</td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td>{{item.DD_DB_NAME}}</td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td>{{item.DD_TYPE}}</td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td>{{item.DD_SOURCENAME}}</td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td>{{item.SRC_DESC}}</td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td>{{item.Updated_TS  }}</td>
+                                    <td style="background: transparent !important;"></td>
+                                    <td>{{item.RowLastUpdated  }}</td>
+                                </tr>
+                            </ng-container>
+                            <ng-template #norecdata>
+                                <tr >
+                                <td colspan="10" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found !!</label></td>
+                                </tr>
+                          </ng-template>
+                          </tbody>
+                </table>
+                
+                
+            </div>
+            
+          </main>
+          
+          <div class="modal fade" id="TabelDetailed" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+              <div class="modal-content">
+                <div  class="modal-header">
+                  <p><span><h5 class="modal-title" id="exampleModalLabel">{{TabelName}}</h5></span><span><div class="modal-title" id="exampleModalLabel">{{Table_Desc}} </div></span></p>
+                  <br><br>
+                  
+                  <!-- <div  (click)="exportAsXLSX()" style="cursor: pointer;" class="ms-auto ">
+                        <div  class="d-flex align-items-center export"> Export to excel <span><img src="../../assets/images/export.png" style="margin:-5px 0 0 5px;"></span></div>
+                     </div> -->
+                    <!-- <button (click)="exportAsXLSX()" class="col-md-4 text-right" class="btn btn-primary" id="exporttable" style="width: 143px;margin-left: 15px;background: #4a42d4;border-color:4a42d4 ; font-weight: bold;">Export to Excel</button>
+                </div> -->
+                    <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
+                  
+                </div>
+                <div class="modal-body table table-striped force-overflow" id="style-14" style="max-height: calc(100vh - 90px);overflow: auto;">
+                  
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead  style="background-color: #4a42d4;color: white; ">
+                            <th scope="col">OUTPUT</th>
+                            <th scope="col">ORDINAL POSITION</th>
+                            <th scope="col">COLUMN DESCRIPTION</th>
+                            <th scope="col">DATA TYPE</th>
+                            <th scope="col">CHARACTER MAXIMUM LENGTH</th>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="DataDicData_Details ">
+                            <tr *ngFor="let item of DataDicData_Details ">
+                              <td >{{item.OUTPUT }}</td>
+                              <td >{{item.ORDINAL_POSITION }}</td>
+                              <td >{{item.COLUMN_DESCRIPTION}}</td>
+                              <td >{{item.DATA_TYPE}}</td>
+                              <td >{{item.CHARACTER_MAXIMUM_LENGTH}}</td>
+                            </tr>
+                            </ng-container>
+        
+                        <ng-template #norecdata>
+                            <tr >
+                              <td colspan="15" style="text-align: center;color:#6c757d"><label>No Data Found</label></td>
+                            </tr>
+                          </ng-template>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="ViewTableData" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+              <div class="modal-content">
+                <div  class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">{{TabelName_Data}}</h5>
+                    <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body table table-striped force-overflow" id="style-14" style=" max-height: 400px !important;overflow: auto; white-space: nowrap;height: auto;">
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead *ngIf="keys; " style="background-color: #4a42d4;color: white; ">
+                      <th  *ngFor = 'let key of keys'>{{key}}</th>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="DataDicData_TableData ">
+                            <tr *ngFor="let item of DataDicData_TableData ">
+                             <td  *ngFor = 'let key of keys'> {{item[key]}}</td>
+                            </tr>
+                            </ng-container>
+                        <ng-template #norecdata>
+                            <tr >
+                              <td colspan="15" style="text-align: center;color:#6c757d"><label>No Data Found</label></td>
+                            </tr>
+                          </ng-template>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+</div>
+
+

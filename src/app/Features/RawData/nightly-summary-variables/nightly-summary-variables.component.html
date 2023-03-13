@@ -1,0 +1,242 @@
+<app-header></app-header>
+<div class="container-fluid">
+    <div class="row">
+      <ng4-loading-spinner ></ng4-loading-spinner>
+        <main class="col-md-9 ms-auto col-lg-10" *ngIf="SummeryGrid" >
+            <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                <div class="top_bg d-flex align-items-center">
+                  <div class="form-group" >
+                    <label class="form-control input-group-lg reg_name">Nightly Summary</label>
+                </div>
+            <div  class="form-group" style="margin-right: 20px !important;">
+                <button (click)="AddSummery()" type="button" class="btn btn-primary">Add</button>
+            </div>
+            <div  class="form-group " style="margin-right: 20px !important;">
+              <select (change)="HeaderDropDownchnge($event)"  [(ngModel)]="HeaderDrpdwn_chnge" id="drpdown" style="text-indent: 10px;font-size: larger;">
+                <option *ngFor ="let i of vbleDrpdwnList" [value]="i.NSV_ID">{{i.NSV_NAME}}</option>
+            </select>
+            </div>
+            <div  class="form-group"  style="margin-right: 10px !important;">
+              <input type="month" [ngModel]="startDate | date:'yyyy-MM'" [max]="getToday()" (ngModelChange)="updatedate($event)"  name="startDate" class="datepicker">
+          </div> 
+          <div style="cursor: pointer;" (click)="exportAsXLSX()" class="col-lg-3  ms-auto" >
+            <div class="d-flex align-items-center export" style="float: right;cursor: pointer;"><div>Export to excel</div>  <span><img src="../../assets/images/export.png" style="margin:-5px 0 0 5px;"></span></div>
+         </div>
+                </div>
+                
+            </div>
+            <div  class="table-responsive hover_">
+                <table class="table table-striped" style="width: 100%; text-align: center;">
+                    <thead>
+                      <tr style="text-transform: uppercase;">
+                        <th>STORE NAME</th>
+                        <th>STOREAB</th>
+                        <th>USED UNITS</th>
+                        <th>NEW UNITS</th>
+                        <th>PARTS GROSS</th>
+                        <th>RECAP GROSS</th>
+                        <th>SERVICE GROSS</th>
+                        <th>MFR PVR</th>
+                        <th>MFR MARGIN</th>
+                        <th>STATUS</th>
+                        <th>EDIT</th>
+                      </tr>
+                    </thead>
+  
+                    <tbody style="cursor: pointer;">
+                        <ng-container  *ngIf="GridData.length > 0 && HeaderDrpdwn_chnge == 1; else norecdata">
+                            <tr *ngFor="let item of GridData">
+                              <td>{{item.STORENAME}}</td>
+                              <td>{{item.STOREAB}}</td>
+                              <td>{{item.USED_UNITS}}</td>
+                              <td>{{item.NEW_UNITS}}</td>
+                              <td>{{item.PARTS_GROSS}}</td>
+                              <td>{{item.RECAP_GROSS}}</td>
+                              <td>{{item.SERVICE_GROSS}}</td>
+                              <td>{{item.MFR_PVR}}</td>
+                              <td>{{item.MFR_MARGIN}}</td>
+                              <td>
+                                <span [ngStyle]="{'color': item.NSVE_STATUS=='Y' ? '#0aa40a' : '#ff0000' }">{{item.NSVE_STATUS=='Y' ? 'Active' : 'In-active'}}</span>
+                              </td>
+                              <td><img src="assets/images/edit_1.png"  (click)="edit(item)"/></td>
+                            </tr>
+                    </ng-container>
+                      <ng-template #norecdata>
+                        <tr>
+                          <td colspan="10" style="text-align: center;color: #040404;font-size: 14px;"><label>No Data Found</label></td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+
+                  </table>
+              
+            </div>
+        </main>
+        <main class="col-md-9 ms-auto col-lg-10" *ngIf="EditSummery">
+            <div class="row flex-wrap flex-md-nowrap align-items-center border-bottom">
+                <div class="top_bg d-flex align-items-center">
+                  <div class="form-group col-xs-3 ">
+                    <label class="form-control input-group-lg reg_name">Add/Edit Summary</label>
+                </div>
+                </div>
+            </div>
+            <div>
+              <div class="row">
+                <div class="column1">
+                </div>
+                <div class="column">
+                </div>
+              </div>
+          </div>
+          <div class="contentpanel" style="margin-top:15px;">
+              <div class="container">
+                <div class="row">
+                  <div>
+                    <div class="panel panel-default">
+                      
+                      <div class="form-row align-items-center">
+                            <div class="row">
+                              <div class="col-lg-3">
+                                <select (change)="DropDownchnge($event)" [(ngModel)]="Drpdwn_chnge" id="drpdown">
+                                      <!-- <option  value="">Select variable</option> -->
+                                      <option *ngFor =" let i of vbleDrpdwnList" [value]="i.NSV_ID">{{i.NSV_NAME}}</option>
+                                    
+                                </select>
+                              </div>
+                              <div class="col-lg-4">
+                                  <button data-toggle="modal" data-target="#AddGroup" class="btn" style="font-size: 13px;background-color: #267fd3;color: white;
+                                  text-rendering: optimizeLegibility !important;
+                                  font-size: 15px;
+                                  font-family: HelveticaNeue-Regular" (click)="AddButn()">Add Variable</button>
+                              </div>
+                            </div>
+                            <br><br>
+                            <!-- <form role="form" [formGroup]="SummeryForm" *ngIf="Drpdwn_chnge == 1; else norecdata"> -->
+                              <div *ngIf="Drpdwn_chnge == 1;">
+                           
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label>STORE NAME</label>
+                                        <select  [(ngModel)]="storename" (change)="DealerChange($event)" class="form-control form-select" >
+                                            <option  value="">Select Store</option>
+                                            <option *ngFor="let i of Dealer_DD" [value]="i.AS_ID">{{i.DEALER_NAME}}</option>
+                                        </select>
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                        <label>STOREAB</label>
+                                        <input type="text"  class="form-control" [(ngModel)]="storeab" readonly>
+                                </div>
+                                
+                            </div>   
+                            <br><br> 
+                            <div class="row">
+                              <div class="form-group col-lg-4">
+                                <label>NEW UNITS</label>
+                                <input type="text"  class="form-control" [(ngModel)]="newunits" maxlength="4">
+                            </div> 
+                                <div class="form-group col-lg-4">
+                                    <label>USED UNITS</label>
+                                    <input type="text"  class="form-control" [(ngModel)]="usedunits" maxlength="4">
+                                </div>
+                                 <div class="form-group col-lg-4">
+                                        <label>RECAP GROSS</label>
+                                        <input type="text"  class="form-control" [(ngModel)]="recapgross" maxlength="10">
+                                </div>
+                                
+                            </div> 
+                            <br><br>
+                            <div class="row">
+                              <div class="form-group col-lg-4">
+                                <label>MFR MARGIN</label>
+                                <input type="text"  class="form-control" [(ngModel)]="mfrmargin" maxlength="10">
+                            </div> 
+                                <div class="form-group col-lg-4">
+                                    <label>SERVICE GROSS</label>
+                                    <input type="text"  class="form-control" [(ngModel)]="servicegross" maxlength="10">
+                                </div>
+                                 <div class="form-group col-lg-4">
+                                        <label>PARTS GROSS</label>
+                                        <input type="text"  class="form-control" [(ngModel)]="partsgross" maxlength="10" >
+                                </div>
+  
+                            </div>  
+                            <br><br>
+                            <div class="row">
+                              <div class="form-group col-lg-4">
+                                <label>MFR PVR</label>
+                                <input type="text"  class="form-control" [(ngModel)]="mfrpvr" maxlength="10">
+                            </div> 
+                                <div class="form-group col-lg-4 date">
+                                    <label>PERIOD</label>
+                                    <input type="date" class="form-control" [(ngModel)]="period" [min]="getdatemin" >
+                                </div>                           
+                            </div>  
+                            <br><br> 
+
+                            <div class="row">
+                             <div class="form-group"> 
+                              <div class="switch" id="switchdivpublic" tabindex="1">
+                                <input class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnPYes" name="status" tabindex="1"
+                                  type="radio"  [(ngModel)]="status"  checked value="Y"><label
+                                  class="switch-label switch-label-off" for="rbtnPYes">Active</label>
+                                  <input class="switch-input ng-untouched ng-pristine ng-valid" id="rbtnPNo" name="status" tabindex="1"
+                                   type="radio" [(ngModel)]="status"  value="N"><label
+                                  class="switch-label switch-label-on" for="rbtnPNo">In-Active</label><span class="switch-selection"></span>
+                                  
+                              </div>
+                            </div> 
+                        </div>
+                          <div class="col-lg-12 pt-lg-5 pl-lg-4">
+                            <div class="row">
+                              <div class="col-lg-2">
+                                <button id="savebutton" type="button" class="savebutton" (click)="OnSubmit()">Save</button>
+                              </div>
+                              <div class="col-lg-2">
+                                <button type="button" class="cancelbutton" (click)="BackToGrid()">Cancel</button>
+                              </div>
+                            </div>
+                            </div>
+                              
+                          </div>
+                        <!-- </form> -->
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="Drpdwn_chnge != 1">
+                      <label colspan="5" style="text-align: center;color: #040404;font-size: 14px;">No Data Found</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+              <div class="modal fade" id="AddGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document"  [formGroup]="Vrbleform">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Add Variable</h5>
+                      <button  type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div >
+                          <label for="variablename" style="font-size: larger;">Variable Name</label>
+                          <input type="text" placeholder="Enter Variable Name" maxlength="51" class="form-control" formControlName="variablename" id="variablename" />
+                          <div *ngIf="submitted && Vrbleform.controls.variablename.errors" >
+                            <div *ngIf="Vrbleform.controls.variablename.errors.required" style="color:red" >Variable Name is required</div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button  type="button" class="btn btn-primary" (click)="UpdateVariable()">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+        </main>
+
+
+
+    </div>
+
+
+</div>
